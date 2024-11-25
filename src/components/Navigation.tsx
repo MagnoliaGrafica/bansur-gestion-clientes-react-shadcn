@@ -62,7 +62,7 @@ const Navigation = () => {
         variants={containerVariants}
         animate={containerControls}
         initial="close"
-        className="bg-neutral-900 flex flex-col z-10 gap-20 p-5 absolute top-0 left-0 h-full shadow shadow-neutral-600"
+        className="bg-bansur flex flex-col z-10 gap-20 p-5 absolute top-0 left-0 h-full shadow shadow-neutral-400"
       >
         <div className="flex flex-row w-full justify-between place-items-center">
           <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-amber-700 rounded-full" />
@@ -93,24 +93,16 @@ const Navigation = () => {
           </button>
         </div>
         <div className="flex flex-col gap-3">
-  <NavigationLink name="Dashboard" path="/dashboard" isOpen={isOpen}>
-    <ChartBarIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
-  </NavigationLink>
-  <NavigationLink name="About" path="/about" isOpen={isOpen}>
-    <Square2StackIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
-  </NavigationLink>
-  <NavigationLink name="Comment" path="/comment" isOpen={isOpen}>
-    <DocumentCheckIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
-  </NavigationLink>
-  <NavigationLink name="Analytics" path="/analytics" isOpen={isOpen}>
-    <ChartPieIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
-  </NavigationLink>
-  <NavigationLink name="Product" path="/product" isOpen={isOpen}>
-    <UsersIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
-  </NavigationLink>
-</div>
-
-
+          <NavigationLink name="Dashboard" path="/dashboard" isOpen={isOpen}>
+            <ChartBarIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
+          </NavigationLink>
+          <NavigationLink name="Clientes" path="/clientes" isOpen={isOpen}>
+            <UsersIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
+          </NavigationLink>
+          
+          
+          
+      </div>
       </motion.nav>
     </>
   )

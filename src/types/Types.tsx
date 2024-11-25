@@ -2,6 +2,13 @@ export interface defaultLayoutProps{
     children: React.ReactNode
 }
 
+export interface Props {
+    children: React.ReactNode
+    name: string
+    path: string // Nueva propiedad para la ruta
+    isOpen: boolean
+  }
+
 // Definimos el tipo para los clientes
 export interface Cliente {
     id: number;

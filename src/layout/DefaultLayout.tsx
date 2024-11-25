@@ -1,11 +1,16 @@
-import {defaultLayoutProps} from "../types/Types.tsx"
+import { Outlet } from "react-router-dom";
+import Navigation from "../components/Navigation";
 
-export const DefaultLayout = ({children}: defaultLayoutProps ) => {
-  
+const DefaultLayout = () => {
   return (
-      <main>
-        {children}
+    <div>
+      {/* Aquí está el Navigation que será común para todas las rutas */}
+      <Navigation />
+      <main className="w-full h-screen flex flex-row relative bg-white pl-28">
+        {/* Aquí se renderizarán las rutas secundarias */}
+        <Outlet />
       </main>
+    </div>
   );
 };
 

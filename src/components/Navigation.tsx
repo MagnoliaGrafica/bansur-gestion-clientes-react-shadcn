@@ -3,9 +3,6 @@ import { useState, useEffect } from "react"
 import NavigationLink from "./NavigationLink.tsx"
 import {
   ChartBarIcon,
-  ChartPieIcon,
-  DocumentCheckIcon,
-  Square2StackIcon,
   UsersIcon,
 } from "@heroicons/react/24/outline"
 

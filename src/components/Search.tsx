@@ -66,9 +66,8 @@ const SearchComponent: React.FC = () => {
         className="my-6"
         />
 
-
 <Table>
-  <TableCaption>A list of your recent invoices.</TableCaption>
+  <TableCaption>Lista de clientes.</TableCaption>
   <TableHeader>
     <TableRow>
       <TableHead className="w-[400px]">Nombre</TableHead>

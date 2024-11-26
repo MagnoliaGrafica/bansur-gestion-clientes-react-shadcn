@@ -23,7 +23,8 @@ const ClienteDetail = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  const URL = "http://localhost:3000/api/clientes/";
+  //const URL = "http://localhost:3000/api/clientes/";
+  const URL = "https://bansur-api-express.vercel.app/api/clientes/";
 
   const showData = async () => {
     try {

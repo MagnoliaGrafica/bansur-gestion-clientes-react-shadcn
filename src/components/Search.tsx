@@ -27,7 +27,8 @@ const SearchComponent: React.FC = () => {
   const [clientes, setClientes] = useState<Cliente[]>([]);
   const [search, setSearch] = useState<string>("");
 
-  const URL = 'http://localhost:3000/api/clientes';
+  //const URL = 'http://localhost:3000/api/clientes';
+  const URL = "https://bansur-api-express.vercel.app/api/clientes";
 
   // Función para obtener los datos de la API
   const showData = async () => {

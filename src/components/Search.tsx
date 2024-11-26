@@ -2,6 +2,24 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router";
 import axios from "axios";
 import { Cliente } from "../types/Types"; 
+import { Input } from "@/components/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { PencilSquareIcon } from "@heroicons/react/24/outline";
+
+
+
+
 
 
 const SearchComponent: React.FC = () => {
@@ -39,42 +57,57 @@ const SearchComponent: React.FC = () => {
 
   return (
     <div className="container mx-auto">
-      <input 
-        type="text" 
-        placeholder="buscar..." 
-        value={search}
-        onChange={searcher}    
-      />
-      <table>
-
-    <thead>
-      <tr>
-        <th>Nombre</th>
-        <th>Comuna</th>
-        <th>Monto</th>
-        <th>Convenio</th>
-        <th>Estado</th>
-        <th>Canal</th>
-        <th>Ejecutivo</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      {results.map((cliente) => (
-          <tr key={cliente.id}>
-            <td>{cliente.nombre} {cliente.apellido}<br />{cliente.rut}</td>
-            <td>{cliente.comuna}</td>
-            <td>{cliente.monto}</td>
-            <td>{cliente.convenio}</td>
-            <td>{cliente.estado}</td>
-            <td>{cliente.canal}</td>
-            <td>{cliente.ejecutivo}</td>
-            <td><Link to={`/cliente/${cliente.id}`}>Actualizar - {cliente.id}</Link></td>
-          </tr>
-        ))}
       
-    </tbody>
-      </table>
+      <Input 
+        type="text" 
+        placeholder="Buscar cliente..." 
+        value={search}
+        onChange={searcher} 
+        className="my-6"
+        />
+
+
+<Table>
+  <TableCaption>A list of your recent invoices.</TableCaption>
+  <TableHeader>
+    <TableRow>
+      <TableHead className="w-[400px]">Nombre</TableHead>
+      <TableHead>Convenio</TableHead>
+      <TableHead>Estado</TableHead>
+      <TableHead>Ejecutivo</TableHead>
+      <TableHead className="text-right">Monto</TableHead>
+      <TableHead></TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    {results.map((cliente) => (
+    <TableRow key={cliente.id}>
+            <TableCell className="font-medium">{cliente.nombre} {cliente.apellido}<br />{cliente.rut}</TableCell>
+            <TableCell>{cliente.convenio}</TableCell>
+            <TableCell><Badge variant="outline">{cliente.ejecutivo}</Badge>
+            </TableCell>
+            <TableCell>
+              
+              <Avatar>
+                  <AvatarFallback>{cliente.ejecutivo}</AvatarFallback>
+              </Avatar>
+
+              </TableCell>
+            <TableCell className="text-right">${cliente.monto}</TableCell>
+            <TableCell>
+
+            <Button asChild variant="outline" size="icon">
+              <Link to={`/cliente/${cliente.id}`}>
+                <PencilSquareIcon className="h-4 w-4" />
+              </Link>
+            </Button>
+              </TableCell>
+      </TableRow>
+    ))}
+      
+  </TableBody>
+</Table>
+
       
     </div>
   );

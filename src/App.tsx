@@ -8,6 +8,7 @@ import Product from './pages/Product.tsx';
 import ProductList from './pages/ProductList.tsx';
 import Clientes from './pages/Clientes.tsx';
 import Cliente from './pages/Cliente.tsx';
+import ClienteAdd from './pages/ClienteAdd.tsx';
 import DefaultLayout from './layout/DefaultLayout.tsx';
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
           <Route path="/productList" element={<ProductList />} />
           <Route path="/clientes" element={<Clientes />} />
           <Route path="/cliente/:id" element={<Cliente />} />
+          <Route path="/cliente/add" element={<ClienteAdd />} />
         </Route>
       </Routes>
     </BrowserRouter>

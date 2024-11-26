@@ -15,11 +15,7 @@ import {
 import { Avatar, AvatarFallback} from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { PencilSquareIcon } from "@heroicons/react/24/outline";
-
-
-
-
+import { PencilSquareIcon, UserPlusIcon } from "@heroicons/react/24/outline";
 
 
 const SearchComponent: React.FC = () => {
@@ -58,14 +54,20 @@ const SearchComponent: React.FC = () => {
 
   return (
     <div className="container mx-auto">
-      
+      <div className="flex justify-between gap-4 my-6">
       <Input 
         type="text" 
         placeholder="Buscar cliente..." 
         value={search}
-        onChange={searcher} 
-        className="my-6"
+        onChange={searcher}
         />
+
+        <Button asChild variant="outline" >
+          <Link to="/cliente/add">
+            <UserPlusIcon /> Nuevo Cliente 
+          </Link>
+        </Button>  
+      </div>
 
 <Table>
   <TableCaption>Lista de clientes.</TableCaption>

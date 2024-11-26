@@ -1,4 +1,3 @@
-import SearchComponent from './components/Search.tsx';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import Dashboard from './pages/Dashboard.tsx';

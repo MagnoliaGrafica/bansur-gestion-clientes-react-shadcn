@@ -19,8 +19,20 @@ export interface Cliente {
     empresa: string;
     comuna:string;
     monto: number;
+    tipoCredito:number;
     convenio: number;
+    sector: number;
     estado: number;
     canal: number;
     ejecutivo: number;
+  }
+
+  export interface Sector { 
+    id: number; 
+    nombre: string; 
+  };
+
+  export interface TipoCredito {
+    id: number;
+    nombre: string;
   }

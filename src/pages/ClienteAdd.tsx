@@ -31,10 +31,6 @@ const ClienteAdd = () => {
               <Input type="text" name="apellido" placeholder="Apellido" />
             </div>
 
-
-
-
-
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="framework">Ejecutivo</Label>
               <Select>

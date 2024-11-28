@@ -78,6 +78,9 @@ const SearchComponent: React.FC = () => {
       <TableHead>Estado</TableHead>
       <TableHead>Ejecutivo</TableHead>
       <TableHead className="text-right">Monto</TableHead>
+      <TableHead>Ingresado</TableHead>
+      <TableHead>A comité</TableHead>
+      <TableHead>Cierre</TableHead>
       <TableHead></TableHead>
     </TableRow>
   </TableHeader>
@@ -86,18 +89,22 @@ const SearchComponent: React.FC = () => {
     <TableRow key={cliente.id}>
             <TableCell className="font-medium">{cliente.nombre} {cliente.apellido}<br />{cliente.rut}</TableCell>
             <TableCell>{cliente.convenio}</TableCell>
-            <TableCell><Badge variant="outline">{cliente.ejecutivo}</Badge>
-            </TableCell>
+            <TableCell><Badge variant="outline">{cliente.ejecutivo}</Badge></TableCell>
             <TableCell>
-              
-              <Avatar>
+                <Avatar>
                   <AvatarFallback>{cliente.ejecutivo}</AvatarFallback>
               </Avatar>
-
               </TableCell>
-            <TableCell className="text-right">${cliente.monto}</TableCell>
-            <TableCell>
+              <TableCell className="text-right">
+                ${new Intl.NumberFormat("es-CL").format(cliente.monto)}
+            </TableCell>
 
+            
+            <TableCell>{new Date(cliente.createdAt).toLocaleDateString("es-CL")}</TableCell>
+            <TableCell>{cliente.fechaAsignado}</TableCell>
+            <TableCell>{cliente.fechaCierre}</TableCell>            
+            
+            <TableCell>
             <Button asChild variant="outline" size="icon">
               <Link to={`/cliente/${cliente.id}`}>
                 <PencilSquareIcon className="h-4 w-4" />

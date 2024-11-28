@@ -25,6 +25,9 @@ export interface Cliente {
     estado: number;
     canal: number;
     ejecutivo: number;
+    createdAt: number;
+    fechaAsignado:number;
+    fechaCierre:number;
   }
 
   export interface Sector { 

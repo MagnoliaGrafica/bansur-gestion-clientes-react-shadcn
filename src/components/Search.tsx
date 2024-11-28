@@ -52,6 +52,19 @@ const SearchComponent: React.FC = () => {
     showData();
   }, []);
 
+  //calcular fechas
+  const calculateDays = (createdAt: string | number | Date, fechaAsignado?: string | number | Date | null): number => {
+    const startDate = new Date(createdAt); // Fecha de creación
+    const endDate = fechaAsignado ? new Date(fechaAsignado) : new Date(); // Fecha asignada o fecha actual
+  
+    // Calcular la diferencia en milisegundos
+    const differenceInMilliseconds = endDate.getTime() - startDate.getTime();
+  
+    // Convertir la diferencia a días
+    return Math.floor(differenceInMilliseconds / (1000 * 60 * 60 * 24));
+  };
+  
+
   return (
     <div className="container mx-auto">
       <div className="flex justify-between gap-4 my-6">
@@ -77,11 +90,13 @@ const SearchComponent: React.FC = () => {
       <TableHead>Convenio</TableHead>
       <TableHead>Estado</TableHead>
       <TableHead>Ejecutivo</TableHead>
-      <TableHead className="text-right">Monto</TableHead>
-      <TableHead>Ingresado</TableHead>
-      <TableHead>A comité</TableHead>
-      <TableHead>Cierre</TableHead>
-      <TableHead></TableHead>
+      <TableHead>Monto Solitado</TableHead>
+      <TableHead>Monto a Evaluar</TableHead>
+      <TableHead className="w-[110px]">Ingresado</TableHead>
+      <TableHead className="w-[110px]">A comité</TableHead>
+      <TableHead className="w-[110px]">Cierre</TableHead>
+      <TableHead>Tiempo en asignar</TableHead>
+      <TableHead>...</TableHead>
     </TableRow>
   </TableHeader>
   <TableBody>
@@ -89,20 +104,40 @@ const SearchComponent: React.FC = () => {
     <TableRow key={cliente.id}>
             <TableCell className="font-medium">{cliente.nombre} {cliente.apellido}<br />{cliente.rut}</TableCell>
             <TableCell>{cliente.convenio}</TableCell>
-            <TableCell><Badge variant="outline">{cliente.ejecutivo}</Badge></TableCell>
+            <TableCell>
+              <Badge variant={cliente.gc_estado && cliente.gc_estado.id === 9 ? "destructive" : "outline"}>
+                  {cliente.gc_estado ? cliente.gc_estado.nombre : "Sin asignar"}
+            </Badge>
+            </TableCell>
             <TableCell>
                 <Avatar>
-                  <AvatarFallback>{cliente.ejecutivo}</AvatarFallback>
+                  <AvatarFallback>{cliente.gc_ban_user ? cliente.gc_ban_user.nombre : "N/A"}</AvatarFallback>
               </Avatar>
               </TableCell>
               <TableCell className="text-right">
                 ${new Intl.NumberFormat("es-CL").format(cliente.monto)}
             </TableCell>
+            <TableCell>
+              -
+            </TableCell>
 
             
             <TableCell>{new Date(cliente.createdAt).toLocaleDateString("es-CL")}</TableCell>
-            <TableCell>{cliente.fechaAsignado}</TableCell>
-            <TableCell>{cliente.fechaCierre}</TableCell>            
+            <TableCell>
+                {cliente.fechaAsignado 
+                  ? new Date(cliente.fechaAsignado).toLocaleDateString("es-CL") 
+                  : "-"}
+              </TableCell>
+              <TableCell>
+                {cliente.fechaCierre 
+                  ? new Date(cliente.fechaCierre).toLocaleDateString("es-CL") 
+                  : "-"}
+              </TableCell>
+
+              <TableCell>
+  {calculateDays(cliente.createdAt, cliente.fechaAsignado)} días
+</TableCell>
+          
             
             <TableCell>
             <Button asChild variant="outline" size="icon">

@@ -28,6 +28,8 @@ export interface Cliente {
     createdAt: number;
     fechaAsignado:number;
     fechaCierre:number;
+    gc_ban_user: gc_ban_user;
+    gc_estado: gc_estado;
   }
 
   export interface Sector { 
@@ -55,3 +57,14 @@ export interface Cliente {
     nombre: string;
     apellido: string;
   }
+
+  interface gc_ban_user {
+    id: number;
+    nombre:string;
+    apellido:string;
+  }
+
+  interface gc_estado {
+      id: number,
+      nombre:string
+    }

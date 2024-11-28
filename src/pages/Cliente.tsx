@@ -291,7 +291,7 @@ useEffect(() => {
                   />
                   </div>
                 <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="monto">Monto</Label>
+                  <Label htmlFor="monto">Monto Solicitado</Label>
                   <Input 
                     type="number" 
                     name="monto" 
@@ -314,7 +314,7 @@ useEffect(() => {
                   </RadioGroup>
                 </div>
     
-                <div>convenio</div>
+                <div className="my-2">(*) Convenio (listado de convenios)</div>
 
                 {/* Sector */}
                 <div className="flex flex-col space-y-1.5">

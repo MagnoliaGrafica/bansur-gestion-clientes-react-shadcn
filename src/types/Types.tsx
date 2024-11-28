@@ -36,3 +36,19 @@ export interface Cliente {
     id: number;
     nombre: string;
   }
+
+  export interface Estados {
+    id: number;
+    nombre: string;
+  }
+
+  export interface Canales {
+    id: number;
+    nombre: string;
+  }
+
+  export interface Ejecutivos {
+    id: number;
+    nombre: string;
+    apellido: string;
+  }

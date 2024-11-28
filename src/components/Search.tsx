@@ -43,10 +43,15 @@ const SearchComponent: React.FC = () => {
 
   // Filtrado de resultados basado en la búsqueda
   const results = search
-    ? clientes.filter((dato) =>
-        dato.nombre.toLowerCase().includes(search.toLowerCase())
-      )
-    : clientes;
+  ? clientes.filter((dato) => {
+      const nombre = dato.nombre?.toLowerCase() || ""; // Asegura que nombre es una cadena
+      const rut = dato.rut?.toLowerCase() || ""; // Asegura que rut es una cadena
+      const searchText = search.toLowerCase();
+
+      return nombre.includes(searchText) || rut.includes(searchText);
+    })
+  : clientes;
+
 
   useEffect(() => {
     showData();
@@ -70,7 +75,7 @@ const SearchComponent: React.FC = () => {
       <div className="flex justify-between gap-4 my-6">
       <Input 
         type="text" 
-        placeholder="Buscar cliente..." 
+        placeholder="Buscar cliente por Nombre o Rut." 
         value={search}
         onChange={searcher}
         />
@@ -135,8 +140,8 @@ const SearchComponent: React.FC = () => {
               </TableCell>
 
               <TableCell>
-  {calculateDays(cliente.createdAt, cliente.fechaAsignado)} días
-</TableCell>
+                    {calculateDays(cliente.createdAt, cliente.fechaAsignado)} días
+              </TableCell>
           
             
             <TableCell>

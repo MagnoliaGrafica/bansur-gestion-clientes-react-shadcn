@@ -43,7 +43,7 @@ const ClienteDetail = () => {
   const ESTADOS_API_URL = "https://bansur-api-express.vercel.app/api/estados";
   const CANAL_API_URL = "https://bansur-api-express.vercel.app/api/canal";
   const EJECUTIVO_API_URL = "https://bansur-api-express.vercel.app/api/ejecutivos";
-  const CONVENIOS_API_URL = "https://bansur-api-express.vercel.app/api/convenios";
+ // const CONVENIOS_API_URL = "https://bansur-api-express.vercel.app/api/convenios";
 
 
   // Obtener canales desde la API

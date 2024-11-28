@@ -30,11 +30,8 @@ const ClienteDetail = () => {
   const [selectedEstados, setSelectedEstados] = useState<string>("");
   const [canal, setCanal] = useState<Canales[]>([]);
   const [selectedCanal, setSelectedCanal] = useState<string>("");
-
   const [ejecutivo, setEjecutivo] = useState<Ejecutivos[]>([]);
   const [selectedEjecutivo, setSelectedEjecutivo] = useState<string>("");
-  
-  
   const [loading, setLoading] = useState<boolean>(true);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -147,11 +144,18 @@ useEffect(() => {
     };
     fetchCliente();
   }, [params.id]);
+  
 
   // Manejar cambios en los inputs
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setElCliente((prev) => (prev ? { ...prev, [name]: value } : null));
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type } = e.target;
+  
+    // Convertir a number si el input es de tipo "number"
+    const newValue = type === "number" ? (value === "" ? "" : Number(value)) : value;
+  
+    setElCliente((prev) =>
+      prev ? { ...prev, [name]: newValue } : null
+    );
   };
 
     
@@ -289,7 +293,7 @@ useEffect(() => {
                 <div className="flex flex-col space-y-1.5">
                   <Label htmlFor="monto">Monto</Label>
                   <Input 
-                    type="text" 
+                    type="number" 
                     name="monto" 
                     value={elCliente.monto || ""} 
                     onChange={handleInputChange} 
@@ -335,7 +339,7 @@ useEffect(() => {
                         </SelectTrigger>
                         <SelectContent>
                           {estados.map((estado) => (
-                            <SelectItem value={String(estado.id)} id={`estado-${estado.id}`}> {estado.nombre} </SelectItem>
+                            <SelectItem key={estado.id} value={String(estado.id)} id={`estado-${estado.id}`}> {estado.nombre} </SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
@@ -350,7 +354,7 @@ useEffect(() => {
                         </SelectTrigger>
                         <SelectContent>
                           {canal.map((can)=> (
-                            <SelectItem value={String(can.id)} id={`canal-${can.id}`}> {can.nombre} </SelectItem>
+                            <SelectItem key={can.id} value={String(can.id)} id={`canal-${can.id}`}> {can.nombre} </SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
@@ -366,7 +370,7 @@ useEffect(() => {
                         </SelectTrigger>
                         <SelectContent>
                           {ejecutivo.map((executive)=> (
-                            <SelectItem value={String(executive.id)} id={`ejecutivo-${executive.id}`}> {executive.nombre} {executive.apellido}</SelectItem>
+                            <SelectItem key={executive.id} value={String(executive.id)} id={`ejecutivo-${executive.id}`}> {executive.nombre} {executive.apellido}</SelectItem>
                           ))}
                         </SelectContent>
                       </Select>

@@ -4,13 +4,13 @@ import {
   import { Label } from "@radix-ui/react-label";
   import { Input } from "@/components/ui/input";
   import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@radix-ui/react-select";
+ 
   
-
-const ClienteAdd = () => {
+  const ClienteAdd = () => {
     return(
+      <section>
         <div>
-        <h2>agregar nuevo cliente</h2>
-
+        
         <div>
 
         <form>
@@ -30,7 +30,15 @@ const ClienteAdd = () => {
               <Label htmlFor="apellido">Apellido</Label>
               <Input type="text" name="apellido" placeholder="Apellido" />
             </div>
-
+            <div className="flex flex-col space-y-1.5">
+              <Label htmlFor="rut">Rut</Label>
+              <Input type="text" name="rut" placeholder="Rut" />
+            </div>
+            <div className="flex flex-col space-y-1.5">
+              <Label htmlFor="rut">Email</Label>
+              <Input type="email" name="email" placeholder="email" />
+            </div>
+            
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="framework">Ejecutivo</Label>
               <Select>
@@ -56,7 +64,7 @@ const ClienteAdd = () => {
 </form>
         </div>
         </div>
-
+        </section>
     )
 }
 

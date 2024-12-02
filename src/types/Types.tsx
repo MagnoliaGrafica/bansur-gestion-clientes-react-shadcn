@@ -19,6 +19,7 @@ export interface Cliente {
     empresa: string;
     comuna:string;
     monto: number;
+    montoEvaluar: number;
     tipoCredito:number;
     convenio: number;
     sector: number;
@@ -67,4 +68,12 @@ export interface Cliente {
   interface gc_estado {
       id: number,
       nombre:string
+    }
+
+  export interface ResumenCanal {
+      fecha: string;
+      totalesPorCanal: {
+        [key: string]: number; 
+      };
+      sumaTotal: number;
     }

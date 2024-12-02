@@ -299,6 +299,14 @@ useEffect(() => {
                     onChange={handleInputChange} 
                     />
                   </div>
+                <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="monto">Monto a Evaluar</Label>
+                  <Input
+                    type="number" 
+                    name="montoEvaluar" 
+                    value={elCliente.montoEvaluar || ""} 
+                    onChange={handleInputChange} /> 
+                </div>  
 
     
                 {/* Tipo de Crédito */}

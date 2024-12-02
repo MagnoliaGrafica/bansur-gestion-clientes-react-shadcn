@@ -123,7 +123,7 @@ const SearchComponent: React.FC = () => {
                 ${new Intl.NumberFormat("es-CL").format(cliente.monto)}
             </TableCell>
             <TableCell>
-              -
+              ${new Intl.NumberFormat("es-CL").format(cliente.montoEvaluar)}
             </TableCell>
 
             

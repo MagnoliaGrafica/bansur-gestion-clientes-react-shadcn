@@ -77,3 +77,19 @@ export interface Cliente {
       };
       sumaTotal: number;
     }
+
+    export interface ResumenSector {
+      fecha: string;
+      totalesPorSector: {
+        [key: string]: number; 
+      };
+      sumaTotal: number;
+    }
+
+    export interface ResumenEstados {
+      fecha: string;
+      totalesPorEstado: {
+        [key: string]: number; 
+      };
+      sumaTotal: number;
+    }

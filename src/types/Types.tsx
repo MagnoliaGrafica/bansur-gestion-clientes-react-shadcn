@@ -93,3 +93,15 @@ export interface Cliente {
       };
       sumaTotal: number;
     }
+
+    export interface ResumenEjecutivo {
+      fecha: string;
+      totalesPorEjecutivo: {
+        [key: string]: {
+          monto: number; // Monto total por ejecutivo
+          clientes: number; // Número de clientes por ejecutivo
+        };
+      };
+      sumaTotal: number; // Suma de todos los montos
+      clientes: number; // Total de clientes en todos los ejecutivos
+    }

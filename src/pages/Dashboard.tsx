@@ -1,6 +1,7 @@
 import { ResumenCanal } from "@/components/ResumenCanal";
 import { ResumenSector } from "@/components/ResumenSector";
 import { ResumenEstados } from "@/components/ResumenEstados";
+import { ResumenEjecutivo} from "@/components/ResumenEjecutivo"
 
 import {
     Card,
@@ -14,6 +15,17 @@ const Dashboard = () => {
         <div>
             <h2 className="text-2xl font-medium text-bansur my-4">Dashboard Gestión Comercial</h2>
             <div className="grid grid-cols-3 gap-8">
+
+            <section>
+            <Card>
+                <CardHeader>
+                    <CardTitle>Resumen Ejecutivo</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <ResumenEjecutivo />
+                </CardContent>
+                </Card>
+            </section>    
 
             <section>
             <Card>

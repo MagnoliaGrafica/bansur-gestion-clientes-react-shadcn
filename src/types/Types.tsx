@@ -105,3 +105,16 @@ export interface Cliente {
       sumaTotal: number; // Suma de todos los montos
       clientes: number; // Total de clientes en todos los ejecutivos
     }
+
+    export interface ResumenEjecutivoSector {
+      fecha: string; // Fecha asociada a la respuesta
+      [key: string]: // Clave dinámica, como "3", "4", "7", etc., o "fecha"
+        | {
+            [key: string]: { // Subclave dinámica, como "1", "2", etc.
+              monto: number; // Monto total en esa categoría
+              clientes: number; // Número de clientes en esa categoría
+            };
+          }
+        | string; // Clave "fecha" que tiene como valor una cadena de texto
+    }
+    

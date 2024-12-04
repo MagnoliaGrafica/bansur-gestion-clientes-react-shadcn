@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { UsersIcon } from "@heroicons/react/24/outline";
 
 export function ResumenEjecutivoSector() {
   const [resumenEjecutivoSector, setResumenEjecutivoSector] = useState(null);
@@ -39,11 +40,9 @@ export function ResumenEjecutivoSector() {
       <TableHeader>
         <TableRow>
           <TableHead>Ejecutivo</TableHead>
-          <TableHead>Sector 1</TableHead>
-          <TableHead>Sector 2</TableHead>
+          <TableHead>Público</TableHead>
+          <TableHead>Privado</TableHead>
           <TableHead>Total</TableHead>
-          <TableHead>Clientes Sector 1</TableHead>
-          <TableHead>Clientes Sector 2</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -58,11 +57,10 @@ export function ResumenEjecutivoSector() {
             return (
                 <TableRow key={index}>
                 <TableCell>{ejecutivoMap.get(key) || `Desconocido (${key})`}</TableCell>
-                <TableCell>${new Intl.NumberFormat("es-CL").format(sector1.monto)}</TableCell>
-                <TableCell>${new Intl.NumberFormat("es-CL").format(sector2.monto)}</TableCell>
+                <TableCell><div className="text-center"><UsersIcon className="inline size-4 text-bansur" />{sector1.clientes}</div><br />${new Intl.NumberFormat("es-CL").format(sector1.monto)}</TableCell>
+                <TableCell><div className="text-center"><UsersIcon className="inline size-4 text-bansur" />{sector2.clientes}</div><br />${new Intl.NumberFormat("es-CL").format(sector2.monto)}</TableCell>
                 <TableCell>${new Intl.NumberFormat("es-CL").format(total)}</TableCell>
-                <TableCell>{sector1.clientes}</TableCell>
-                <TableCell>{sector2.clientes}</TableCell>
+                
               </TableRow>
             );
           })}

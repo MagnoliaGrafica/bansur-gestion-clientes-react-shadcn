@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { UsersIcon } from "@heroicons/react/24/outline";
 
 export function ResumenEjecutivoSector() {
   const [resumenEjecutivoSector, setResumenEjecutivoSector] = useState(null);
 
+  // Función para obtener los datos de la API
   const fetchResumenEjecutivoSector = async () => {
     try {
       const response = await axios.get(`https://bansur-api-express.vercel.app/api/resumen/ejecutivo_sector`);
@@ -23,6 +24,7 @@ export function ResumenEjecutivoSector() {
     return <p>Cargando...</p>;
   }
 
+  // Datos de los ejecutivos, puedes obtener esto de la API si es necesario
   const ejecutivos = [
     { nombre: "Macarena Calistro", key: "2" },
     { nombre: "Edward Saldaña", key: "3" },
@@ -33,7 +35,22 @@ export function ResumenEjecutivoSector() {
     { nombre: "Alex Ballota", key: "8" },
   ];
 
+  // Mapa de ejecutivos por key
   const ejecutivoMap = new Map(ejecutivos.map(({ key, nombre }) => [key, nombre]));
+  const { ejecutivos: ejecutivosData } = resumenEjecutivoSector;
+
+  // Calcular los totales
+  let totalSector1Monto = 0;
+  let totalSector2Monto = 0;
+  let totalGeneralMonto = 0;
+
+  Object.values(ejecutivosData).forEach((sectores) => {
+    const sector1 = sectores["1"] || { monto: 0, clientes: 0 }; // Asegúrate que sector1 existe
+    const sector2 = sectores["2"] || { monto: 0, clientes: 0 }; // Asegúrate que sector2 existe
+    totalSector1Monto += sector1.monto;
+    totalSector2Monto += sector2.monto;
+    totalGeneralMonto += sectores.totalMonto;
+  });
 
   return (
     <Table>
@@ -46,25 +63,77 @@ export function ResumenEjecutivoSector() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {Object.entries(resumenEjecutivoSector)
-          .filter(([key]) => key !== "fecha") // Ignorar la clave "fecha"
-          .map(([key, sectores], index) => {
-            const sectoresData = sectores as { [sectorId: string]: { monto: number; clientes: number } }; // Type assertion
-            const sector1 = sectoresData["1"] || { monto: 0, clientes: 0 };
-            const sector2 = sectoresData["2"] || { monto: 0, clientes: 0 };
-            const total = sector1.monto + sector2.monto;
+        {/* Renderizar los datos de los ejecutivos */}
+        {Object.entries(ejecutivosData).map(([key, sectores], index) => {
+          // Asegúrate de que los sectores tienen los valores correctos
+          const sectoresData = sectores as {
+            [sectorId: string]: { monto: number; clientes: number };
+            totalMonto: number;
+            totalClientes: number;
+          };
 
-            return (
-                <TableRow key={index}>
-                <TableCell>{ejecutivoMap.get(key) || `Desconocido (${key})`}</TableCell>
-                <TableCell><div className="text-center"><UsersIcon className="inline size-4 text-bansur" />{sector1.clientes}</div><br />${new Intl.NumberFormat("es-CL").format(sector1.monto)}</TableCell>
-                <TableCell><div className="text-center"><UsersIcon className="inline size-4 text-bansur" />{sector2.clientes}</div><br />${new Intl.NumberFormat("es-CL").format(sector2.monto)}</TableCell>
-                <TableCell>${new Intl.NumberFormat("es-CL").format(total)}</TableCell>
-                
-              </TableRow>
-            );
-          })}
+          const sector1 = sectoresData["1"] || { monto: 0, clientes: 0 }; // Valores predeterminados
+          const sector2 = sectoresData["2"] || { monto: 0, clientes: 0 }; // Valores predeterminados
+
+          return (
+            <TableRow key={index}>
+              {/* Nombre del ejecutivo */}
+              <TableCell>{ejecutivoMap.get(key) || `Desconocido (${key})`}</TableCell>
+              {/* Sector Público */}
+              <TableCell>
+                <div className="text-center">
+                  <UsersIcon className="inline size-4 text-bansur" /> {sector1.clientes}
+                </div>
+                <br />
+                ${new Intl.NumberFormat("es-CL").format(sector1.monto)}
+              </TableCell>
+              {/* Sector Privado */}
+              <TableCell>
+                <div className="text-center">
+                  <UsersIcon className="inline size-4 text-bansur" /> {sector2.clientes}
+                </div>
+                <br />
+                ${new Intl.NumberFormat("es-CL").format(sector2.monto)}
+              </TableCell>
+              {/* Total */}
+              <TableCell>
+                <div className="text-center">
+                  <UsersIcon className="inline size-4 text-bansur" /> {sectoresData.totalClientes}
+                </div>
+                <br />
+                ${new Intl.NumberFormat("es-CL").format(sectoresData.totalMonto)}
+              </TableCell>
+            </TableRow>
+          );
+        })}
       </TableBody>
+      <TableFooter>
+        {/* Mostrar los totales */}
+        <TableRow>
+          <TableCell>Total General</TableCell>
+          <TableCell>
+            <div className="text-center">
+              <UsersIcon className="inline size-4 text-bansur" />
+            </div>
+            <br />
+            ${new Intl.NumberFormat("es-CL").format(totalSector1Monto)}
+          </TableCell>
+          <TableCell>
+            <div className="text-center">
+              <UsersIcon className="inline size-4 text-bansur" />
+            </div>
+            <br />
+            ${new Intl.NumberFormat("es-CL").format(totalSector2Monto)}
+          </TableCell>
+          <TableCell>
+            <div className="text-center">
+              <UsersIcon className="inline size-4 text-bansur" />
+            </div>
+            <br />
+            ${new Intl.NumberFormat("es-CL").format(totalGeneralMonto)}
+          </TableCell>
+        </TableRow>
+      </TableFooter>
     </Table>
   );
 }

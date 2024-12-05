@@ -3,13 +3,29 @@ import axios from "axios";
 import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { UsersIcon } from "@heroicons/react/24/outline";
 
-export function ResumenEjecutivoSector() {
-  const [resumenEjecutivoSector, setResumenEjecutivoSector] = useState(null);
+// Define el tipo adecuado para los sectores
+type SectorData = {
+  monto: number;
+  clientes: number;
+};
 
-  // Función para obtener los datos de la API
+type EjecutivosData = {
+  [sectorId: string]: SectorData | number; // Sectores dinámicos + números (totalMonto y totalClientes)
+  totalMonto: number;
+  totalClientes: number;
+};
+
+export function ResumenEjecutivoSector() {
+  const [resumenEjecutivoSector, setResumenEjecutivoSector] = useState<{
+    fecha: string;
+    totalesPorSector: { [sectorId: string]: { monto: number; clientes: number } };
+    ejecutivos: { [key: string]: any };
+  } | null>(null);
+
   const fetchResumenEjecutivoSector = async () => {
     try {
       const response = await axios.get(`https://bansur-api-express.vercel.app/api/resumen/ejecutivo_sector`);
+      console.log("Datos recibidos:", response.data);
       setResumenEjecutivoSector(response.data);
     } catch (error) {
       console.error("Error al obtener el resumen", error);
@@ -24,7 +40,6 @@ export function ResumenEjecutivoSector() {
     return <p>Cargando...</p>;
   }
 
-  // Datos de los ejecutivos, puedes obtener esto de la API si es necesario
   const ejecutivos = [
     { nombre: "Macarena Calistro", key: "2" },
     { nombre: "Edward Saldaña", key: "3" },
@@ -35,22 +50,14 @@ export function ResumenEjecutivoSector() {
     { nombre: "Alex Ballota", key: "8" },
   ];
 
-  // Mapa de ejecutivos por key
   const ejecutivoMap = new Map(ejecutivos.map(({ key, nombre }) => [key, nombre]));
-  const { ejecutivos: ejecutivosData } = resumenEjecutivoSector;
 
-  // Calcular los totales
-  let totalSector1Monto = 0;
-  let totalSector2Monto = 0;
-  let totalGeneralMonto = 0;
+  const { totalesPorSector, ejecutivos: ejecutivosData } = resumenEjecutivoSector;
 
-  Object.values(ejecutivosData).forEach((sectores) => {
-    const sector1 = sectores["1"] || { monto: 0, clientes: 0 }; // Asegúrate que sector1 existe
-    const sector2 = sectores["2"] || { monto: 0, clientes: 0 }; // Asegúrate que sector2 existe
-    totalSector1Monto += sector1.monto;
-    totalSector2Monto += sector2.monto;
-    totalGeneralMonto += sectores.totalMonto;
-  });
+  // Calcular totales generales por sector
+  const totalSector1Monto = totalesPorSector["1"]?.monto || 0;
+  const totalSector2Monto = totalesPorSector["2"]?.monto || 0;
+  const totalGeneralMonto = totalSector1Monto + totalSector2Monto;
 
   return (
     <Table>
@@ -63,17 +70,9 @@ export function ResumenEjecutivoSector() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {/* Renderizar los datos de los ejecutivos */}
         {Object.entries(ejecutivosData).map(([key, sectores], index) => {
-          // Asegúrate de que los sectores tienen los valores correctos
-          const sectoresData = sectores as {
-            [sectorId: string]: { monto: number; clientes: number };
-            totalMonto: number;
-            totalClientes: number;
-          };
-
-          const sector1 = sectoresData["1"] || { monto: 0, clientes: 0 }; // Valores predeterminados
-          const sector2 = sectoresData["2"] || { monto: 0, clientes: 0 }; // Valores predeterminados
+          const sector1 = sectores["1"] || { monto: 0, clientes: 0 };
+          const sector2 = sectores["2"] || { monto: 0, clientes: 0 };
 
           return (
             <TableRow key={index}>
@@ -98,29 +97,28 @@ export function ResumenEjecutivoSector() {
               {/* Total */}
               <TableCell>
                 <div className="text-center">
-                  <UsersIcon className="inline size-4 text-bansur" /> {sectoresData.totalClientes}
+                  <UsersIcon className="inline size-4 text-bansur" /> {sectores.totalClientes || 0}
                 </div>
                 <br />
-                ${new Intl.NumberFormat("es-CL").format(sectoresData.totalMonto)}
+                ${new Intl.NumberFormat("es-CL").format(sectores.totalMonto || 0)}
               </TableCell>
             </TableRow>
           );
         })}
       </TableBody>
       <TableFooter>
-        {/* Mostrar los totales */}
         <TableRow>
           <TableCell>Total General</TableCell>
           <TableCell>
             <div className="text-center">
-              <UsersIcon className="inline size-4 text-bansur" />
+              <UsersIcon className="inline size-4 text-bansur" /> {totalesPorSector["1"]?.clientes || 0}
             </div>
             <br />
             ${new Intl.NumberFormat("es-CL").format(totalSector1Monto)}
           </TableCell>
           <TableCell>
             <div className="text-center">
-              <UsersIcon className="inline size-4 text-bansur" />
+              <UsersIcon className="inline size-4 text-bansur" /> {totalesPorSector["2"]?.clientes || 0}
             </div>
             <br />
             ${new Intl.NumberFormat("es-CL").format(totalSector2Monto)}

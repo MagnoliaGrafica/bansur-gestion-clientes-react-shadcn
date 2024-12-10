@@ -92,23 +92,21 @@ const SearchComponent: React.FC = () => {
   <TableHeader>
     <TableRow>
       <TableHead className="w-[400px]">Nombre</TableHead>
-      <TableHead>Convenio</TableHead>
       <TableHead>Estado</TableHead>
       <TableHead>Ejecutivo</TableHead>
       <TableHead>Monto Solitado</TableHead>
       <TableHead>Monto a Evaluar</TableHead>
-      <TableHead className="w-[110px]">Ingresado</TableHead>
-      <TableHead className="w-[110px]">A comité</TableHead>
-      <TableHead className="w-[110px]">Cierre</TableHead>
-      <TableHead>Tiempo en asignar</TableHead>
+      <TableHead className="w-[110px]">Fecha Ingresado</TableHead>
+      <TableHead className="w-[110px]">Fecha a comité</TableHead>
+      <TableHead className="w-[110px]">Fecha Cierre</TableHead>
+      <TableHead>Total días</TableHead>
       <TableHead>...</TableHead>
     </TableRow>
   </TableHeader>
   <TableBody>
     {results.map((cliente) => (
     <TableRow key={cliente.id}>
-            <TableCell className="font-medium">{cliente.nombre} {cliente.apellido}<br />{cliente.rut}</TableCell>
-            <TableCell>{cliente.convenio}</TableCell>
+            <TableCell className="font-medium">{cliente.nombre} {cliente.apellido}<br />{cliente.rut}<br />convenio:{cliente.convenio}</TableCell>
             <TableCell>
               <Badge variant={cliente.gc_estado && cliente.gc_estado.id === 9 ? "destructive" : "outline"}>
                   {cliente.gc_estado ? cliente.gc_estado.nombre : "Sin asignar"}

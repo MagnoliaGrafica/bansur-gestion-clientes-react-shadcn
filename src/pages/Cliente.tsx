@@ -158,7 +158,6 @@ useEffect(() => {
     );
   };
 
-    
   // Manejar selección de tipo de crédito
   const handleTipoCreditoChange = (value: string) => {
     setSelectedTipoCredito(value);  // Asegurarse de que el valor sea un string
@@ -308,7 +307,6 @@ useEffect(() => {
                     onChange={handleInputChange} /> 
                 </div>  
 
-    
                 {/* Tipo de Crédito */}
                 <div className="flex flex-col space-y-1.5">
                   <Label htmlFor="tipoCredito">Tipo de Crédito</Label>

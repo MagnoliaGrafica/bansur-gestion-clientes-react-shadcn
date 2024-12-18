@@ -58,9 +58,9 @@ const SearchComponent: React.FC = () => {
   }, []);
 
   //calcular fechas
-  const calculateDays = (createdAt: string | number | Date, fechaAsignado?: string | number | Date | null): number => {
+  const calculateDays = (createdAt: string | number | Date, fechaCierre?: string | number | Date | null): number => {
     const startDate = new Date(createdAt); // Fecha de creación
-    const endDate = fechaAsignado ? new Date(fechaAsignado) : new Date(); // Fecha asignada o fecha actual
+    const endDate = fechaCierre ? new Date(fechaCierre) : new Date(); // Fecha cierre o fecha actual si no tiene cierre
   
     // Calcular la diferencia en milisegundos
     const differenceInMilliseconds = endDate.getTime() - startDate.getTime();
@@ -106,7 +106,7 @@ const SearchComponent: React.FC = () => {
   <TableBody>
     {results.map((cliente) => (
     <TableRow key={cliente.id}>
-            <TableCell className="font-medium">{cliente.nombre} {cliente.apellido}<br />{cliente.rut}<br />convenio:{cliente.convenio}</TableCell>
+            <TableCell className="font-medium text-bansur">{cliente.nombre} {cliente.apellido}<br /><span className="text-gray-400 text-md">{cliente.rut}</span><br /><span className="text-bansur/40">conv.:{cliente.gc_convenio.nombre}</span></TableCell>
             <TableCell>
               <Badge variant={cliente.gc_estado && cliente.gc_estado.id === 9 ? "destructive" : "outline"}>
                   {cliente.gc_estado ? cliente.gc_estado.nombre : "Sin asignar"}
@@ -138,7 +138,7 @@ const SearchComponent: React.FC = () => {
               </TableCell>
 
               <TableCell>
-                    {calculateDays(cliente.createdAt, cliente.fechaAsignado)} días
+                    {calculateDays(cliente.createdAt, cliente.fechaCierre)} días
               </TableCell>
           
             

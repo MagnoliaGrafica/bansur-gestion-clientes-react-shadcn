@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Cliente, Sector, TipoCredito, Estados, Canales, Ejecutivos } from "../types/Types";
+import { Cliente, TipoCredito, Estados, Canales, Ejecutivos, Convenios } from "../types/Types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -22,14 +22,14 @@ const ClienteDetail = () => {
 
   // Estados principales
   const [elCliente, setElCliente] = useState<Cliente | null>(null);
-  const [sectores, setSectores] = useState<Sector[]>([]);
   const [tipoCreditos, setTipoCreditos] = useState<TipoCredito[]>([]);
-  const [selectedSector, setSelectedSector] = useState<string>("");  
   const [selectedTipoCredito, setSelectedTipoCredito] = useState<string>("");  
   const [estados, setEstados] = useState<Estados[]>([]);
   const [selectedEstados, setSelectedEstados] = useState<string>("");
   const [canal, setCanal] = useState<Canales[]>([]);
   const [selectedCanal, setSelectedCanal] = useState<string>("");
+  const [convenios, setConvenios] = useState<Convenios[]>([]);
+  const [selectedConvenio, setSelectedConvenio] = useState<string>("");
   const [ejecutivo, setEjecutivo] = useState<Ejecutivos[]>([]);
   const [selectedEjecutivo, setSelectedEjecutivo] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
@@ -38,12 +38,26 @@ const ClienteDetail = () => {
 
   // URLs
   const CLIENTE_API_URL = "https://bansur-api-express.vercel.app/api/clientes/";
-  const SECTOR_API_URL = "https://bansur-api-express.vercel.app/api/sectores";
   const TIPOCREDITO_API_URL = "https://bansur-api-express.vercel.app/api/tipocreditos";
   const ESTADOS_API_URL = "https://bansur-api-express.vercel.app/api/estados";
   const CANAL_API_URL = "https://bansur-api-express.vercel.app/api/canal";
   const EJECUTIVO_API_URL = "https://bansur-api-express.vercel.app/api/ejecutivos";
- // const CONVENIOS_API_URL = "https://bansur-api-express.vercel.app/api/convenios";
+  const CONVENIOS_API_URL = "https://bansur-api-express.vercel.app/api/convenios";
+
+
+  //obtener convenios desde la API
+  useEffect(()=> {
+    const fetchConvenios = async () => {
+      try {
+        const response = await axios.get<Convenios[]>(CONVENIOS_API_URL);
+        setConvenios(response.data);
+      } catch (error: any) {
+        console.error("Error fetching canales:", error.message || error);
+        setError("Error al cargar los canales.");
+      }
+    };
+    fetchConvenios();
+  }, []);
 
 
   // Obtener canales desde la API
@@ -90,20 +104,6 @@ useEffect(() => {
   }, []);
 
 
-  // Obtener sectores desde la API
-  useEffect(() => {
-    const fetchSectores = async () => {
-      try {
-        const response = await axios.get<Sector[]>(SECTOR_API_URL);
-        setSectores(response.data);
-      } catch (error: any) {
-        console.error("Error fetching sectors:", error.message || error);
-        setError("Error al cargar los sectores.");
-      }
-    };
-    fetchSectores();
-  }, []);
-
   // Obtener tipo de créditos desde la API
   useEffect(() => {
     const fetchTipoCredito = async () => {
@@ -126,11 +126,11 @@ useEffect(() => {
         const response = await axios.get<Cliente>(`${CLIENTE_API_URL}${params.id}`);
         if (response.data) {
           setElCliente(response.data);
-          setSelectedSector(String(response.data.sector || ""));
           setSelectedTipoCredito(String(response.data.tipoCredito || ""));
           setSelectedEstados(String(response.data.estado || ""));
           setSelectedCanal(String(response.data.canal || ""));
           setSelectedEjecutivo(String(response.data.ejecutivo || ""));
+          setSelectedConvenio(String(response.data.convenio || ""));
           setError(null);
         } else {
           setError("Cliente no encontrado.");
@@ -159,17 +159,17 @@ useEffect(() => {
   };
 
     
-  // Manejar selección de sector
-  const handleRadioChange = (value: string) => {
-    setSelectedSector(value);  
-    setElCliente((prev) => (prev ? { ...prev, sector: Number(value) } : null)); 
-  };
-
   // Manejar selección de tipo de crédito
   const handleTipoCreditoChange = (value: string) => {
     setSelectedTipoCredito(value);  // Asegurarse de que el valor sea un string
     setElCliente((prev) => (prev ? { ...prev, tipoCredito: Number(value) } : null)); // Convirtiendo a number
   };
+
+  // Manejar selección de Convenios
+  const handleConvenioChange = (value: string) => {
+    setSelectedConvenio(value);
+    setElCliente((prev)=> (prev ? {...prev, convenio: Number(value)} : null));
+  }
 
   // Manejar selección de estados
   const handleEstadoChange = (value: string) => {
@@ -322,20 +322,20 @@ useEffect(() => {
                   </RadioGroup>
                 </div>
     
-                <div className="my-2">(*) Convenio (listado de convenios)</div>
-
-                {/* Sector */}
+                {/* Convenios */}    
                 <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="sector">Sector</Label>
-                  <RadioGroup value={selectedSector} onValueChange={handleRadioChange}>
-                    {sectores.map((sector) => (
-                      <div key={sector.id} className="flex items-center space-x-2">
-                        <RadioGroupItem value={String(sector.id)} id={`sector-${sector.id}`} />
-                        <Label htmlFor={`sector-${sector.id}`}>{sector.nombre}</Label>
-                      </div>
-                    ))}
-                  </RadioGroup>
-                </div>
+                      <Label htmlFor="convenios">Convenios</Label>
+                      <Select value={selectedConvenio} onValueChange={handleConvenioChange}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Convenios" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {convenios.map((convenio) => (
+                            <SelectItem key={convenio.id} value={String(convenio.id)} id={`convenio-${convenio.id}`}> {convenio.nombre} </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
 
     
                     {/* Estado */}

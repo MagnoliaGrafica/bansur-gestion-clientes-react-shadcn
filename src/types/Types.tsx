@@ -31,6 +31,7 @@ export interface Cliente {
     fechaCierre:number;
     gc_ban_user: gc_ban_user;
     gc_estado: gc_estado;
+    gc_convenio: gc_convenio;
   }
 
   export interface Sector { 
@@ -53,6 +54,11 @@ export interface Cliente {
     nombre: string;
   }
 
+  export interface Convenios {
+    id: number;
+    nombre: string;
+  }
+
   export interface Ejecutivos {
     id: number;
     nombre: string;
@@ -69,6 +75,11 @@ export interface Cliente {
       id: number,
       nombre:string
     }
+
+    interface gc_convenio {
+      id: number,
+      nombre:string
+    }  
 
   export interface ResumenCanal {
       fecha: string;

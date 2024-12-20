@@ -43,22 +43,28 @@ export function ResumenCanal() {
     { nombre: "Ejecutivo", key: "6" },
   ];
 
+  // Crear un mapa de claves para nombres de ejecutivos
+  const canalMap = new Map(canales.map(({ key, nombre }) => [key, nombre]));
+
   return (
     <Table>
       <TableHeader>
         <TableRow>
           <TableHead>Canal</TableHead>
           <TableHead>Monto Cursado</TableHead>
+          <TableHead>Cuenta de RUT</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {canales.map((canal, index) => (
+        {Object.entries(resumenCanal.totalesPorCanal).map(([key, { monto, clientes }], index) => (
           <TableRow key={index}>
-            <TableCell>{canal.nombre}</TableCell>
-            <TableCell>${new Intl.NumberFormat("es-CL").format(resumenCanal.totalesPorCanal[canal.key] || 0)}</TableCell>
+            <TableCell>{canalMap.get(key) || `Desconocido (${key})`}</TableCell>
+            <TableCell>${new Intl.NumberFormat("es-CL").format(monto || 0)}</TableCell>
+            <TableCell>{clientes || 0}</TableCell>
           </TableRow>
         ))}
       </TableBody>
+
       <TableFooter>
         <TableRow>
           <TableCell>Total</TableCell>

@@ -84,9 +84,13 @@ export interface Cliente {
   export interface ResumenCanal {
       fecha: string;
       totalesPorCanal: {
-        [key: string]: number; 
+        [key: string]: {
+          monto: number; 
+          clientes: number; 
+        }; 
       };
       sumaTotal: number;
+      clientes: number;
     }
 
     export interface ResumenSector {

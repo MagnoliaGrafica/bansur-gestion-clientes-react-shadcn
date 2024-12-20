@@ -47,19 +47,24 @@ export function ResumenEstados() {
     { nombre: "No califica", key: "10" }
   ];
 
+  const estadosMap = new Map(estados.map(({ key, nombre }) => [key, nombre]));
+
   return (
     <Table>
       <TableHeader>
         <TableRow>
           <TableHead>Estado</TableHead>
           <TableHead>Monto Cursado</TableHead>
+          <TableHead>Cuenta de RUT</TableHead>
         </TableRow>
       </TableHeader>
+      
       <TableBody>
-        {estados.map((estado, index) => (
+        {Object.entries(resumenEstados.totalesPorEstado).map(([key, { monto, clientes }], index) => (
           <TableRow key={index}>
-            <TableCell>{estado.nombre}</TableCell>
-            <TableCell>${new Intl.NumberFormat("es-CL").format(resumenEstados.totalesPorEstado[estado.key] || 0)}</TableCell>
+            <TableCell>{estadosMap.get(key) || `Desconocido (${key})`}</TableCell>
+            <TableCell>${new Intl.NumberFormat("es-CL").format(monto || 0)}</TableCell>
+            <TableCell>{clientes || 0}</TableCell>
           </TableRow>
         ))}
       </TableBody>

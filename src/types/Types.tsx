@@ -104,9 +104,13 @@ export interface Cliente {
     export interface ResumenEstados {
       fecha: string;
       totalesPorEstado: {
-        [key: string]: number; 
+        [key: string]: {
+          monto: number; 
+          clientes: number; 
+        }; 
       };
       sumaTotal: number;
+      clientes: number;
     }
 
     export interface ResumenEjecutivo {

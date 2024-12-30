@@ -40,7 +40,6 @@ export function ResumenEstados() {
     { nombre: "En Evaluación", key: "3" },
     { nombre: "En Comité", key: "4" },
     { nombre: "Pendiente por información", key: "5" },
-    { nombre: "Validación en Proceso", key: "6" },
     { nombre: "Cursado", key: "7" },
     { nombre: "Rechazado (cliente)", key: "8" },
     { nombre: "Rechazado (comité)", key: "9" },

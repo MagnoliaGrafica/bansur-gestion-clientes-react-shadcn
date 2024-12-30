@@ -32,6 +32,7 @@ export interface Cliente {
     gc_ban_user: gc_ban_user;
     gc_estado: gc_estado;
     gc_convenio: gc_convenio;
+    gc_tipoCredito: TipoCredito;
   }
 
   export interface Sector { 

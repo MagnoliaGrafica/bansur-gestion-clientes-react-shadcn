@@ -9,16 +9,8 @@ import Clientes from "./pages/Clientes.tsx";
 import Cliente from "./pages/Cliente.tsx";
 import ClienteAdd from "./pages/ClienteAdd.tsx";
 import DefaultLayout from "./layout/DefaultLayout.tsx";
-import { AuthProvider } from "./context/AuthContext.tsx"; // Importa AuthProvider
-
-// Login Layout (puede ser vacío o específico)
-const LoginLayout = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <div className="min-h-screen flex items-center justify-center">
-      {children}
-    </div>
-  );
-};
+import LoginLayout from "./layout/LoginLayout.tsx"; 
+import { AuthProvider } from "./context/AuthContext.tsx"; 
 
 function App() {
   return (

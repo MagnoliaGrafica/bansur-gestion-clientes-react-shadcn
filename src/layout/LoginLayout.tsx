@@ -6,3 +6,4 @@ const LoginLayout = ({ children }: { children: React.ReactNode }) => {
     );
   };
   
+  export default LoginLayout; 

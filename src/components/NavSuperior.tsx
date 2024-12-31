@@ -1,7 +1,7 @@
 import { useAuth } from '../context/AuthContext.tsx';
 import { useNavigate } from 'react-router-dom';
 
-const Navbar = () => {
+const NavSuperior = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -37,4 +37,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default NavSuperior;

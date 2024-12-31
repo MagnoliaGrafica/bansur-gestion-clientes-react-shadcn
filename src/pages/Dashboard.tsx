@@ -15,7 +15,7 @@ import {
 import { useEffect } from 'react';
 
 const Dashboard = () => {
-  const { isAuthenticated, user, logout } = useAuth();
+  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {

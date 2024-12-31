@@ -35,8 +35,8 @@ import {
               <Input type="text" name="rut" placeholder="Rut" />
             </div>
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="rut">Email</Label>
-              <Input type="email" name="email" placeholder="email" />
+              <Label htmlFor="rut">Monto</Label>
+              <Input type="text" name="monto" placeholder="Monto a Evaluar" />
             </div>
             
             <div className="flex flex-col space-y-1.5">

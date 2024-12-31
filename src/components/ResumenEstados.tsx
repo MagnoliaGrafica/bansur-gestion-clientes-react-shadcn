@@ -36,14 +36,11 @@ export function ResumenEstados() {
   // Definir los canales y su key correspondiente
   const estados = [
     { nombre: "Sin Asignar", key: "1" },
-    { nombre: "Ingreso", key: "2" },
-    { nombre: "En Evaluación", key: "3" },
-    { nombre: "En Comité", key: "4" },
-    { nombre: "Pendiente por información", key: "5" },
-    { nombre: "Cursado", key: "7" },
-    { nombre: "Rechazado (cliente)", key: "8" },
-    { nombre: "Rechazado (comité)", key: "9" },
-    { nombre: "No califica", key: "10" }
+    { nombre: "Prospecto", key: "2" },
+    { nombre: "Presentado", key: "3" },
+    { nombre: "En Evaluación", key: "4" },
+    { nombre: "Cursado", key: "5" },
+    { nombre: "No Cursado", key: "6" }
   ];
 
   const estadosMap = new Map(estados.map(({ key, nombre }) => [key, nombre]));

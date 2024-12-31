@@ -35,11 +35,8 @@ export function ResumenCanal() {
 
   // Definir los canales y su key correspondiente
   const canales = [
-    { nombre: "Web", key: "1" },
-    { nombre: "Llamada", key: "2" },
-    { nombre: "Ejecutivo", key: "3" },
-    { nombre: "WhatsApp", key: "4" },
-    { nombre: "Presencial", key: "5" },
+    { nombre: "Ejecutivo", key: "1" },
+    { nombre: "Bansur", key: "2" }
   ];
 
   // Crear un mapa de claves para nombres de ejecutivos

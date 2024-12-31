@@ -92,13 +92,11 @@ const SearchComponent: React.FC = () => {
   <TableHeader>
     <TableRow>
       <TableHead className="w-[400px]">Nombre</TableHead>
-      <TableHead>Crédito</TableHead>
       <TableHead>Estado</TableHead>
       <TableHead>Ejecutivo</TableHead>
       <TableHead>Monto Solitado</TableHead>
       <TableHead>Monto a Evaluar</TableHead>
       <TableHead className="w-[110px]">Fecha Ingresado</TableHead>
-      <TableHead className="w-[110px]">Fecha a comité</TableHead>
       <TableHead className="w-[110px]">Fecha Cierre</TableHead>
       <TableHead>Total días</TableHead>
       <TableHead>...</TableHead>
@@ -108,9 +106,8 @@ const SearchComponent: React.FC = () => {
     {results.map((cliente) => (
     <TableRow key={cliente.id}>
             <TableCell className="font-medium text-bansur">{cliente.nombre} {cliente.apellido}<br /><span className="text-gray-400 text-md">{cliente.rut}</span><br /><span className="text-bansur/40">conv.:{cliente.gc_convenio.nombre}</span></TableCell>
-            <TableCell>{cliente.gc_tipoCredito.nombre}</TableCell>
             <TableCell>
-              <Badge variant={cliente.gc_estado && cliente.gc_estado.id === 9 ? "destructive" : "outline"}>
+              <Badge variant={cliente.gc_estado && cliente.gc_estado.id === 6 ? "destructive" : "outline"}>
                   {cliente.gc_estado ? cliente.gc_estado.nombre : "Sin asignar"}
             </Badge>
             </TableCell>
@@ -128,11 +125,7 @@ const SearchComponent: React.FC = () => {
 
             
             <TableCell>{new Date(cliente.createdAt).toLocaleDateString("es-CL")}</TableCell>
-            <TableCell>
-                {cliente.fechaAsignado 
-                  ? new Date(cliente.fechaAsignado).toLocaleDateString("es-CL") 
-                  : "-"}
-              </TableCell>
+           
               <TableCell>
                 {cliente.fechaCierre 
                   ? new Date(cliente.fechaCierre).toLocaleDateString("es-CL") 

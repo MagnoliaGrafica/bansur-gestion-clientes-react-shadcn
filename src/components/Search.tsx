@@ -45,10 +45,11 @@ const SearchComponent: React.FC = () => {
   const results = search
   ? clientes.filter((dato) => {
       const nombre = dato.nombre?.toLowerCase() || ""; // Asegura que nombre es una cadena
+      const apellido = dato.apellido?.toLowerCase() || ""; // Asegura que apellido es una cadena
       const rut = dato.rut?.toLowerCase() || ""; // Asegura que rut es una cadena
       const searchText = search.toLowerCase();
 
-      return nombre.includes(searchText) || rut.includes(searchText);
+      return nombre.includes(searchText)|| apellido.includes(searchText) || rut.includes(searchText);
     })
   : clientes;
 

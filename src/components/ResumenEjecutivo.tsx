@@ -44,6 +44,7 @@ export function ResumenEjecutivo() {
     { nombre: "Pamela Puntareli", key: "6" },
     { nombre: "Lilian Santana", key: "7" },
     { nombre: "Alex Ballota", key: "8" },
+    { nombre: "Pedro Salinas", key: "9" },
   ];
 
   // Crear un mapa de claves para nombres de ejecutivos

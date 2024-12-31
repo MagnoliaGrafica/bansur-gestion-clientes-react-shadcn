@@ -9,6 +9,23 @@ export interface Props {
     isOpen: boolean
   }
 
+  export interface NewCliente {
+    id: number;
+    nombre: string;
+    apellido: string;
+    rut: string;
+    email?: string; // Propiedad opcional
+    empresa?: string; // Propiedad opcional
+    monto?: number; // Propiedad opcional
+    montoEvaluar?: number; // Propiedad opcional
+    estado?: number; // Propiedad opcional
+    canal?: number; // Propiedad opcional
+    ejecutivo?: number; // Propiedad opcional
+    convenio?: number; // Propiedad opcional
+    // ...
+  }
+  
+
 // Definimos el tipo para los clientes
 export interface Cliente {
     id: number;

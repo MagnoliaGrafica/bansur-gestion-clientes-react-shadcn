@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Cliente, TipoCredito, Estados, Canales, Ejecutivos, Convenios } from "../types/Types";
+import { Cliente, Estados, Canales, Ejecutivos, Convenios } from "../types/Types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Select,
   SelectContent,
@@ -22,8 +21,6 @@ const ClienteDetail = () => {
 
   // Estados principales
   const [elCliente, setElCliente] = useState<Cliente | null>(null);
-  const [tipoCreditos, setTipoCreditos] = useState<TipoCredito[]>([]);
-  const [selectedTipoCredito, setSelectedTipoCredito] = useState<string>("");  
   const [estados, setEstados] = useState<Estados[]>([]);
   const [selectedEstados, setSelectedEstados] = useState<string>("");
   const [canal, setCanal] = useState<Canales[]>([]);
@@ -38,7 +35,7 @@ const ClienteDetail = () => {
 
   // URLs
   const CLIENTE_API_URL = "https://bansur-api-express.vercel.app/api/clientes/";
-  const TIPOCREDITO_API_URL = "https://bansur-api-express.vercel.app/api/tipocreditos";
+  //const TIPOCREDITO_API_URL = "https://bansur-api-express.vercel.app/api/tipocreditos";
   const ESTADOS_API_URL = "https://bansur-api-express.vercel.app/api/estados";
   const CANAL_API_URL = "https://bansur-api-express.vercel.app/api/canal";
   const EJECUTIVO_API_URL = "https://bansur-api-express.vercel.app/api/ejecutivos";
@@ -105,7 +102,7 @@ useEffect(() => {
 
 
   // Obtener tipo de créditos desde la API
-  useEffect(() => {
+  /*useEffect(() => {
     const fetchTipoCredito = async () => {
       try {
         const response = await axios.get<TipoCredito[]>(TIPOCREDITO_API_URL);
@@ -116,7 +113,7 @@ useEffect(() => {
       }
     };
     fetchTipoCredito();
-  }, []);
+  }, []);*/
 
   // Obtener datos del cliente
   useEffect(() => {
@@ -126,7 +123,6 @@ useEffect(() => {
         const response = await axios.get<Cliente>(`${CLIENTE_API_URL}${params.id}`);
         if (response.data) {
           setElCliente(response.data);
-          setSelectedTipoCredito(String(response.data.tipoCredito || ""));
           setSelectedEstados(String(response.data.estado || ""));
           setSelectedCanal(String(response.data.canal || ""));
           setSelectedEjecutivo(String(response.data.ejecutivo || ""));
@@ -159,10 +155,10 @@ useEffect(() => {
   };
 
   // Manejar selección de tipo de crédito
-  const handleTipoCreditoChange = (value: string) => {
+  /*const handleTipoCreditoChange = (value: string) => {
     setSelectedTipoCredito(value);  // Asegurarse de que el valor sea un string
     setElCliente((prev) => (prev ? { ...prev, tipoCredito: Number(value) } : null)); // Convirtiendo a number
-  };
+  };*/
 
   // Manejar selección de Convenios
   const handleConvenioChange = (value: string) => {
@@ -190,14 +186,15 @@ useEffect(() => {
 
   // Validación del formulario
   const validateForm = (): boolean => {
-    if (!elCliente?.nombre || !elCliente.email) {
-      alert("Por favor, completa los campos obligatorios: Nombre y Email.");
+    //if (!elCliente?.nombre || !elCliente.email) {
+      if (!elCliente?.nombre) {
+      alert("Por favor, completa los campos obligatorios: Nombre");
       return false;
     }
-    if (!/^\S+@\S+\.\S+$/.test(elCliente.email)) {
+   /* if (!/^\S+@\S+\.\S+$/.test(elCliente.email)) {
       alert("Por favor, ingresa un correo electrónico válido.");
       return false;
-    }
+    }*/
     return true;
   };
 
@@ -253,16 +250,7 @@ useEffect(() => {
                     onChange={handleInputChange}
                   />
                 </div>
-                <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    name="email"
-                    type="email"
-                    value={elCliente.email || ""}
-                    onChange={handleInputChange}
-                  />
-                </div>
-
+                
                 <div className="flex flex-col space-y-1.5">
                   <Label htmlFor="rut">Rut</Label>
                   <Input 
@@ -270,24 +258,6 @@ useEffect(() => {
                     name="rut" 
                     value={elCliente.rut || ""} 
                     onChange={handleInputChange} />
-                  </div>
-                <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="empresa">Empresa</Label>
-                  <Input 
-                    type="text" 
-                    name="empresa" 
-                    value={elCliente.empresa || ""} 
-                    onChange={handleInputChange} 
-                  />
-                  </div>
-                <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="comuna">Comuna</Label>
-                  <Input 
-                    type="text" 
-                    name="comuna" 
-                    value={elCliente.comuna || ""} 
-                    onChange={handleInputChange} 
-                  />
                   </div>
                 <div className="flex flex-col space-y-1.5">
                   <Label htmlFor="monto">Monto Solicitado</Label>
@@ -307,19 +277,7 @@ useEffect(() => {
                     onChange={handleInputChange} /> 
                 </div>  
 
-                {/* Tipo de Crédito */}
-                <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="tipoCredito">Tipo de Crédito</Label>
-                  <RadioGroup value={selectedTipoCredito} onValueChange={handleTipoCreditoChange}>
-                    {tipoCreditos.map((tipoCredito) => (
-                      <div key={tipoCredito.id} className="flex items-center space-x-2">
-                        <RadioGroupItem value={String(tipoCredito.id)} id={`tipocredito-${tipoCredito.id}`} />
-                        <Label htmlFor={`tipocredito-${tipoCredito.id}`}>{tipoCredito.nombre}</Label>
-                      </div>
-                    ))}
-                  </RadioGroup>
-                </div>
-    
+                
                 {/* Convenios */}    
                 <div className="flex flex-col space-y-1.5">
                       <Label htmlFor="convenios">Convenios</Label>

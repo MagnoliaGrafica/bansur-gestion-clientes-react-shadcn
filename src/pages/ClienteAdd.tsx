@@ -100,7 +100,7 @@ const AddCliente = () => {
     try {
       setIsSubmitting(true);
       const response = await axios.post(CLIENTE_API_URL, elCliente);
-      if (response.status === 201) {
+      if (response.status === 200) {
         alert("Cliente creado con éxito.");
         navigate("/clientes");
       }

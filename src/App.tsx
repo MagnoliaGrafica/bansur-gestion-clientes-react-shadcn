@@ -1,31 +1,44 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Login from './pages/Login.tsx';
-import Dashboard from './pages/Dashboard.tsx';
-import About from './pages/About.tsx';
-import Analytics from './pages/Analytics.tsx';
-import Comment from './pages/Comment.tsx';
-import Product from './pages/Product.tsx';
-import ProductList from './pages/ProductList.tsx';
-import Clientes from './pages/Clientes.tsx';
-import Cliente from './pages/Cliente.tsx';
-import ClienteAdd from './pages/ClienteAdd.tsx';
-import DefaultLayout from './layout/DefaultLayout.tsx';
-import { AuthProvider } from './context/AuthContext.tsx'; // Importa AuthProvider
+import Login from "./pages/Login.tsx";
+import Dashboard from "./pages/Dashboard.tsx";
+import About from "./pages/About.tsx";
+import Product from "./pages/Product.tsx";
+import ProductList from "./pages/ProductList.tsx";
+import Clientes from "./pages/Clientes.tsx";
+import Cliente from "./pages/Cliente.tsx";
+import ClienteAdd from "./pages/ClienteAdd.tsx";
+import DefaultLayout from "./layout/DefaultLayout.tsx";
+import { AuthProvider } from "./context/AuthContext.tsx"; // Importa AuthProvider
+
+// Login Layout (puede ser vacío o específico)
+const LoginLayout = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      {children}
+    </div>
+  );
+};
 
 function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          {/* Aplica DefaultLayout como un wrapper */}
+          {/* Login Route */}
+          <Route
+            path="/login"
+            element={
+              <LoginLayout>
+                <Login />
+              </LoginLayout>
+            }
+          />
+          {/* Default Layout for Protected Routes */}
           <Route element={<DefaultLayout />}>
-            <Route path="/login" element={<Login />} />
             <Route path="/" element={<Dashboard />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/about" element={<About />} />
-            <Route path="/comment" element={<Comment />} />
-            <Route path="/analytics" element={<Analytics />} />
             <Route path="/product" element={<Product />} />
             <Route path="/productList" element={<ProductList />} />
             <Route path="/clientes" element={<Clientes />} />

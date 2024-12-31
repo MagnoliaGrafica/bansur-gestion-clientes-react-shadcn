@@ -22,7 +22,6 @@ export interface Props {
     canal?: number; // Propiedad opcional
     ejecutivo?: number; // Propiedad opcional
     convenio?: number; // Propiedad opcional
-    // ...
   }
   
 

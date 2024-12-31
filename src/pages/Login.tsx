@@ -56,7 +56,7 @@ const Login = () => {
     <div className="flex flex-col gap-6 mx-auto mt-20">
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">Login</CardTitle>
+          <CardTitle className="text-2xl">Login Gestión Clientes Bansur</CardTitle>
           {/*<CardDescription>
             Enter your email below to login to your account
           </CardDescription>*/}

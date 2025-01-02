@@ -15,10 +15,17 @@ const badgeVariants = cva(
         destructive:
           "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
         outline: "text-foreground",
+        
+        sinasignar:"text-foreground",
+        prospecto:"bg-purple-500 border-transparent text-white",
+        presentado:"bg-blue-500 border-transparent text-white",
+        evaluacion:"bg-yellow-500 border-transparent text-white",
+        cursado:"bg-green-500 border-transparent text-white",
+        nocursado:"border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
       },
     },
     defaultVariants: {
-      variant: "default",
+      variant: "outline",
     },
   }
 )

@@ -5,7 +5,7 @@ import NavigationLink from "./NavigationLink.tsx";
 import {
   ChartBarIcon,
   UsersIcon,
-  ArrowRightOnRectangleIcon,
+  ArrowLeftStartOnRectangleIcon
 } from "@heroicons/react/24/outline";
 
 const containerVariants = {
@@ -69,7 +69,7 @@ const Navigation = () => {
         className="bg-bansur flex flex-col z-10 gap-20 p-5 absolute top-0 left-0 h-full shadow shadow-neutral-400"
       >
         <div className="flex flex-row w-full justify-between place-items-center">
-          <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-amber-700 rounded-full" />
+          <div> <img src="/images/logo-bansur-bco.png" className="w-32" /></div>
           <button
             className="p-1 rounded-full flex"
             onClick={() => handleOpenClose()}
@@ -110,7 +110,7 @@ const Navigation = () => {
             onClick={handleLogout}
             className="flex items-center gap-3 p-2 mt-5 text-white hover:text-white/50 transition"
           >
-            <ArrowRightOnRectangleIcon className="size-8" />
+            <ArrowLeftStartOnRectangleIcon className="size-8" />
             {isOpen && <span>Cerrar Sesión</span>}
           </button>
         </div>

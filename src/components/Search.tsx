@@ -69,6 +69,33 @@ const SearchComponent: React.FC = () => {
     // Convertir la diferencia a días
     return Math.floor(differenceInMilliseconds / (1000 * 60 * 60 * 24));
   };
+
+  type BadgeVariant =
+  | "sinasignar"
+  | "prospecto"
+  | "presentado"
+  | "evaluacion"
+  | "cursado"
+  | "nocursado"
+  | "outline"
+  | "default"
+  | "secondary"
+  | "destructive";
+
+  
+
+  const badgeVariants: Record<number, BadgeVariant> = {
+    1: "sinasignar",
+    2: "prospecto",
+    3: "presentado",
+    4: "evaluacion",
+    5: "cursado",
+    6: "nocursado",
+  };
+  
+  const getBadgeVariant = (id: number | undefined): BadgeVariant =>
+    badgeVariants[id || 0] || "outline";
+  
   
 
   return (
@@ -108,10 +135,10 @@ const SearchComponent: React.FC = () => {
     <TableRow key={cliente.id}>
             <TableCell className="font-medium text-bansur">{cliente.nombre} {cliente.apellido}<br /><span className="text-gray-400 text-md">{cliente.rut}</span><br /><span className="text-bansur/40">conv.:{cliente.gc_convenio.nombre}</span></TableCell>
             <TableCell>
-              <Badge variant={cliente.gc_estado && cliente.gc_estado.id === 6 ? "destructive" : "outline"}>
-                  {cliente.gc_estado ? cliente.gc_estado.nombre : "Sin asignar"}
-            </Badge>
-            </TableCell>
+  <Badge variant={getBadgeVariant(cliente.gc_estado?.id)}>
+    {cliente.gc_estado ? cliente.gc_estado.nombre : "Sin asignar"}
+  </Badge>
+</TableCell>
             <TableCell>
                 <Avatar>
                   <AvatarFallback>{cliente.gc_ban_user ? cliente.gc_ban_user.nombre : "N/A"}</AvatarFallback>

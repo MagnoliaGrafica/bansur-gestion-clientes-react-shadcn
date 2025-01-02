@@ -9,7 +9,8 @@ import Clientes from "./pages/Clientes.tsx";
 import Cliente from "./pages/Cliente.tsx";
 import ClienteAdd from "./pages/ClienteAdd.tsx";
 import DefaultLayout from "./layout/DefaultLayout.tsx";
-import LoginLayout from "./layout/LoginLayout.tsx"; 
+import LoginLayout from "./layout/LoginLayout.tsx";
+import ProtectedRoute from "./layout/ProtectedRoute.tsx"; 
 import { AuthProvider } from "./context/AuthContext.tsx"; 
 
 function App() {
@@ -27,16 +28,18 @@ function App() {
             }
           />
           {/* Default Layout for Protected Routes */}
-          <Route element={<DefaultLayout />}>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/product" element={<Product />} />
-            <Route path="/productList" element={<ProductList />} />
-            <Route path="/clientes" element={<Clientes />} />
-            <Route path="/cliente/:id" element={<Cliente />} />
-            <Route path="/cliente/add" element={<ClienteAdd />} />
-          </Route>
+          <Route element={<ProtectedRoute />}>
+  <Route element={<DefaultLayout />}>
+  <Route path="/" element={<Dashboard />} />
+    <Route path="/dashboard" element={<Dashboard />} />
+    <Route path="/about" element={<About />} />
+    <Route path="/product" element={<Product />} />
+    <Route path="/productList" element={<ProductList />} />
+    <Route path="/clientes" element={<Clientes />} />
+    <Route path="/cliente/:id" element={<Cliente />} />
+    <Route path="/cliente/add" element={<ClienteAdd />} />
+  </Route>
+</Route>
         </Routes>
       </BrowserRouter>
     </AuthProvider>

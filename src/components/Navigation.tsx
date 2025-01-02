@@ -1,10 +1,12 @@
-import { motion, useAnimationControls } from "framer-motion"
-import { useState, useEffect } from "react"
-import NavigationLink from "./NavigationLink.tsx"
+import { motion, useAnimationControls } from "framer-motion";
+import { useState, useEffect } from "react";
+import { useAuth } from "../context/AuthContext.tsx"; // Importamos el contexto
+import NavigationLink from "./NavigationLink.tsx";
 import {
   ChartBarIcon,
   UsersIcon,
-} from "@heroicons/react/24/outline"
+  ArrowRightOnRectangleIcon,
+} from "@heroicons/react/24/outline";
 
 const containerVariants = {
   close: {
@@ -23,7 +25,7 @@ const containerVariants = {
       duration: 0.5,
     },
   },
-}
+};
 
 const svgVariants = {
   close: {
@@ -32,26 +34,31 @@ const svgVariants = {
   open: {
     rotate: 180,
   },
-}
+};
 
 const Navigation = () => {
-  const [isOpen, setIsOpen] = useState(false)
-  const containerControls = useAnimationControls()
-  const svgControls = useAnimationControls()
+  const [isOpen, setIsOpen] = useState(false);
+  const { logout, hasRole } = useAuth(); // Usamos hasRole
+  const containerControls = useAnimationControls();
+  const svgControls = useAnimationControls();
 
   useEffect(() => {
     if (isOpen) {
-      containerControls.start("open")
-      svgControls.start("open")
+      containerControls.start("open");
+      svgControls.start("open");
     } else {
-      containerControls.start("close")
-      svgControls.start("close")
+      containerControls.start("close");
+      svgControls.start("close");
     }
-  }, [isOpen])
+  }, [isOpen]);
 
   const handleOpenClose = () => {
-    setIsOpen(!isOpen)
-  }
+    setIsOpen(!isOpen);
+  };
+
+  const handleLogout = () => {
+    logout(); // Llamamos a la función logout del contexto
+  };
 
   return (
     <>
@@ -90,19 +97,26 @@ const Navigation = () => {
           </button>
         </div>
         <div className="flex flex-col gap-3">
-          <NavigationLink name="Dashboard" path="/dashboard" isOpen={isOpen}>
-            <ChartBarIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
-          </NavigationLink>
+          {/* Enlace al Dashboard solo para roles 1 y 2 */}
+          {hasRole([1, 2]) && (
+            <NavigationLink name="Dashboard" path="/dashboard" isOpen={isOpen}>
+              <ChartBarIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
+            </NavigationLink>
+          )}
           <NavigationLink name="Clientes" path="/clientes" isOpen={isOpen}>
             <UsersIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
           </NavigationLink>
-          
-          
-          
-      </div>
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-3 p-2 mt-5 text-white hover:text-white/50 transition"
+          >
+            <ArrowRightOnRectangleIcon className="size-8" />
+            {isOpen && <span>Cerrar Sesión</span>}
+          </button>
+        </div>
       </motion.nav>
     </>
-  )
-}
+  );
+};
 
-export default Navigation
+export default Navigation;

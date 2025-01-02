@@ -15,17 +15,19 @@ import {
 import { useEffect } from 'react';
 
 const Dashboard = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, hasRole } = useAuth(); // Agregamos hasRole
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate('/login'); // Redirige si el usuario no está autenticado
+      navigate('/login'); // Redirige si no está autenticado
+    } else if (!hasRole([1, 2])) {
+      navigate('/clientes'); // Redirige si el rol no está permitido
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, hasRole, navigate]);
 
-  if (!isAuthenticated) {
-    return null; // Mientras se realiza la redirección, no renderiza nada
+  if (!isAuthenticated || !hasRole([1, 2])) {
+    return null; // Evita renderizar mientras se realiza la redirección
   }
 
   return (

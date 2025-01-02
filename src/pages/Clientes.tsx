@@ -2,9 +2,10 @@ import { useAuth } from '../context/AuthContext.tsx';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import SearchComponent from "../components/Search";
+import ListarByEjecutivo from '@/components/ListarByEjecutivo';
 
 const Clientes = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, hasRole } = useAuth(); // Agregamos hasRole
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,7 +21,12 @@ const Clientes = () => {
   return (
     <div>
       <h2 className="text-2xl font-medium text-bansur my-4">Gestión Comercial Clientes</h2>
-      <SearchComponent />
+      
+      {/* Renderizar SearchComponent solo si el rol es 1 o 2 */}
+      {hasRole([1, 2]) && <SearchComponent />}
+
+      {/* Renderizar ListarByEjecutivo solo si el rol es 4 */}
+      {hasRole([4]) && <ListarByEjecutivo />}
     </div>
   );
 };

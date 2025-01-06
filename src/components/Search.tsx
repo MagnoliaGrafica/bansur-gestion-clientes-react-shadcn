@@ -95,6 +95,17 @@ const SearchComponent: React.FC = () => {
   
   const getBadgeVariant = (id: number | undefined): BadgeVariant =>
     badgeVariants[id || 0] || "outline";
+
+  
+  const getInitials = (
+    nombre: string | undefined,
+    apellido: string | undefined
+  ): string => {
+    if (!nombre && !apellido) return "N/A";
+    const firstInitial = nombre ? nombre.charAt(0).toUpperCase() : "";
+    const lastInitial = apellido ? apellido.charAt(0).toUpperCase() : "";
+    return `${firstInitial}${lastInitial}`;
+  };
   
   
 
@@ -135,13 +146,15 @@ const SearchComponent: React.FC = () => {
     <TableRow key={cliente.id}>
             <TableCell className="font-medium text-bansur">{cliente.nombre} {cliente.apellido}<br /><span className="text-gray-400 text-md">{cliente.rut}</span><br /><span className="text-bansur/40">conv.:{cliente.gc_convenio.nombre}</span></TableCell>
             <TableCell>
-  <Badge variant={getBadgeVariant(cliente.gc_estado?.id)}>
-    {cliente.gc_estado ? cliente.gc_estado.nombre : "Sin asignar"}
-  </Badge>
-</TableCell>
+              <Badge variant={getBadgeVariant(cliente.gc_estado?.id)}>
+                {cliente.gc_estado ? cliente.gc_estado.nombre : "Sin asignar"}
+              </Badge>
+            </TableCell>
             <TableCell>
-                <Avatar>
-                  <AvatarFallback>{cliente.gc_ban_user ? cliente.gc_ban_user.nombre : "N/A"}</AvatarFallback>
+              <Avatar>
+                <AvatarFallback>
+                  {getInitials(cliente.gc_ban_user?.nombre, cliente.gc_ban_user?.apellido)}
+                </AvatarFallback>
               </Avatar>
               </TableCell>
               <TableCell className="text-right">

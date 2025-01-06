@@ -82,6 +82,31 @@ const ListarByEjecutivo: React.FC = () => {
     return Math.floor(differenceInMilliseconds / (1000 * 60 * 60 * 24));
   };
 
+  type BadgeVariant =
+  | "sinasignar"
+  | "prospecto"
+  | "presentado"
+  | "evaluacion"
+  | "cursado"
+  | "nocursado"
+  | "outline"
+  | "default"
+  | "secondary"
+  | "destructive";
+
+
+  const badgeVariants: Record<number, BadgeVariant> = {
+    1: "sinasignar",
+    2: "prospecto",
+    3: "presentado",
+    4: "evaluacion",
+    5: "cursado",
+    6: "nocursado",
+  };
+  
+  const getBadgeVariant = (id: number | undefined): BadgeVariant =>
+    badgeVariants[id || 0] || "outline";
+
   return (
     <div className="container mx-auto">
       <div className="flex justify-between gap-4 my-6">
@@ -125,13 +150,9 @@ const ListarByEjecutivo: React.FC = () => {
                   <span className="text-bansur/40">conv.:{cliente.gc_convenio.nombre}</span>
                 </TableCell>
                 <TableCell>
-                  <Badge
-                    variant={
-                      cliente.gc_estado && cliente.gc_estado.id === 6 ? "destructive" : "outline"
-                    }
-                  >
-                    {cliente.gc_estado ? cliente.gc_estado.nombre : "Sin asignar"}
-                  </Badge>
+                  <Badge variant={getBadgeVariant(cliente.gc_estado?.id)}>
+                                  {cliente.gc_estado ? cliente.gc_estado.nombre : "Sin asignar"}
+                                </Badge>
                 </TableCell>
                 <TableCell className="text-right">
                   ${new Intl.NumberFormat("es-CL").format(cliente.monto)}

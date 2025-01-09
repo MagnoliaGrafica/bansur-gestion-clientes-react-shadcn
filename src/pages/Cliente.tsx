@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useAuth } from '../context/AuthContext.tsx';
 import axios from "axios";
 import { Cliente, Estados, Canales, Ejecutivos, Convenios } from "../types/Types";
 import { Button } from "@/components/ui/button";
@@ -17,6 +18,7 @@ import {
 
 const ClienteDetail = () => {
   const params = useParams();
+  const { hasRole } = useAuth();
   const navigate = useNavigate();
 
   // Estados principales
@@ -326,7 +328,7 @@ useEffect(() => {
 
 
                     {/* ejecutivo */}
-                    <div className="flex flex-col space-y-1.5">
+                    {hasRole([1, 2]) && <div className="flex flex-col space-y-1.5">
                       <Label htmlFor="ejecutivo">Ejecutivo</Label>
                       <Select value={selectedEjecutivo} onValueChange={handleEjecutivoChange}>
                         <SelectTrigger className="w-[280px]">
@@ -338,7 +340,9 @@ useEffect(() => {
                           ))}
                         </SelectContent>
                       </Select>
-                    </div>
+                    </div>}
+
+                    
               </div>
             </CardContent>
             <CardFooter className="flex justify-between">

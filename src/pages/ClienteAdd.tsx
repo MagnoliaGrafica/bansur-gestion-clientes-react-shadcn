@@ -6,7 +6,7 @@ import AddClienteAdmin from '@/components/addClienteAdmin';
 import AddClienteEjecutivo from '@/components/AddClienteEjecutivo';
 
 const Clientes = () => {
-  const { isAuthenticated, hasRole } = useAuth(); // Agregamos hasRole
+  const { isAuthenticated, hasRole } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {

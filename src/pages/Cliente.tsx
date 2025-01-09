@@ -37,7 +37,6 @@ const ClienteDetail = () => {
 
   // URLs
   const CLIENTE_API_URL = "https://bansur-api-express.vercel.app/api/clientes/";
-  //const TIPOCREDITO_API_URL = "https://bansur-api-express.vercel.app/api/tipocreditos";
   const ESTADOS_API_URL = "https://bansur-api-express.vercel.app/api/estados";
   const CANAL_API_URL = "https://bansur-api-express.vercel.app/api/canal";
   const EJECUTIVO_API_URL = "https://bansur-api-express.vercel.app/api/ejecutivos";
@@ -103,20 +102,6 @@ useEffect(() => {
   }, []);
 
 
-  // Obtener tipo de créditos desde la API
-  /*useEffect(() => {
-    const fetchTipoCredito = async () => {
-      try {
-        const response = await axios.get<TipoCredito[]>(TIPOCREDITO_API_URL);
-        setTipoCreditos(response.data);
-      } catch (error: any) {
-        console.error("Error fetching tipo de creditos:", error.message || error);
-        setError("Error al cargar los tipos de crédito.");
-      }
-    };
-    fetchTipoCredito();
-  }, []);*/
-
   // Obtener datos del cliente
   useEffect(() => {
     const fetchCliente = async () => {
@@ -156,12 +141,6 @@ useEffect(() => {
     );
   };
 
-  // Manejar selección de tipo de crédito
-  /*const handleTipoCreditoChange = (value: string) => {
-    setSelectedTipoCredito(value);  // Asegurarse de que el valor sea un string
-    setElCliente((prev) => (prev ? { ...prev, tipoCredito: Number(value) } : null)); // Convirtiendo a number
-  };*/
-
   // Manejar selección de Convenios
   const handleConvenioChange = (value: string) => {
     setSelectedConvenio(value);
@@ -171,8 +150,26 @@ useEffect(() => {
   // Manejar selección de estados
   const handleEstadoChange = (value: string) => {
     setSelectedEstados(value);
-    setElCliente((prev)=> (prev ? {...prev, estado: Number(value)}: null));
+  
+    const fechaActual = Date.now(); // Timestamp actual como número
+  
+    setElCliente((prev) => {
+      if (!prev) return null;
+  
+      // Buscar el estado por id y verificar su nombre
+      const estadoSeleccionado = estados.find((estado) => String(estado.id) === value);
+      const esEstadoFinalizado = estadoSeleccionado?.nombre === "Cursado" || estadoSeleccionado?.nombre === "No cursado";
+  
+      return {
+        ...prev,
+        estado: Number(value),
+        fechaCierre: esEstadoFinalizado ? fechaActual : prev.fechaCierre,
+      };
+    });
   };
+  
+  
+  
 
   // Manejar selección de canal
   const handleCanalChange = (value: string) => {
@@ -204,21 +201,35 @@ useEffect(() => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
-
+  
     try {
       setIsSubmitting(true);
-      const response = await axios.put(`${CLIENTE_API_URL}${elCliente!.id}`, elCliente);
+  
+      // Convertir fechaCierre a ISO string
+      const clienteActualizado = {
+        ...elCliente,
+        fechaCierre: elCliente?.fechaCierre ? new Date(elCliente.fechaCierre).toISOString() : null,
+      };
+  
+      console.log("Datos enviados al servidor:", clienteActualizado);
+  
+      const response = await axios.put(`${CLIENTE_API_URL}${elCliente!.id}`, clienteActualizado);
+  
       if (response.status === 200) {
         alert("Cliente actualizado con éxito.");
         navigate("/clientes");
+      } else {
+        console.error("Error en la respuesta del servidor:", response);
       }
     } catch (error: any) {
-      console.error("Error updating client:", error.message || error);
+      console.error("Error al actualizar el cliente:", error.response?.data || error.message);
       alert("Error al actualizar el cliente.");
     } finally {
       setIsSubmitting(false);
     }
   };
+  
+  
 
   if (loading) return <p>Cargando...</p>;
   if (error) return <p>{error}</p>;

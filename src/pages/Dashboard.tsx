@@ -5,6 +5,8 @@ import { ResumenCanal } from "@/components/ResumenCanal";
 import { ResumenEstados } from "@/components/ResumenEstados";
 import { ResumenEjecutivo } from "@/components/ResumenEjecutivo";
 
+import ChartEjecutivo from "@/components/ChartEjecutivo.tsx";
+
 import {
   Card,
   CardContent,
@@ -63,6 +65,9 @@ const Dashboard = () => {
               <ResumenEstados />
             </CardContent>
           </Card>
+        </section>
+        <section>
+          <ChartEjecutivo />
         </section>
       </div>
     </div>

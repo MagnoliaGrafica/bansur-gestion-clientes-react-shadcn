@@ -56,10 +56,12 @@ const AddClienteAdmin = () => {
           axios.get<Convenios[]>(CONVENIOS_API_URL),
           axios.get<Ejecutivos[]>(EJECUTIVO_API_URL),
         ]);
-
+  
         setEstados(resEstados.data);
         setCanal(resCanales.data);
-        setConvenios(resConvenios.data);
+        setConvenios(
+          resConvenios.data.sort((a, b) => a.nombre.localeCompare(b.nombre)) // Ordenar por nombre
+        );
         setEjecutivo(resEjecutivos.data);
       } catch (error: any) {
         console.error("Error fetching data:", error.message || error);
@@ -68,6 +70,7 @@ const AddClienteAdmin = () => {
     };
     fetchData();
   }, []);
+  
 
   // Manejar cambios en los inputs
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

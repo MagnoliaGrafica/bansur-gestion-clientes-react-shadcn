@@ -55,7 +55,9 @@ const AddClienteEjecutivo = () => {
           axios.get<Canales[]>(CANAL_API_URL),
         ]);
 
-        setConvenios(resConvenios.data);
+        setConvenios(
+          resConvenios.data.sort((a, b) => a.nombre.localeCompare(b.nombre)) // Ordenar por nombre
+        );
         setCanal(resCanales.data);
       } catch (error: any) {
         console.error("Error fetching data:", error.message || error);

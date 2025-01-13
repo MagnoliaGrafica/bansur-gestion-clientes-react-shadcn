@@ -77,11 +77,12 @@ const ChartEjecutivos = () => {
             <XAxis dataKey="iniciales" />
             <YAxis />
             <Tooltip
-              formatter={(value, name, props) => [
-                new Intl.NumberFormat("es-CL").format(Number(value)),
-                props.payload.nombre,
-              ]}
-            />
+  formatter={(value, _, props) => [
+    new Intl.NumberFormat("es-CL").format(Number(value)),
+    props.payload.nombre,
+  ]}
+/>
+
             <Bar dataKey="monto" fill={colors.blue[500]} name="Monto" radius={[4, 4, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>

@@ -107,6 +107,7 @@ export interface Cliente {
         }; 
       };
       sumaTotal: number;
+      totalClientes: number;
       clientes: number;
     }
 
@@ -127,7 +128,7 @@ export interface Cliente {
         }; 
       };
       sumaTotal: number;
-      clientes: number;
+      totalClientes: number;
     }
 
     export interface ResumenEjecutivo {
@@ -139,5 +140,5 @@ export interface Cliente {
         };
       };
       sumaTotal: number; // Suma de todos los montos
-      clientes: number; // Total de clientes en todos los ejecutivos
+      totalClientes: number; // Total de clientes en todos los ejecutivos
     }

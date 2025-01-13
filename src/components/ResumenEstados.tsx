@@ -50,7 +50,7 @@ export function ResumenEstados() {
       <TableHeader>
         <TableRow>
           <TableHead>Estado</TableHead>
-          <TableHead>Monto Cursado</TableHead>
+          <TableHead>Monto Total</TableHead>
           <TableHead>Cuenta de RUT</TableHead>
         </TableRow>
       </TableHeader>
@@ -68,6 +68,7 @@ export function ResumenEstados() {
         <TableRow>
           <TableCell>Total</TableCell>
           <TableCell>${new Intl.NumberFormat("es-CL").format(resumenEstados.sumaTotal || 0)}</TableCell>
+          <TableCell>{resumenEstados.totalClientes || 0}</TableCell>
         </TableRow>
       </TableFooter>
     </Table>

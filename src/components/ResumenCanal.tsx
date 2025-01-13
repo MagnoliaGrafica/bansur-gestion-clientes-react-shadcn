@@ -47,7 +47,7 @@ export function ResumenCanal() {
       <TableHeader>
         <TableRow>
           <TableHead>Canal</TableHead>
-          <TableHead>Monto Cursado</TableHead>
+          <TableHead>Monto Total</TableHead>
           <TableHead>Cuenta de RUT</TableHead>
         </TableRow>
       </TableHeader>
@@ -65,6 +65,7 @@ export function ResumenCanal() {
         <TableRow>
           <TableCell>Total</TableCell>
           <TableCell>${new Intl.NumberFormat("es-CL").format(resumenCanal.sumaTotal || 0)}</TableCell>
+          <TableCell>{resumenCanal.totalClientes || 0}</TableCell>
         </TableRow>
       </TableFooter>
     </Table>

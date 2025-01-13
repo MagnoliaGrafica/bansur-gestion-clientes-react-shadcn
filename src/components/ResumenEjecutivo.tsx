@@ -55,7 +55,7 @@ export function ResumenEjecutivo() {
       <TableHeader>
         <TableRow>
           <TableHead>Ejecutivo</TableHead>
-          <TableHead>Monto Cursado</TableHead>
+          <TableHead>Monto Total</TableHead>
           <TableHead>Cuenta de RUT</TableHead>
         </TableRow>
       </TableHeader>
@@ -72,7 +72,7 @@ export function ResumenEjecutivo() {
         <TableRow>
           <TableCell>Total</TableCell>
           <TableCell>${new Intl.NumberFormat("es-CL").format(resumenEjecutivo.sumaTotal || 0)}</TableCell>
-          <TableCell>{resumenEjecutivo.clientes || 0}</TableCell>
+          <TableCell>{resumenEjecutivo.totalClientes || 0}</TableCell>
         </TableRow>
       </TableFooter>
     </Table>

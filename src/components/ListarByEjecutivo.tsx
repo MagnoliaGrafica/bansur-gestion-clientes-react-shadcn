@@ -85,23 +85,27 @@ const ListarByEjecutivo: React.FC = () => {
   type BadgeVariant =
   | "sinasignar"
   | "prospecto"
-  | "presentado"
-  | "evaluacion"
+  | "preparacion"
+  | "comite"
+  | "aprobado"
+  | "rechazado"
   | "cursado"
-  | "nocursado"
   | "outline"
   | "default"
   | "secondary"
-  | "destructive";
+  | "destructive"
+  | null
+  | undefined;
 
 
   const badgeVariants: Record<number, BadgeVariant> = {
     1: "sinasignar",
     2: "prospecto",
-    3: "presentado",
-    4: "evaluacion",
-    5: "cursado",
-    6: "nocursado",
+    3: "preparacion",
+    4: "comite",
+    5: "aprobado",
+    6: "rechazado",
+    7: "cursado"
   };
   
   const getBadgeVariant = (id: number | undefined): BadgeVariant =>

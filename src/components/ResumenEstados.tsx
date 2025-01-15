@@ -37,10 +37,11 @@ export function ResumenEstados() {
   const estados = [
     { nombre: "Sin Asignar", key: "1" },
     { nombre: "Prospecto", key: "2" },
-    { nombre: "Presentado", key: "3" },
-    { nombre: "En Evaluación", key: "4" },
-    { nombre: "Cursado", key: "5" },
-    { nombre: "No Cursado", key: "6" }
+    { nombre: "En Preparación", key: "3" },
+    { nombre: "Comité Superior", key: "4" },
+    { nombre: "Aprobado", key: "5" },
+    { nombre: "Rechazado", key: "6" },
+    { nombre: "Cursado", key: "7" }
   ];
 
   const estadosMap = new Map(estados.map(({ key, nombre }) => [key, nombre]));

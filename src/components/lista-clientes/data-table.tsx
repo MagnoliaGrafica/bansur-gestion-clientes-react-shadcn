@@ -14,6 +14,8 @@ import {
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Link } from "react-router";
+import { UserPlusIcon } from "@heroicons/react/24/outline";
 
 import {
   Table,
@@ -101,6 +103,13 @@ export function DataTable<TData, TValue>({
               })}
           </DropdownMenuContent>
         </DropdownMenu>
+
+        <Button asChild variant="bansur" className="ml-4" >
+          <Link to="/cliente/add">
+            <UserPlusIcon /> Nuevo Cliente 
+          </Link>
+        </Button>
+
       </div>
     <div className="rounded-md border">
       <Table>

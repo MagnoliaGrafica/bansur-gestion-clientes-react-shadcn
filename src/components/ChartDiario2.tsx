@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Area, AreaChart, CartesianGrid, XAxis, YAxis, Tooltip } from "recharts";
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import dayjs from "dayjs";
 import "dayjs/locale/es"; // Para los nombres de los meses en español
 dayjs.locale("es");

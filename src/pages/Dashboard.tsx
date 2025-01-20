@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom';
 
 import { ResumenCanal } from "@/components/ResumenCanal";
 import { ResumenEstados } from "@/components/ResumenEstados";
-import { ResumenEjecutivo } from "@/components/ResumenEjecutivo";
+import { ResumenEjecutivoCompleto } from "@/components/ResumenEjecutivoCompleto";
 
 import ChartEjecutivo from "@/components/ChartEjecutivo.tsx";
+import {MonthlyChart2} from '@/components/ChartDiario2.tsx'
 
 import {
   Card,
@@ -36,26 +37,20 @@ const Dashboard = () => {
     <div>
       <h2 className="text-2xl font-medium text-bansur my-4">Dashboard Gestión Comercial</h2>
       <div className="grid grid-cols-3 gap-8">
-        <section>
+         <section className='col-span-3'>
           <Card>
             <CardHeader>
               <CardTitle>Resumen Ejecutivo</CardTitle>
             </CardHeader>
             <CardContent>
-              <ResumenEjecutivo />
+              <ResumenEjecutivoCompleto />
             </CardContent>
           </Card>
         </section>
-        <section>
-          <Card>
-            <CardHeader>
-              <CardTitle>Resumen Canal</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ResumenCanal />
-            </CardContent>
-          </Card>
+        <section className='col-span-2'>
+          <MonthlyChart2></MonthlyChart2>
         </section>
+        
         <section>
           <Card>
             <CardHeader>
@@ -69,6 +64,17 @@ const Dashboard = () => {
         <section>
           <ChartEjecutivo />
         </section>
+        <section>
+          <Card>
+            <CardHeader>
+              <CardTitle>Resumen Canal</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ResumenCanal />
+            </CardContent>
+          </Card>
+        </section>
+        
       </div>
     </div>
   );

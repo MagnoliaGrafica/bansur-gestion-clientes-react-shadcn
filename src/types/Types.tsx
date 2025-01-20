@@ -135,10 +135,17 @@ export interface Cliente {
       fecha: string;
       totalesPorEjecutivo: {
         [key: string]: {
-          monto: number; // Monto total por ejecutivo
-          clientes: number; // Número de clientes por ejecutivo
+          totalMonto: number; // Cambiado de 'monto' a 'totalMonto'
+          totalClientes: number; // Cambiado de 'clientes' a 'totalClientes'
+          estados: {
+            [estado: string]: {
+              monto: number;
+              clientes: number;
+            };
+          };
         };
       };
-      sumaTotal: number; // Suma de todos los montos
-      totalClientes: number; // Total de clientes en todos los ejecutivos
+      sumaTotal: number;
+      totalClientes: number;
     }
+    

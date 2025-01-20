@@ -63,7 +63,8 @@ interface gc_convenio {
   return Math.floor(differenceInMilliseconds / (1000 * 60 * 60 * 24));
 };
 
-//obtener iniciales
+//obtener iniciales para avatar
+// Ejemplo de cómo corregir el acceso
 const getInitials = (
   nombre: string | undefined,
   apellido: string | undefined
@@ -102,6 +103,7 @@ type BadgeVariant =
   
   const getBadgeVariant = (id: number | undefined): BadgeVariant =>
     badgeVariants[id || 0] || "outline";
+
 
   const capitalizeFirstLetter = (text: string): string => {
     if (!text) return '';
@@ -273,27 +275,23 @@ type BadgeVariant =
     },
     {
       accessorKey: "ejecutivo",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Ejecutivo <ArrowsUpDownIcon className="size-4" />
-          </Button>
-        );
-      },
-      cell: ({ row }) => {
-        return (
-          <div className="flex justify-center">
-            <Avatar>
-              <AvatarFallback>
-                {getInitials(row.original.gc_ban_user?.nombre, row.original.gc_ban_user.apellido)}
-              </AvatarFallback>
-            </Avatar>
-          </div>
-        );
-      },
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Ejecutivo <ArrowsUpDownIcon className="size-4" />
+        </Button>
+      ),
+      cell: ({ row }) => (
+        <div className="flex justify-center">
+          <Avatar>
+            <AvatarFallback>
+              {getInitials(row.original.gc_ban_user?.nombre, row.original.gc_ban_user?.apellido)}
+            </AvatarFallback>
+          </Avatar>
+        </div>
+      ),
     },
     {
       id: "actions",

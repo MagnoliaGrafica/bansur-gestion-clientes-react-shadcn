@@ -43,9 +43,12 @@ export function DataTable<TData, TValue>({
   data,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]); // Column filters state
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [selectedEstado, setSelectedEstado] = React.useState<string>(''); // Selected estado value
   const [estados, setEstados] = React.useState<any[]>([]); // States fetched from API
+
+  const [startDate, setStartDate] = React.useState<string>(''); // Start date filter state
+  const [endDate, setEndDate] = React.useState<string>(''); // End date filter state
   
   React.useEffect(() => {
     fetch("https://bansur-api-express.vercel.app/api/estados")
@@ -53,37 +56,67 @@ export function DataTable<TData, TValue>({
       .then((data) => setEstados(data));
   }, []);
 
-  
-  
   // Filtro en el estado de la tabla (modificado para comparar id)
-const table = useReactTable({
-  data,
-  columns,
-  getCoreRowModel: getCoreRowModel(),
-  getPaginationRowModel: getPaginationRowModel(),
-  onSortingChange: setSorting,
-  getSortedRowModel: getSortedRowModel(),
-  onColumnFiltersChange: setColumnFilters,
-  getFilteredRowModel: getFilteredRowModel(),
-  state: {
-    sorting,
-    columnFilters,
-  },
-  filterFns: {
-    matchEjecutivo: (row, columnId, filterValue) => {
-      // Comparar id del ejecutivo con el `id` en gc_ban_user
-      return (
-        row.original[columnId]?.id?.toString() === filterValue?.toString()
-      );
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
+    onColumnFiltersChange: setColumnFilters,
+    getFilteredRowModel: getFilteredRowModel(),
+    state: {
+      sorting,
+      columnFilters,
     },
-  },
-});
+    filterFns: {
+      dateRange: (row, columnId, filterValue) => {
+        // Convertimos la fecha de la base de datos (createdAt)
+        const rowDate = new Date(row.original[columnId]);
+    
+        // Convertimos las fechas de filtro a Date objects
+        const [start, end] = filterValue;
+        const startDate = new Date(start);
+        const endDate = new Date(end);
+    
+        // Ajustamos las horas de las fechas para que solo se compare el día, mes y año
+        startDate.setHours(0, 0, 0, 0); // Establece la hora de inicio a las 00:00:00
+        endDate.setHours(23, 59, 59, 999); // Establece la hora de fin a las 23:59:59
+    
+        // Asegúrate de que las fechas están en el mismo formato para la comparación (timestamps en milisegundos)
+        const startTimestamp = startDate.getTime();
+        const endTimestamp = endDate.getTime();
+        const rowTimestamp = rowDate.getTime();
+    
+        // Log para verificar las fechas que estamos comparando
+        console.log('Fecha de inicio:', startDate.toLocaleString());
+        console.log('Fecha de fin:', endDate.toLocaleString());
+        console.log('Fecha de la base de datos (rowDate):', rowDate.toLocaleString());
+        console.log('startTimestamp:', startTimestamp);
+        console.log('endTimestamp:', endTimestamp);
+        console.log('rowTimestamp:', rowTimestamp);
+    
+        // Comparar las fechas usando timestamps
+        const isAfterStart = rowTimestamp >= startTimestamp;
+        const isBeforeEnd = rowTimestamp <= endTimestamp;
+    
+        // Log si la fecha está dentro del rango
+        console.log('¿La fecha está dentro del rango?', isAfterStart && isBeforeEnd);
+    
+        return isAfterStart && isBeforeEnd;
+      }
+    }
+    
+    
+    
+  });
 
   // Function to update filters dynamically
-  const handleFilterChange = (columnId: string, value: string) => {
+  const handleFilterChange = (columnId: string, value: string | [string, string]) => {
     setColumnFilters((prevFilters) => {
       const existingFilter = prevFilters.find((filter) => filter.id === columnId);
-
+  
       if (existingFilter) {
         return prevFilters.map((filter) =>
           filter.id === columnId ? { ...filter, value } : filter
@@ -93,6 +126,7 @@ const table = useReactTable({
       }
     });
   };
+  
 
   // Handle estado filter change
   const handleEstadoChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -100,7 +134,24 @@ const table = useReactTable({
     setSelectedEstado(estado);
     handleFilterChange('gc_estado', estado); // Asegurarse de que `estado` es el id
   };
+
+  // Handle date range change
+  const handleDateChange = () => {
+    // Log para ver las fechas seleccionadas
+    console.log('Fecha de inicio:', startDate);
+    console.log('Fecha de fin:', endDate);
   
+    // Asegurarse de que las fechas son válidas antes de pasarlas al filtro
+    if (startDate && endDate) {
+      // Verificar si las fechas están en el formato adecuado
+      console.log('Fechas validas, aplicando filtro:', [startDate, endDate]);
+      handleFilterChange('createdAt', [startDate, endDate]);
+    } else {
+      console.log('Fechas inválidas, no se aplica el filtro.');
+    }
+  };
+  
+
   return (
     <div>
       <div className="flex items-center py-4 space-x-4">
@@ -127,6 +178,27 @@ const table = useReactTable({
           ))}
         </select>
         
+        {/* Filtros de Fecha */}
+        <div className="flex space-x-2">
+          <Input
+            type="date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            className="border p-2 rounded-md"
+            placeholder="Fecha de inicio"
+          />
+          <Input
+            type="date"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            className="border p-2 rounded-md"
+            placeholder="Fecha de fin"
+          />
+          <Button onClick={handleDateChange} variant="outline">
+            Filtrar por fecha
+          </Button>
+        </div>
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">

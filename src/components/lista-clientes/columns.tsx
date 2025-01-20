@@ -200,9 +200,10 @@ type BadgeVariant =
         );
       },
       cell: ({ row }) => {
-        const date = new Date(row.getValue("createdAt") as number);
+        const date = new Date(row.getValue("createdAt") as number); // Convertimos el valor de createdAt
         return <div className="text-center">{date.toLocaleDateString("es-CL")}</div>;
       },
+      
     },
     {
       accessorKey: "fechaCierre",

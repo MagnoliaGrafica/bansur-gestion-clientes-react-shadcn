@@ -9,7 +9,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Avatar, AvatarFallback} from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { PencilSquareIcon, EllipsisHorizontalIcon, ArrowsUpDownIcon } from "@heroicons/react/24/outline";
 
@@ -63,17 +62,6 @@ interface gc_convenio {
   return Math.floor(differenceInMilliseconds / (1000 * 60 * 60 * 24));
 };
 
-//obtener iniciales para avatar
-// Ejemplo de cómo corregir el acceso
-const getInitials = (
-  nombre: string | undefined,
-  apellido: string | undefined
-): string => {
-  if (!nombre && !apellido) return "N/A";
-  const firstInitial = nombre ? nombre.charAt(0).toUpperCase() : "";
-  const lastInitial = apellido ? apellido.charAt(0).toUpperCase() : "";
-  return `${firstInitial}${lastInitial}`;
-};
 
 type BadgeVariant =
   | "sinasignar"

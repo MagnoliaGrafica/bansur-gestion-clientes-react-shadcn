@@ -66,44 +66,6 @@ export function DataTable<TData, TValue>({
       sorting,
       columnFilters,
     },
-    filterFns: {
-      dateRange: (row, columnId, filterValue) => {
-        // Convertimos la fecha de la base de datos (createdAt)
-        const rowDate = new Date(row.original[columnId]);
-    
-        // Convertimos las fechas de filtro a Date objects
-        const [start, end] = filterValue;
-        const startDate = new Date(start);
-        const endDate = new Date(end);
-    
-        // Ajustamos las horas de las fechas para que solo se compare el día, mes y año
-        startDate.setHours(0, 0, 0, 0); // Establece la hora de inicio a las 00:00:00
-        endDate.setHours(23, 59, 59, 999); // Establece la hora de fin a las 23:59:59
-    
-        // Asegúrate de que las fechas están en el mismo formato para la comparación (timestamps en milisegundos)
-        const startTimestamp = startDate.getTime();
-        const endTimestamp = endDate.getTime();
-        const rowTimestamp = rowDate.getTime();
-    
-        // Log para verificar las fechas que estamos comparando
-        console.log('Fecha de inicio:', startDate.toLocaleString());
-        console.log('Fecha de fin:', endDate.toLocaleString());
-        console.log('Fecha de la base de datos (rowDate):', rowDate.toLocaleString());
-        console.log('startTimestamp:', startTimestamp);
-        console.log('endTimestamp:', endTimestamp);
-        console.log('rowTimestamp:', rowTimestamp);
-    
-        // Comparar las fechas usando timestamps
-        const isAfterStart = rowTimestamp >= startTimestamp;
-        const isBeforeEnd = rowTimestamp <= endTimestamp;
-    
-        // Log si la fecha está dentro del rango
-        console.log('¿La fecha está dentro del rango?', isAfterStart && isBeforeEnd);
-    
-        return isAfterStart && isBeforeEnd;
-      }
-    }
-    
     
   });
 
@@ -136,7 +98,7 @@ export function DataTable<TData, TValue>({
     <div>
       <div className="flex items-center py-4 space-x-4">
         <Input
-          placeholder="Filtrar nombres..."
+          placeholder="Buscar nombres..."
           value={(table.getColumn("nombre")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("nombre")?.setFilterValue(event.target.value)

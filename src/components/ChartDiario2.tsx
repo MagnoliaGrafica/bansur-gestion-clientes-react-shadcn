@@ -18,7 +18,13 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 
 // Configuración de colores y etiquetas para las series
@@ -33,13 +39,19 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
+type DataItem = {
+  fecha: string;
+  totalMonto: number;
+  totalClientes: number;
+};
+
 export function MonthlyChart2() {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<DataItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedMonth, setSelectedMonth] = useState("2024-12");
   const [error, setError] = useState(false);
 
-  // Función para obtener datos desde el endpoint
+  // Función para obtener datos desde el endpoint y completar días faltantes
   const fetchData = async (month: string) => {
     setLoading(true);
     setError(false);
@@ -50,11 +62,44 @@ export function MonthlyChart2() {
       if (!response.ok) {
         throw new Error("Error fetching data");
       }
-      const result = await response.json();
+      const result: DataItem[] = await response.json();
+
       if (result.length === 0) {
         setError(true); // No hay datos
       } else {
-        setData(result);
+        // Ordenar los datos por fecha
+        const sortedData = result.sort(
+          (a, b) => new Date(a.fecha).getTime() - new Date(b.fecha).getTime()
+        );
+
+        // Generar todos los días del mes seleccionado
+        const startOfMonth = dayjs(`${month}-01`);
+        const endOfMonth = startOfMonth.endOf("month");
+        const allDays = [];
+        let current = startOfMonth;
+
+        while (current <= endOfMonth) {
+          const dayOfWeek = current.day();
+          // Excluir sábados (6) y domingos (0)
+          if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+            allDays.push(current.format("YYYY-MM-DD"));
+          }
+          current = current.add(1, "day");
+        }
+
+        // Combinar los días existentes con los días faltantes
+        const completeData = allDays.map((day) => {
+          const existingData = sortedData.find((item) => item.fecha === day);
+          return (
+            existingData || {
+              fecha: day,
+              totalMonto: 0,
+              totalClientes: 0,
+            }
+          );
+        });
+
+        setData(completeData);
       }
     } catch {
       setError(true);
@@ -78,7 +123,9 @@ export function MonthlyChart2() {
     while (current <= today) {
       months.push({
         value: current.format("YYYY-MM"),
-        label: current.format("MMMM YYYY").replace(/^\w/, (c) => c.toUpperCase()), // Capitaliza el primer carácter
+        label: current.format("MMMM YYYY").replace(/^\w/, (c) =>
+          c.toUpperCase()
+        ), // Capitaliza el primer carácter
       });
       current = current.add(1, "month");
     }
@@ -112,78 +159,96 @@ export function MonthlyChart2() {
           <Skeleton className="h-[300px] w-full" />
         ) : error ? (
           <div className="text-center text-muted-foreground">
-            No hay datos disponibles para {months.find((m) => m.value === selectedMonth)?.label}
+            No hay datos disponibles para{" "}
+            {months.find((m) => m.value === selectedMonth)?.label}
           </div>
         ) : (
-          <ChartContainer config={chartConfig}>
+          <ChartContainer config={chartConfig} style={{ height: '400px' }}>
             <AreaChart
-              accessibilityLayer
-              data={data}
-              margin={{
-                left: 12,
-                right: 12,
-              }}
-            >
-              <CartesianGrid vertical={false} />
-              <XAxis
-                dataKey="fecha"
-                tickLine={false}
-                axisLine={false}
-                tickMargin={8}
-                tickFormatter={(value) => dayjs(value).format("DD/MM")}
-              />
-              {/* Eje Y para Clientes */}
-              <YAxis yAxisId="left" />
-              {/* Eje Y para Monto (a la derecha) */}
-              <YAxis yAxisId="right" orientation="right" />
-              <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-              <defs>
-                <linearGradient id="fillMonto" x1="0" y1="0" x2="0" y2="1">
-                  <stop
-                    offset="5%"
-                    stopColor="var(--color-monto)"
-                    stopOpacity={0.8}
-                  />
-                  <stop
-                    offset="95%"
-                    stopColor="var(--color-monto)"
-                    stopOpacity={0.1}
-                  />
-                </linearGradient>
-                <linearGradient id="fillClientes" x1="0" y1="0" x2="0" y2="1">
-                  <stop
-                    offset="5%"
-                    stopColor="var(--color-clientes)"
-                    stopOpacity={0.8}
-                  />
-                  <stop
-                    offset="95%"
-                    stopColor="var(--color-clientes)"
-                    stopOpacity={0.1}
-                  />
-                </linearGradient>
-              </defs>
-              {/* Gráfico de Clientes */}
-              <Area
-                dataKey="totalClientes"
-                type="natural"
-                fill="url(#fillClientes)"
-                fillOpacity={0.4}
-                stroke="var(--color-clientes)"
-                stackId="a"
-                yAxisId="left" // Asocia con el eje Y izquierdo
-              />
-              {/* Gráfico de Monto */}
-              <Area
-                dataKey="totalMonto"
-                type="natural"
-                fill="url(#fillMonto)"
-                fillOpacity={0.4}
-                stroke="var(--color-monto)"
-                stackId="a"
-                yAxisId="right" // Asocia con el eje Y derecho
-              />
-            </AreaChart>
+  accessibilityLayer
+  data={data}
+  margin={{
+    left: 12,  // Reducir margen izquierdo para que el eje Y no sea tan grande
+    right: 12,
+    top: 12, // Reducir margen superior
+    bottom: 12, // Reducir margen inferior
+  }}
+>
+  <CartesianGrid vertical={false} />
+  <XAxis
+  dataKey="fecha"
+  tickLine={false}
+  axisLine={false}
+  tickMargin={8}
+  tickFormatter={(value) => dayjs(value).format("DD")}  // Solo mostrar el día
+/>
+
+  {/* Eje Y para Clientes */}
+  <YAxis
+    yAxisId="left"
+    tickSize={5}  // Reducir el tamaño de las líneas de los ticks
+    tickFormatter={(value) => value.toFixed(0)}  // Opcional: Redondear valores para hacer más compacta la visualización
+    tickCount={5} // Reducir el número de etiquetas en el eje Y
+    width={40} // Reducir el ancho del eje Y (esto hará que el eje ocupe menos espacio)
+  />
+  {/* Eje Y para Monto (a la derecha) */}
+  <YAxis
+    yAxisId="right"
+    orientation="right"
+    tickSize={5}
+    tickFormatter={(value) => value.toFixed(0)}
+    tickCount={5}
+    width={40} // Reducir el ancho del eje Y derecho
+  />
+  <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+  <defs>
+    <linearGradient id="fillMonto" x1="0" y1="0" x2="0" y2="1">
+      <stop
+        offset="5%"
+        stopColor="var(--color-monto)"
+        stopOpacity={0.8}
+      />
+      <stop
+        offset="95%"
+        stopColor="var(--color-monto)"
+        stopOpacity={0.1}
+      />
+    </linearGradient>
+    <linearGradient id="fillClientes" x1="0" y1="0" x2="0" y2="1">
+      <stop
+        offset="5%"
+        stopColor="var(--color-clientes)"
+        stopOpacity={0.8}
+      />
+      <stop
+        offset="95%"
+        stopColor="var(--color-clientes)"
+        stopOpacity={0.1}
+      />
+    </linearGradient>
+  </defs>
+  {/* Gráfico de Clientes */}
+  <Area
+    dataKey="totalClientes"
+    type="natural"
+    fill="url(#fillClientes)"
+    fillOpacity={0.4}
+    stroke="var(--color-clientes)"
+    stackId="a"
+    yAxisId="left"
+  />
+  {/* Gráfico de Monto */}
+  <Area
+    dataKey="totalMonto"
+    type="natural"
+    fill="url(#fillMonto)"
+    fillOpacity={0.4}
+    stroke="var(--color-monto)"
+    stackId="a"
+    yAxisId="right"
+  />
+</AreaChart>
+
           </ChartContainer>
         )}
       </CardContent>

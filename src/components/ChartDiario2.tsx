@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
+import { Button } from "@/components/ui/button"
+
 import dayjs from "dayjs";
 import "dayjs/locale/es"; // Para los nombres de los meses en español
 dayjs.locale("es");
@@ -50,6 +52,8 @@ export function MonthlyChart2() {
   const [loading, setLoading] = useState(true);
   const [selectedMonth, setSelectedMonth] = useState("2024-12");
   const [error, setError] = useState(false);
+  const [showClientes, setShowClientes] = useState(true); // Controlar la visibilidad de Clientes
+  const [showMonto, setShowMonto] = useState(true); // Controlar la visibilidad de Monto
 
   // Función para obtener datos desde el endpoint y completar días faltantes
   const fetchData = async (month: string) => {
@@ -163,93 +167,97 @@ export function MonthlyChart2() {
             {months.find((m) => m.value === selectedMonth)?.label}
           </div>
         ) : (
-          <ChartContainer config={chartConfig} style={{ height: '400px' }}>
-            <AreaChart
-  accessibilityLayer
-  data={data}
-  margin={{
-    left: 12,  // Reducir margen izquierdo para que el eje Y no sea tan grande
-    right: 12,
-    top: 12, // Reducir margen superior
-    bottom: 12, // Reducir margen inferior
-  }}
->
-  <CartesianGrid vertical={false} />
-  <XAxis
-  dataKey="fecha"
-  tickLine={false}
-  axisLine={false}
-  tickMargin={8}
-  tickFormatter={(value) => dayjs(value).format("DD")}  // Solo mostrar el día
-/>
+          <>
+            {/* Botones para mostrar/ocultar clientes y monto */}
+            <div className="flex gap-4 mb-4">
+              <Button
+                className={`btn ${showClientes ? "btn-primary" : "btn-secondary"}`}
+                onClick={() => setShowClientes(!showClientes)}
+              >
+                {showClientes ? "Ocultar Clientes" : "Mostrar Clientes"}
+              </Button>
+              <Button
+                className={`btn ${showMonto ? "btn-primary" : "btn-secondary"}`}
+                onClick={() => setShowMonto(!showMonto)}
+              >
+                {showMonto ? "Ocultar Monto" : "Mostrar Monto"}
+              </Button>
+            </div>
 
-  {/* Eje Y para Clientes */}
-  <YAxis
-    yAxisId="left"
-    tickSize={5}  // Reducir el tamaño de las líneas de los ticks
-    tickFormatter={(value) => value.toFixed(0)}  // Opcional: Redondear valores para hacer más compacta la visualización
-    tickCount={5} // Reducir el número de etiquetas en el eje Y
-    width={40} // Reducir el ancho del eje Y (esto hará que el eje ocupe menos espacio)
-  />
-  {/* Eje Y para Monto (a la derecha) */}
-  <YAxis
-    yAxisId="right"
-    orientation="right"
-    tickSize={5}
-    tickFormatter={(value) => value.toFixed(0)}
-    tickCount={5}
-    width={40} // Reducir el ancho del eje Y derecho
-  />
-  <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-  <defs>
-    <linearGradient id="fillMonto" x1="0" y1="0" x2="0" y2="1">
-      <stop
-        offset="5%"
-        stopColor="var(--color-monto)"
-        stopOpacity={0.8}
-      />
-      <stop
-        offset="95%"
-        stopColor="var(--color-monto)"
-        stopOpacity={0.1}
-      />
-    </linearGradient>
-    <linearGradient id="fillClientes" x1="0" y1="0" x2="0" y2="1">
-      <stop
-        offset="5%"
-        stopColor="var(--color-clientes)"
-        stopOpacity={0.8}
-      />
-      <stop
-        offset="95%"
-        stopColor="var(--color-clientes)"
-        stopOpacity={0.1}
-      />
-    </linearGradient>
-  </defs>
-  {/* Gráfico de Clientes */}
-  <Area
-    dataKey="totalClientes"
-    type="natural"
-    fill="url(#fillClientes)"
-    fillOpacity={0.4}
-    stroke="var(--color-clientes)"
-    stackId="a"
-    yAxisId="left"
-  />
-  {/* Gráfico de Monto */}
-  <Area
-    dataKey="totalMonto"
-    type="natural"
-    fill="url(#fillMonto)"
-    fillOpacity={0.4}
-    stroke="var(--color-monto)"
-    stackId="a"
-    yAxisId="right"
-  />
-</AreaChart>
-
-          </ChartContainer>
+            <ChartContainer config={chartConfig} style={{ height: '400px' }}>
+              <AreaChart
+                accessibilityLayer
+                data={data}
+                margin={{
+                  left: 12,
+                  right: 12,
+                  top: 12,
+                  bottom: 12,
+                }}
+              >
+                <CartesianGrid vertical={false} />
+                <XAxis
+                  dataKey="fecha"
+                  tickLine={false}
+                  axisLine={false}
+                  tickMargin={8}
+                  tickFormatter={(value) => dayjs(value).format("DD")}
+                />
+                {/* Eje Y para Clientes */}
+                <YAxis
+                  yAxisId="left"
+                  tickSize={5}
+                  tickFormatter={(value) => value.toFixed(0)}
+                  tickCount={5}
+                  width={40}
+                />
+                {/* Eje Y para Monto (a la derecha) */}
+                <YAxis
+                  yAxisId="right"
+                  orientation="right"
+                  tickSize={5}
+                  tickFormatter={(value) => value.toFixed(0)}
+                  tickCount={5}
+                  width={40}
+                />
+                <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+                <defs>
+                  <linearGradient id="fillMonto" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="var(--color-monto)" stopOpacity={0.8} />
+                    <stop offset="95%" stopColor="var(--color-monto)" stopOpacity={0.1} />
+                  </linearGradient>
+                  <linearGradient id="fillClientes" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="var(--color-clientes)" stopOpacity={0.8} />
+                    <stop offset="95%" stopColor="var(--color-clientes)" stopOpacity={0.1} />
+                  </linearGradient>
+                </defs>
+                {/* Mostrar solo si showClientes es true */}
+                {showClientes && (
+                  <Area
+                    dataKey="totalClientes"
+                    type="natural"
+                    fill="url(#fillClientes)"
+                    fillOpacity={0.4}
+                    stroke="var(--color-clientes)"
+                    stackId="a"
+                    yAxisId="left"
+                  />
+                )}
+                {/* Mostrar solo si showMonto es true */}
+                {showMonto && (
+                  <Area
+                    dataKey="totalMonto"
+                    type="natural"
+                    fill="url(#fillMonto)"
+                    fillOpacity={0.4}
+                    stroke="var(--color-monto)"
+                    stackId="a"
+                    yAxisId="right"
+                  />
+                )}
+              </AreaChart>
+            </ChartContainer>
+          </>
         )}
       </CardContent>
       <CardFooter>

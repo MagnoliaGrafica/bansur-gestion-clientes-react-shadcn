@@ -275,24 +275,24 @@ type BadgeVariant =
       },
     },
     {
-      accessorKey: "ejecutivo",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Ejecutivo <ArrowsUpDownIcon className="size-4" />
-        </Button>
-      ),
-      cell: ({ row }) => (
-        <div className="flex justify-center">
-          <Avatar>
-            <AvatarFallback>
-              {getInitials(row.original.gc_ban_user?.nombre, row.original.gc_ban_user?.apellido)}
-            </AvatarFallback>
-          </Avatar>
-        </div>
-      ),
+        accessorKey: "gc_ban_user",
+        header: () => <div className="text-center">Ejecutivo</div>,
+        cell: ({ row }) => {
+          const nombre = row.original.gc_ban_user?.nombre as string;
+          const apellido = row.original.gc_ban_user?.apellido as string;
+          return (
+            <div className="text-bansur text-base font-medium">
+              {nombre} {apellido} <br />
+            </div>
+          );
+        },
+        // Define cómo debe funcionar el filtro
+        filterFn: (row, _columnId, filterValue) => {
+          const { nombre = "", apellido = "" } = row.original.gc_ban_user || {};
+          const fullName = `${nombre} ${apellido}`.toLowerCase();
+          return fullName.includes(filterValue.toLowerCase());
+        },
+      
     },
     {
       id: "actions",

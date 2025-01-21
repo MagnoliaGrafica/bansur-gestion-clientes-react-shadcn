@@ -46,8 +46,6 @@ export function DataTable<TData, TValue>({
   const [selectedEstado, setSelectedEstado] = React.useState<string>(''); // Selected estado value
   const [estados, setEstados] = React.useState<any[]>([]); // States fetched from API
 
-  const [startDate, setStartDate] = React.useState<string>(''); // Start date filter state
-  const [endDate, setEndDate] = React.useState<string>(''); // End date filter state
   
   React.useEffect(() => {
     fetch("https://bansur-api-express.vercel.app/api/estados")
@@ -55,7 +53,6 @@ export function DataTable<TData, TValue>({
       .then((data) => setEstados(data));
   }, []);
 
-  // Filtro en el estado de la tabla (modificado para comparar id)
   const table = useReactTable({
     data,
     columns,
@@ -108,7 +105,6 @@ export function DataTable<TData, TValue>({
     }
     
     
-    
   });
 
   // Function to update filters dynamically
@@ -131,25 +127,10 @@ export function DataTable<TData, TValue>({
   const handleEstadoChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const estado = e.target.value;
     setSelectedEstado(estado);
-    handleFilterChange('gc_estado', estado); // Asegurarse de que `estado` es el id
+    handleFilterChange('gc_estado', estado); 
   };
 
-  // Handle date range change
-  const handleDateChange = () => {
-    // Log para ver las fechas seleccionadas
-    console.log('Fecha de inicio:', startDate);
-    console.log('Fecha de fin:', endDate);
-  
-    // Asegurarse de que las fechas son válidas antes de pasarlas al filtro
-    if (startDate && endDate) {
-      // Verificar si las fechas están en el formato adecuado
-      console.log('Fechas validas, aplicando filtro:', [startDate, endDate]);
-      handleFilterChange('createdAt', [startDate, endDate]);
-    } else {
-      console.log('Fechas inválidas, no se aplica el filtro.');
-    }
-  };
-  
+   
 
   return (
     <div>
@@ -163,6 +144,16 @@ export function DataTable<TData, TValue>({
           className="max-w-sm"
         />
 
+<Input
+  placeholder="Filtrar ejecutivos..."
+  value={(table.getColumn("gc_ban_user")?.getFilterValue() as string) ?? ""}
+  onChange={(event) =>
+    table.getColumn("gc_ban_user")?.setFilterValue(event.target.value)
+  }
+  className="max-w-sm"
+/>
+
+      
         {/* Filtro de Estado */}
         <select
           value={selectedEstado}
@@ -177,27 +168,7 @@ export function DataTable<TData, TValue>({
           ))}
         </select>
         
-        {/* Filtros de Fecha */}
-        <div className="flex space-x-2">
-          <Input
-            type="date"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-            className="border p-2 rounded-md"
-            placeholder="Fecha de inicio"
-          />
-          <Input
-            type="date"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-            className="border p-2 rounded-md"
-            placeholder="Fecha de fin"
-          />
-          <Button onClick={handleDateChange} variant="outline">
-            Filtrar por fecha
-          </Button>
-        </div>
-
+        
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">

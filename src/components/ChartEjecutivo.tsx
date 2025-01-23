@@ -68,7 +68,7 @@ const ChartEjecutivos = () => {
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>Montos por Ejecutivo</CardTitle>
+        <CardTitle>Montos por ejecutivo a la fecha</CardTitle>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={400}>

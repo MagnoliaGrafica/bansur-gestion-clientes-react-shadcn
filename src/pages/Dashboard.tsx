@@ -6,6 +6,7 @@ import { ResumenEstados } from "@/components/ResumenEstados";
 import { ResumenEjecutivoCompleto } from "@/components/ResumenEjecutivoCompleto";
 
 import ChartEjecutivo from "@/components/ChartEjecutivo.tsx";
+import ChartEjecutivosDiarios from '@/components/ChartEjecutivoDiario.tsx';
 import {MonthlyChart2} from '@/components/ChartDiario2.tsx'
 
 import {
@@ -63,6 +64,9 @@ const Dashboard = () => {
         </section>
         <section>
           <ChartEjecutivo />
+        </section>
+        <section>
+          <ChartEjecutivosDiarios />
         </section>
         <section>
           <Card>

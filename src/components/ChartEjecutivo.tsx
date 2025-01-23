@@ -75,13 +75,14 @@ const ChartEjecutivos = () => {
           <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="iniciales" />
-            <YAxis />
+            <YAxis tickFormatter={(value) => new Intl.NumberFormat("es-CL", { notation: "compact" }).format(value)} />
+
             <Tooltip
-  formatter={(value, _, props) => [
-    new Intl.NumberFormat("es-CL").format(Number(value)),
-    props.payload.nombre,
-  ]}
-/>
+              formatter={(value, _, props) => [
+                new Intl.NumberFormat("es-CL").format(Number(value)),
+                props.payload.nombre,
+              ]}
+            />
 
             <Bar dataKey="monto" fill={colors.blue[500]} name="Monto" radius={[4, 4, 0, 0]} />
           </BarChart>

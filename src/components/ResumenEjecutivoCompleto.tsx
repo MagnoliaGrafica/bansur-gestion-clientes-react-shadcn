@@ -63,7 +63,7 @@ export function ResumenEjecutivoCompleto() {
           <TableHead>N</TableHead>
           <TableHead>Monto Total</TableHead>
           {estadosConocidos.map((estado) => (
-            <TableHead key={estado.id} colSpan={2} className='text-center text-bansur'>
+            <TableHead key={estado.id}  className='text-center text-bansur'>
               {estado.nombre}
             </TableHead>
           ))}
@@ -77,12 +77,12 @@ export function ResumenEjecutivoCompleto() {
             >
               Monto
             </TableHead>,
-            <TableHead
+            /*<TableHead
               key={`${estado.id}-clientes`}
               className={index % 2 === 0 ? "bg-bansur/10" : ""}
             >
               N
-            </TableHead>,
+            </TableHead>*/,
           ])}
         </TableRow>
       </TableHeader>
@@ -104,12 +104,12 @@ export function ResumenEjecutivoCompleto() {
                     estados?.[estado.id]?.monto || 0
                   )}
                 </TableCell>,
-                <TableCell
+                /*<TableCell
                   key={`${estado.id}-clientes`}
                   className={index % 2 === 0 ? "bg-gray-50" : ""}
                 >
                   {estados?.[estado.id]?.clientes || 0}
-                </TableCell>,
+                </TableCell>*/,
               ])}
             </TableRow>
           )

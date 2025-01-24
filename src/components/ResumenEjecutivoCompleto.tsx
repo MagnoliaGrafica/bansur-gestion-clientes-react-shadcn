@@ -47,10 +47,12 @@ export function ResumenEjecutivoCompleto() {
   const ejecutivos = [
     { nombre: "Macarena Calistro", key: "2" },
     { nombre: "Edward Saldaña", key: "3" },
+    { nombre: "Felipe Santana", key: "4" },
     { nombre: "Jeanette Bastidas", key: "5" },
     { nombre: "Pamela Puntareli", key: "6" },
     { nombre: "Lilian Santana", key: "7" },
     { nombre: "Alex Ballota", key: "8" },
+    { nombre: "Pedro Salinas", key: "9" }
   ];
 
   const ejecutivoMap = new Map(ejecutivos.map(({ key, nombre }) => [key, nombre]));
@@ -88,7 +90,7 @@ export function ResumenEjecutivoCompleto() {
       </TableHeader>
       <TableBody>
         {Object.entries(resumenEjecutivo.totalesPorEjecutivo).map(
-          ([key, { totalMonto, totalClientes, estados }], index) => (
+          ([key, { totalClientes, estados }], index) => (
             <TableRow key={index}>
               <TableCell>{ejecutivoMap.get(key) || `Desconocido (${key})`}</TableCell>
               <TableCell>{totalClientes}</TableCell>

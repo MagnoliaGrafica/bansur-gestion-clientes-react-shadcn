@@ -16,13 +16,13 @@ export function ResumenEjecutivoCompleto() {
 
   // Estados conocidos
   const estadosConocidos = [
-    { id: "1", nombre: "Sin asignar" },
+   // { id: "1", nombre: "Sin asignar" },
     { id: "2", nombre: "Prospecto" },
     { id: "3", nombre: "En Preparación" },
     { id: "4", nombre: "Comité Sup." },
     { id: "5", nombre: "Aprobado" },
-    { id: "6", nombre: "Rechazado" },
     { id: "7", nombre: "Cursado" },
+    { id: "6", nombre: "Rechazado" },
   ];
 
   useEffect(() => {
@@ -61,7 +61,7 @@ export function ResumenEjecutivoCompleto() {
         <TableRow>
           <TableHead>Ejecutivo</TableHead>
           <TableHead>N</TableHead>
-          <TableHead>Monto Total</TableHead>
+          {/*<TableHead>Monto Total</TableHead>*/}
           {estadosConocidos.map((estado) => (
             <TableHead key={estado.id}  className='text-center text-bansur'>
               {estado.nombre}
@@ -69,7 +69,7 @@ export function ResumenEjecutivoCompleto() {
           ))}
         </TableRow>
         <TableRow>
-          <TableHead colSpan={3}></TableHead>
+          <TableHead colSpan={2}></TableHead>
           {estadosConocidos.flatMap((estado, index) => [
             <TableHead
               key={`${estado.id}-monto`}
@@ -92,9 +92,9 @@ export function ResumenEjecutivoCompleto() {
             <TableRow key={index}>
               <TableCell>{ejecutivoMap.get(key) || `Desconocido (${key})`}</TableCell>
               <TableCell>{totalClientes}</TableCell>
-              <TableCell>
+             {/* <TableCell>
                 <span className='text-bansur font-semibold'>${new Intl.NumberFormat("es-CL").format(totalMonto)}</span>
-              </TableCell>
+              </TableCell>*/}
               {estadosConocidos.flatMap((estado, index) => [
                 <TableCell
                   key={`${estado.id}-monto`}
@@ -119,9 +119,9 @@ export function ResumenEjecutivoCompleto() {
         <TableRow>
           <TableCell>Total</TableCell>
           <TableCell>{resumenEjecutivo.totalClientes}</TableCell>
-          <TableCell>
+          {/*<TableCell>
             ${new Intl.NumberFormat("es-CL").format(resumenEjecutivo.sumaTotal)}
-          </TableCell>
+          </TableCell>*/}
           {estadosConocidos.flatMap((estado, index) => [
             <TableCell
               key={`total-monto-${estado.id}`}

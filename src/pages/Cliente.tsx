@@ -25,6 +25,10 @@ const ClienteDetail = () => {
   const [elCliente, setElCliente] = useState<Cliente | null>(null);
   const [estados, setEstados] = useState<Estados[]>([]);
   const [selectedEstados, setSelectedEstados] = useState<string>("");
+
+  const [tiposRechazos, setTiposRechazos] = useState<Estados[]>([]);
+  const [selectedTiposRechazos, setSelectedTiposRechazos] = useState<string>("");
+
   const [canal, setCanal] = useState<Canales[]>([]);
   const [selectedCanal, setSelectedCanal] = useState<string>("");
   const [convenios, setConvenios] = useState<Convenios[]>([]);
@@ -41,6 +45,7 @@ const ClienteDetail = () => {
   const CANAL_API_URL = "https://bansur-api-express.vercel.app/api/canal";
   const EJECUTIVO_API_URL = "https://bansur-api-express.vercel.app/api/ejecutivos";
   const CONVENIOS_API_URL = "https://bansur-api-express.vercel.app/api/convenios";
+  const RECHAZOS_API_URL = "https://bansur-api-express.vercel.app/api/tiporechazos";
 
 
   //obtener convenios desde la API
@@ -99,6 +104,20 @@ useEffect(() => {
       }
     };
     fetchEstados();
+  }, []);
+
+  // Obtener tipos de rechazos desde la API
+  useEffect(() => {
+    const fetchTiposRechazos = async () => {
+      try {
+        const response = await axios.get<Estados[]>(RECHAZOS_API_URL);
+        setTiposRechazos(response.data);
+      } catch (error: any) {
+        console.error("Error fetching tipos de rechazos:", error.message || error);
+        setError("Error al cargar los tipos de rechazos.");
+      }
+    };
+    fetchTiposRechazos();
   }, []);
 
 
@@ -167,10 +186,14 @@ useEffect(() => {
       };
     });
   };
-  
-  
-  
 
+  //manejar selección de tipos de rechazos
+  const handleTiposRechazosChange = (value: string) => {
+    setSelectedTiposRechazos(value);
+    setElCliente((prev)=> (prev ? {...prev, tiposRechazos: Number(value)}: null));
+  };  
+  
+    
   // Manejar selección de canal
   const handleCanalChange = (value: string) => {
     setSelectedCanal(value);
@@ -229,8 +252,6 @@ useEffect(() => {
     }
   };
   
-  
-
   if (loading) return <p>Cargando...</p>;
   if (error) return <p>{error}</p>;
 
@@ -308,6 +329,7 @@ useEffect(() => {
 
     
                     {/* Estado */}
+                    <div className="grid grid-cols-2 gap-4">
                     <div className="flex flex-col space-y-1.5">
                       <Label htmlFor="estado">Estado</Label>
                       <Select value={selectedEstados} onValueChange={handleEstadoChange}>
@@ -321,6 +343,21 @@ useEffect(() => {
                         </SelectContent>
                       </Select>
                     </div>
+                      <div className="flex flex-col space-y-1.5">
+                      <Label htmlFor="motivo">Motivo</Label>
+                      <Select value={selectedTiposRechazos} onValueChange={handleTiposRechazosChange}>
+                        <SelectTrigger className="w-[180px]">
+                          <SelectValue placeholder="Motivo" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {tiposRechazos.map((tipo) => (
+                            <SelectItem key={tipo.id} value={String(tipo.id)} id={`tipo-${tipo.id}`}> {tipo.nombre} </SelectItem>
+                          ))}
+                        </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    
 
                     {/* Canal */}
                     <div className="flex flex-col space-y-1.5">

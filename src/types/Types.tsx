@@ -40,6 +40,7 @@ export interface Cliente {
     convenio: number;
     sector: number;
     estado: number;
+    tipo_rechazos: number;
     canal: number;
     ejecutivo: number;
     createdAt: number;

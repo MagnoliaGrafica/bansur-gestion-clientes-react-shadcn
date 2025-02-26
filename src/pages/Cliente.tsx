@@ -130,6 +130,7 @@ useEffect(() => {
         if (response.data) {
           setElCliente(response.data);
           setSelectedEstados(String(response.data.estado || ""));
+          setSelectedTiposRechazos(String(response.data.tipo_rechazos || ""));
           setSelectedCanal(String(response.data.canal || ""));
           setSelectedEjecutivo(String(response.data.ejecutivo || ""));
           setSelectedConvenio(String(response.data.convenio || ""));
@@ -190,7 +191,7 @@ useEffect(() => {
   //manejar selección de tipos de rechazos
   const handleTiposRechazosChange = (value: string) => {
     setSelectedTiposRechazos(value);
-    setElCliente((prev)=> (prev ? {...prev, tiposRechazos: Number(value)}: null));
+    setElCliente((prev)=> (prev ? {...prev, tipo_rechazos: Number(value)}: null));
   };  
   
     
@@ -327,36 +328,45 @@ useEffect(() => {
                       </Select>
                     </div>
 
-    
-                    {/* Estado */}
-                    <div className="grid grid-cols-2 gap-4">
-                    <div className="flex flex-col space-y-1.5">
-                      <Label htmlFor="estado">Estado</Label>
-                      <Select value={selectedEstados} onValueChange={handleEstadoChange}>
-                        <SelectTrigger className="w-[180px]">
-                          <SelectValue placeholder="Estado" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {estados.map((estado) => (
-                            <SelectItem key={estado.id} value={String(estado.id)} id={`estado-${estado.id}`}> {estado.nombre} </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                      <div className="flex flex-col space-y-1.5">
-                      <Label htmlFor="motivo">Motivo</Label>
-                      <Select value={selectedTiposRechazos} onValueChange={handleTiposRechazosChange}>
-                        <SelectTrigger className="w-[180px]">
-                          <SelectValue placeholder="Motivo" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {tiposRechazos.map((tipo) => (
-                            <SelectItem key={tipo.id} value={String(tipo.id)} id={`tipo-${tipo.id}`}> {tipo.nombre} </SelectItem>
-                          ))}
-                        </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
+                       
+                   {/* Estado */}
+<div className="grid grid-cols-2 gap-4">
+  <div className="flex flex-col space-y-1.5">
+    <Label htmlFor="estado">Estado</Label>
+    <Select value={selectedEstados} onValueChange={handleEstadoChange}>
+      <SelectTrigger className="w-[180px]">
+        <SelectValue placeholder="Estado" />
+      </SelectTrigger>
+      <SelectContent>
+        {estados.map((estado) => (
+          <SelectItem key={estado.id} value={String(estado.id)} id={`estado-${estado.id}`}> 
+            {estado.nombre} 
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  </div>
+
+  {/* Mostrar "Motivo" solo si el estado es "Rechazado" */}
+  {estados.find((estado) => String(estado.id) === selectedEstados)?.nombre === "Rechazado" && (
+    <div className="flex flex-col space-y-1.5">
+      <Label htmlFor="motivo">Motivo</Label>
+      <Select value={selectedTiposRechazos} onValueChange={handleTiposRechazosChange}>
+        <SelectTrigger className="w-[180px]">
+          <SelectValue placeholder="Motivo" />
+        </SelectTrigger>
+        <SelectContent>
+          {tiposRechazos.map((tipo) => (
+            <SelectItem key={tipo.id} value={String(tipo.id)} id={`tipo-${tipo.id}`}> 
+              {tipo.nombre} 
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
+  )}
+</div>
+
                     
 
                     {/* Canal */}

@@ -24,7 +24,6 @@ export interface Props {
     convenio?: number; // Propiedad opcional
   }
   
-
 // Definimos el tipo para los clientes
 export interface Cliente {
     id: number;

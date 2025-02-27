@@ -116,13 +116,14 @@ type BadgeVariant =
         const nombre = capitalizeFirstLetter(row.getValue("nombre") as string);
         const apellido = capitalizeFirstLetter(row.original.apellido as string);
         const rut = row.original.rut as string;
-        const convenio = capitalizeFirstLetter(row.original.gc_convenio?.nombre as string);
+        //const convenio = capitalizeFirstLetter(row.original.gc_convenio?.nombre as string);
+        const convenio = row.original.gc_convenio?.nombre
         return (
           <div className="text-bansur text-base font-medium">
             {nombre} {apellido} <br />
             <span className="text-gray-400 text-xs">{rut}</span>
             <br />
-            <span className="text-gray-800 text-md font-normal">{convenio}</span>
+            <span className="text-gray-500 text-sm ">{convenio}</span>
           </div>
         );
       },

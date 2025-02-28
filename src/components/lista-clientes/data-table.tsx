@@ -92,8 +92,6 @@ export function DataTable<TData, TValue>({
     handleFilterChange('gc_estado', estado); 
   };
 
-   
-
   return (
     <div>
       <div className="flex items-center py-4 space-x-4">

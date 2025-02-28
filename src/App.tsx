@@ -8,6 +8,8 @@ import ProductList from "./pages/ProductList.tsx";
 import Clientes from "./pages/Clientes.tsx";
 import Cliente from "./pages/Cliente.tsx";
 import ClienteAdd from "./pages/ClienteAdd.tsx";
+import Rechazados from "./pages/Rechazados.tsx";
+import Cursados from "./pages/Cursados.tsx";
 import DefaultLayout from "./layout/DefaultLayout.tsx";
 import LoginLayout from "./layout/LoginLayout.tsx";
 import ProtectedRoute from "./layout/ProtectedRoute.tsx"; 
@@ -36,6 +38,8 @@ function App() {
     <Route path="/product" element={<Product />} />
     <Route path="/productList" element={<ProductList />} />
     <Route path="/clientes" element={<Clientes />} />
+    <Route path="/clientes/rechazados" element={<Rechazados />} />
+    <Route path="/clientes/cursados" element={<Cursados />} />
     <Route path="/cliente/:id" element={<Cliente />} />
     <Route path="/cliente/add" element={<ClienteAdd />} />
   </Route>

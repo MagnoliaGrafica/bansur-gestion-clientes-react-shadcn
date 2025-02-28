@@ -5,7 +5,9 @@ import NavigationLink from "./NavigationLink.tsx";
 import {
   ChartBarIcon,
   UsersIcon,
-  ArrowLeftStartOnRectangleIcon
+  ArrowLeftStartOnRectangleIcon,
+  HandThumbDownIcon,
+  HandThumbUpIcon
 } from "@heroicons/react/24/outline";
 
 const containerVariants = {
@@ -106,6 +108,16 @@ const Navigation = () => {
           <NavigationLink name="Clientes" path="/clientes" isOpen={isOpen}>
             <UsersIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
           </NavigationLink>
+
+          <NavigationLink name="Cursados" path="/clientes/cursados" isOpen={isOpen}>
+            <HandThumbUpIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />  
+          </NavigationLink>
+
+          <NavigationLink name="Rechazados" path="/clientes/rechazados" isOpen={isOpen}>
+            <HandThumbDownIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
+          </NavigationLink>
+
+
           <button
             onClick={handleLogout}
             className="flex items-center gap-3 p-2 mt-5 text-white hover:text-white/50 transition"

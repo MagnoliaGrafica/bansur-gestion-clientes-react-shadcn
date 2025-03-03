@@ -15,7 +15,7 @@ import {
   
 
 const Rechazados = () => {
-    const { isAuthenticated } = useAuth(); 
+    const { isAuthenticated, user, hasRole } = useAuth(); 
     const navigate = useNavigate();
     const [rechazados, setRechazados] = React.useState<any[]>([]);
     const [error, setError] = React.useState<string | null>(null);
@@ -27,14 +27,25 @@ const Rechazados = () => {
     }, [isAuthenticated, navigate]);
 
     useEffect(() => {
-        fetch("https://bansur-api-express.vercel.app/api/clientes?estadoId=6")
-            .then((response) => {
-                if (!response.ok) throw new Error("Error en la API");
-                return response.json();
-            })
-            .then((data) => setRechazados(data))
-            .catch((error) => setError(error.message));
-    }, []);
+      if(!user) return; // Si user es null, salir de la función
+
+      let apiUrl = `https://bansur-api-express.vercel.app/api/clientes?estadoId=6`;
+
+      if (hasRole([3, 4]) && user.id) {
+          apiUrl += `&banUserId=${user.id}`;
+      }
+
+      fetch(apiUrl)
+          .then((response) => {
+              if (!response.ok) throw new Error("Error en la API");
+              return response.json();
+          })
+          .then((data) => setRechazados(data))
+          .catch((error) => setError(error.message));
+  }
+  , [user, hasRole]);
+      
+     
 
     if (!isAuthenticated) return null; // Evita renderizado si no está autenticado
 

@@ -15,28 +15,37 @@ import {
   
 
 const Cursados = () => {
-    const { isAuthenticated } = useAuth(); 
+    const { isAuthenticated, user, hasRole } = useAuth(); 
     const navigate = useNavigate();
     const [cursados, setCursados] = React.useState<any[]>([]);
     const [error, setError] = React.useState<string | null>(null);
 
     useEffect(() => {
-        if (!isAuthenticated) {
+        if (!isAuthenticated ) {
             navigate('/login'); 
         }
     }, [isAuthenticated, navigate]);
 
     useEffect(() => {
-        fetch("https://bansur-api-express.vercel.app/api/clientes?estadoId=7")
-            .then((response) => {
-                if (!response.ok) throw new Error("Error en la API");
-                return response.json();
-            })
-            .then((data) => setCursados(data))
-            .catch((error) => setError(error.message));
-    }, []);
+      if (!user) return; // Si user es null, salir de la función
+  
+      let apiUrl = `https://bansur-api-express.vercel.app/api/clientes?estadoId=7`;
+  
+      // Si el usuario tiene rol 3 o 4 y user.id está definido, agregarlo a la URL
+      if (hasRole([3, 4]) && user.id) {
+          apiUrl += `&banUserId=${user.id}`;
+      }
+  
+      fetch(apiUrl)
+          .then((response) => {
+              if (!response.ok) throw new Error("Error en la API");
+              return response.json();
+          })
+          .then((data) => setCursados(data))
+          .catch((error) => setError(error.message));
+  }, [user, hasRole]);
 
-    if (!isAuthenticated) return null; // Evita renderizado si no está autenticado
+  if (!isAuthenticated) return null; // Evita renderizado si no está autenticado
 
     return (
         <div>

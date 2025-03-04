@@ -12,7 +12,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { PencilSquareIcon, EllipsisHorizontalIcon, ArrowsUpDownIcon } from "@heroicons/react/24/outline";
 
-export type Payment = {
+export type PaymentEje = {
     id: number;
     nombre: string;
     apellido: string;
@@ -31,16 +31,10 @@ export type Payment = {
     createdAt: number;
     fechaAsignado:number;
     fechaCierre:number;
-    gc_ban_user: gc_ban_user;
     gc_estado: gc_estado;
     gc_convenio: gc_convenio;
-    
 }
-interface gc_ban_user {
-  id: number;
-  nombre:string;
-  apellido:string;
-}
+
 interface gc_estado {
   id: number,
   nombre:string
@@ -61,7 +55,6 @@ interface gc_convenio {
   // Convertir la diferencia a días
   return Math.floor(differenceInMilliseconds / (1000 * 60 * 60 * 24));
 };
-
 
 type BadgeVariant =
   | "sinasignar"
@@ -99,7 +92,7 @@ type BadgeVariant =
   };
   
 
-  export const columns: ColumnDef<Payment>[] = [
+  export const columnas: ColumnDef<PaymentEje>[] = [
     {
       accessorKey: "nombre",
       header: ({ column }) => {
@@ -262,25 +255,6 @@ type BadgeVariant =
           </div>
         );
       },
-    },
-    {
-        accessorKey: "gc_ban_user",
-        header: () => <div className="text-center">Ejecutivo</div>,
-        cell: ({ row }) => {
-          const nombre = row.original.gc_ban_user?.nombre as string;
-          const apellido = row.original.gc_ban_user?.apellido as string;
-          return (
-            <div className="text-bansur text-base font-medium">
-              {nombre} {apellido} <br />
-            </div>
-          );
-        },
-        // Define cómo debe funcionar el filtro
-        filterFn: (row, _columnId, filterValue) => {
-          const { nombre = "", apellido = "" } = row.original.gc_ban_user || {};
-          const fullName = `${nombre} ${apellido}`.toLowerCase();
-          return fullName.includes(filterValue.toLowerCase());
-        }, 
     },
     {
       id: "actions",

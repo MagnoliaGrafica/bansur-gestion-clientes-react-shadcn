@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useAuth } from "@/context/AuthContext"; 
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -53,6 +54,8 @@ export function DataTable<TData, TValue>({
       .then((data) => setEstados(data));
   }, []);
 
+  const { hasRole } = useAuth(); // Obtiene la función hasRole desde el contexto de autenticación
+
   const table = useReactTable({
     data,
     columns,
@@ -104,14 +107,16 @@ export function DataTable<TData, TValue>({
           className="max-w-sm"
         />
 
-<Input
-  placeholder="Filtrar ejecutivos..."
-  value={(table.getColumn("gc_ban_user")?.getFilterValue() as string) ?? ""}
-  onChange={(event) =>
-    table.getColumn("gc_ban_user")?.setFilterValue(event.target.value)
-  }
-  className="max-w-sm"
-/>
+        {hasRole([1,2]) && (
+          <Input
+            placeholder="Filtrar ejecutivos..."
+            value={(table.getColumn("gc_ban_user")?.getFilterValue() as string) ?? ""}
+            onChange={(event) =>
+              table.getColumn("gc_ban_user")?.setFilterValue(event.target.value)
+            }
+            className="max-w-sm"
+          />
+        )}
 
       
         {/* Filtro de Estado */}

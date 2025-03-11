@@ -192,7 +192,15 @@ type BadgeVariant =
         const date = new Date(row.getValue("createdAt") as number); // Convertimos el valor de createdAt
         return <div className="text-center">{date.toLocaleDateString("es-CL")}</div>;
       },
-      
+      filterFn:(row, columnId, value) => {
+        if (!value || !Array.isArray(value) || value.length !== 2) return true;
+        
+        const rowDate = new Date(row.getValue(columnId)).getTime();
+        const fromDate = new Date(value[0]).getTime();
+        const toDate = new Date(value[1]).getTime();
+        
+        return rowDate >= fromDate && rowDate <= toDate;
+      }
     },
     {
       accessorKey: "fechaCierre",

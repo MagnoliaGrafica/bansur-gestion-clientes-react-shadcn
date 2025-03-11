@@ -12,10 +12,20 @@ import {
   getPaginationRowModel,
 } from "@tanstack/react-table";
 
+import { Calendar } from "@/components/ui/calendar"
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router";
-import { UserPlusIcon } from "@heroicons/react/24/outline";
+import { UserPlusIcon, CalendarIcon } from "@heroicons/react/24/outline";
+
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
+import { DateRange } from "react-day-picker";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 
 import {
   Table,
@@ -37,6 +47,8 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
+
+const formatDateForAPI = (date: Date) => format(date, "yyyy-MM-dd"); // 📌 Sin hora
 
 export function DataTable<TData, TValue>({
   columns,
@@ -93,6 +105,35 @@ export function DataTable<TData, TValue>({
     const estado = e.target.value;
     setSelectedEstado(estado);
     handleFilterChange('gc_estado', estado); 
+  };
+
+  //para rango de fechas
+
+  const [fecha, setFecha] = React.useState<DateRange | undefined>(undefined);
+
+  
+  const handleFechaChange = (newRange: DateRange | undefined) => {
+    if (!newRange?.from) {
+      setFecha(undefined);
+      handleFilterChange("createdAt", ""); // Eliminar filtro si no hay fecha
+      console.log("Filtro limpiado: Sin fecha seleccionada");
+      return;
+    }
+  
+    setFecha(newRange);
+  
+    if (newRange.from && !newRange.to) {
+      //  Si solo hay "from", filtrar por ese día
+      const fechaFiltrada = formatDateForAPI(newRange.from);
+      console.log("Filtrando por una sola fecha:", fechaFiltrada);
+      handleFilterChange("createdAt", [fechaFiltrada, fechaFiltrada]); 
+    } else if (newRange.from && newRange.to) {
+      //  Si hay rango completo, filtrar entre ambas fechas
+      const fechaInicio = formatDateForAPI(newRange.from);
+      const fechaFin = formatDateForAPI(newRange.to);
+      console.log("Filtrando por rango de fechas:", fechaInicio, "hasta", fechaFin);
+      handleFilterChange("createdAt", [fechaInicio, fechaFin]);
+    }
   };
 
   return (
@@ -161,6 +202,47 @@ export function DataTable<TData, TValue>({
           </DropdownMenuContent>
         </DropdownMenu>
 
+              {/* Filtro de Fecha */}
+        <div className="flex items-center space-x-4">
+        <Popover>
+        <PopoverTrigger asChild>
+        <Button
+  id="date"
+  variant={"outline"}
+  className="w-[300px] justify-start text-left font-normal"
+>
+  <CalendarIcon />
+  {fecha?.from ? (
+    fecha.to ? (
+      <>
+        {format(fecha.from, "dd MMM yyyy", { locale: es })} - {format(fecha.to, "dd MMM yyyy", { locale: es })}
+      </>
+    ) : (
+      format(fecha.from, "dd MMM yyyy", { locale: es }) //  Si solo hay una fecha, mostrarla sola
+    )
+  ) : (
+    <span>Seleccione rango de fechas</span>
+  )}
+</Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0" align="start">
+          <Calendar
+          locale={es}
+            initialFocus
+            mode="range"
+            defaultMonth={fecha?.from}
+            selected={fecha}
+            onSelect={handleFechaChange}
+            numberOfMonths={2}
+            toDate={new Date()} // limita la fecha máxima a hoy
+          />
+        </PopoverContent>
+      </Popover>
+      <Button variant="outline" onClick={() => handleFechaChange(undefined)}>
+    Limpiar
+  </Button>
+     
+      </div>
         <Button asChild variant="bansur" className="ml-4">
           <Link to="/cliente/add">
             <UserPlusIcon /> Nuevo Cliente

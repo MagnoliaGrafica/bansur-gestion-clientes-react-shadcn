@@ -34,7 +34,6 @@ export type Payment = {
     gc_ban_user: gc_ban_user;
     gc_estado: gc_estado;
     gc_convenio: gc_convenio;
-    
 }
 interface gc_ban_user {
   id: number;

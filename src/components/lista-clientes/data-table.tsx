@@ -136,17 +136,24 @@ export function DataTable<TData, TValue>({
     }
   };
 
+  // Obtener las filas filtradas
+const filteredRows = table.getFilteredRowModel().rows.map((row) => row.original);
+
+// Calcular contador y total basados en la data filtrada
+const filteredCount = filteredRows.length;
+const filteredTotal = filteredRows.reduce((acc, item: any) => acc + Math.round(item.montoEvaluar || 0), 0);
+
   return (
     <div>
       <div className="flex items-center space-x-4">
-        <div className="border border-gray-300 shadow-md rounded-md border-l-bansur p-4 flex justify-center items-center">
-          <span>Total Casos</span>
-          <span>0</span>  
+        <div className="border border-gray-300 shadow-sm rounded-md border-l-bansur border-l-2 p-4 flex flex-col flex-wrap justify-center items-center ">
+          <span className="text-gray-700 text-sm">Total Casos</span>
+          <span className="text-bansur text-lg font-bold">{filteredCount}</span>  
         </div>
-        <div className="border border-gray-300 shadow-md p-4 flex justify-center items-center">
-          <span>Monto</span>
-          <span>0</span>
-         </div>
+        <div className="border border-gray-300 shadow-sm rounded-md border-l-bansur border-l-2 p-4 flex flex-col flex-wrap justify-center items-center">
+          <span className="text-gray-700 text-sm">Monto a evaluar</span>
+          <span className="text-bansur text-lg font-bold">  {filteredTotal.toLocaleString("es-CL", { style: "currency", currency: "CLP" })}</span>  
+        </div>
       </div>
       <div className="flex items-center py-4 space-x-4">
         <Input

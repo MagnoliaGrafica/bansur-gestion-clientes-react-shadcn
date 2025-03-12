@@ -138,6 +138,16 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
+      <div className="flex items-center space-x-4">
+        <div className="border border-gray-300 shadow-md rounded-md border-l-bansur p-4 flex justify-center items-center">
+          <span>Total Casos</span>
+          <span>0</span>  
+        </div>
+        <div className="border border-gray-300 shadow-md p-4 flex justify-center items-center">
+          <span>Monto</span>
+          <span>0</span>
+         </div>
+      </div>
       <div className="flex items-center py-4 space-x-4">
         <Input
           placeholder="Buscar nombres..."

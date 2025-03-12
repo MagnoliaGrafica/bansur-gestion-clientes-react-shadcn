@@ -37,7 +37,7 @@ export function ResumenEstados() {
   const estados = [
     { nombre: "Sin Asignar", key: "1" },
     { nombre: "Prospecto", key: "2" },
-    { nombre: "En Preparación", key: "3" },
+    { nombre: "Aceptado", key: "3" },
     { nombre: "Comité Superior", key: "4" },
     { nombre: "Aprobado", key: "5" },
     { nombre: "Rechazado", key: "6" },

@@ -66,7 +66,7 @@ interface gc_convenio {
 type BadgeVariant =
   | "sinasignar"
   | "prospecto"
-  | "preparacion"
+  | "aceptado"
   | "comite"
   | "aprobado"
   | "rechazado"
@@ -82,7 +82,7 @@ type BadgeVariant =
   const badgeVariants: Record<number, BadgeVariant> = {
     1: "sinasignar",
     2: "prospecto",
-    3: "preparacion",
+    3: "aceptado",
     4: "comite",
     5: "aprobado",
     6: "rechazado",

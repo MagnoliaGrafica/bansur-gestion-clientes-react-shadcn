@@ -18,7 +18,7 @@ export function ResumenEjecutivoCompleto() {
   const estadosConocidos = [
    // { id: "1", nombre: "Sin asignar" },
     { id: "2", nombre: "Prospecto" },
-    { id: "3", nombre: "En Preparación" },
+    { id: "3", nombre: "Aceptado" },
     { id: "4", nombre: "Comité Sup." },
     { id: "5", nombre: "Aprobado" },
     { id: "7", nombre: "Cursado" },

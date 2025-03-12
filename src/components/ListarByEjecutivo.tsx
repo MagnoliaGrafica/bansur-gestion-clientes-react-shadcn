@@ -21,7 +21,7 @@ const ListarByEjecutivo: React.FC = () => {
   //ID de los estados de los clientes  
 /*Sin asignar 1
 Prospecto 2
-En Preparación 3
+Aceptado 3
 Comité Superior 4
 Aprobado 5
 Rechazado 6

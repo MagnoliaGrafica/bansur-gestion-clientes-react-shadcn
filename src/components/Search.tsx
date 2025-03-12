@@ -72,7 +72,7 @@ const SearchComponent: React.FC = () => {
   type BadgeVariant =
   | "sinasignar"
   | "prospecto"
-  | "preparacion"
+  | "aceptado"
   | "comite"
   | "aprobado"
   | "rechazado"
@@ -88,7 +88,7 @@ const SearchComponent: React.FC = () => {
   const badgeVariants: Record<number, BadgeVariant> = {
     1: "sinasignar",
     2: "prospecto",
-    3: "preparacion",
+    3: "aceptado",
     4: "comite",
     5: "aprobado",
     6: "rechazado",

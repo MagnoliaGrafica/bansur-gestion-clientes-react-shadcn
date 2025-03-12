@@ -201,7 +201,7 @@ type BadgeVariant =
         return rowDate >= fromDate && rowDate <= toDate;
       }
     },
-    {
+    /*{
       accessorKey: "fechaCierre",
       header: ({ column }) => {
         return (
@@ -221,7 +221,7 @@ type BadgeVariant =
         const date = new Date(fechaCierre);
         return <div className="text-center">{date.toLocaleDateString("es-CL")}</div>;
       },
-    },
+    },*/
     {
       id: "días",
       header: ({ column }) => {

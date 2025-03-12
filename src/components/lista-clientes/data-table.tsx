@@ -60,11 +60,24 @@ export function DataTable<TData, TValue>({
   const [estados, setEstados] = React.useState<any[]>([]); // States fetched from API
 
   
-  React.useEffect(() => {
+  /*React.useEffect(() => {
     fetch("https://bansur-api-express.vercel.app/api/estados")
       .then((response) => response.json())
       .then((data) => setEstados(data));
+  }, []);*/
+
+  React.useEffect(() => {
+    fetch("https://bansur-api-express.vercel.app/api/estados")
+      .then((response) => response.json())
+      .then((data) => {
+        const estadosFiltrados = (data as { nombre: string }[]).filter(
+          (estado) => estado.nombre !== "Rechazado" && estado.nombre !== "Cursado"
+        );
+        setEstados(estadosFiltrados);
+      });
   }, []);
+  
+  
 
   const { hasRole } = useAuth(); // Obtiene la función hasRole desde el contexto de autenticación
 

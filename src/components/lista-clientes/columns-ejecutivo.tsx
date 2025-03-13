@@ -187,7 +187,7 @@ type BadgeVariant =
       },
       
     },
-    {
+    /*{
       accessorKey: "fechaCierre",
       header: ({ column }) => {
         return (
@@ -207,7 +207,7 @@ type BadgeVariant =
         const date = new Date(fechaCierre);
         return <div className="text-center">{date.toLocaleDateString("es-CL")}</div>;
       },
-    },
+    },*/
     {
       id: "días",
       header: ({ column }) => {
@@ -227,7 +227,7 @@ type BadgeVariant =
       },
       cell: ({ row }) => {
         const createdAt = row.getValue("createdAt") as string | number;
-        const fechaCierre = row.getValue("fechaCierre") as string | number | Date | null;
+        const fechaCierre = row.original.fechaCierre;
         const days = calculateDays(createdAt, fechaCierre);
   
         return <div className="text-center">{days} días</div>;

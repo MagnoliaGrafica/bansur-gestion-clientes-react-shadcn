@@ -12,20 +12,22 @@ import {
   getPaginationRowModel,
 } from "@tanstack/react-table";
 
-import { Calendar } from "@/components/ui/calendar"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router";
 import { UserPlusIcon, CalendarIcon } from "@heroicons/react/24/outline";
 
 import { format } from "date-fns";
-import { es } from "date-fns/locale";
-import { DateRange } from "react-day-picker";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
+
 
 import {
   Table,
@@ -48,6 +50,11 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
 }
 
+const months = [
+  "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+  "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+];
+
 const formatDateForAPI = (date: Date) => format(date, "yyyy-MM-dd"); // 📌 Sin hora
 
 export function DataTable<TData, TValue>({
@@ -58,14 +65,8 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [selectedEstado, setSelectedEstado] = React.useState<string>(''); // Selected estado value
   const [estados, setEstados] = React.useState<any[]>([]); // States fetched from API
-
+  const [selectedMonth, setSelectedMonth] = React.useState<string>("");
   
-  /*React.useEffect(() => {
-    fetch("https://bansur-api-express.vercel.app/api/estados")
-      .then((response) => response.json())
-      .then((data) => setEstados(data));
-  }, []);*/
-
   React.useEffect(() => {
     fetch("https://bansur-api-express.vercel.app/api/estados")
       .then((response) => response.json())
@@ -113,48 +114,34 @@ export function DataTable<TData, TValue>({
   };
   
 
-  // Handle estado filter change
-  const handleEstadoChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const estado = e.target.value;
-    setSelectedEstado(estado);
-    handleFilterChange('gc_estado', estado); 
-  };
-
-  //para rango de fechas
-
-  const [fecha, setFecha] = React.useState<DateRange | undefined>(undefined);
+  // Manejar cambio de estado
+const handleEstadoChange = (estado: string) => {
+  const newEstado = estado === "all" ? "" : estado; // Si es "all", limpia el filtro
+  setSelectedEstado(newEstado);
+  handleFilterChange("gc_estado", newEstado);
+};
 
   
-  const handleFechaChange = (newRange: DateRange | undefined) => {
-    if (!newRange?.from) {
-      setFecha(undefined);
-      handleFilterChange("createdAt", ""); // Eliminar filtro si no hay fecha
-      console.log("Filtro limpiado: Sin fecha seleccionada");
-      return;
-    }
-  
-    setFecha(newRange);
-  
-    if (newRange.from && !newRange.to) {
-      //  Si solo hay "from", filtrar por ese día
-      const fechaFiltrada = formatDateForAPI(newRange.from);
-      console.log("Filtrando por una sola fecha:", fechaFiltrada);
-      handleFilterChange("createdAt", [fechaFiltrada, fechaFiltrada]); 
-    } else if (newRange.from && newRange.to) {
-      //  Si hay rango completo, filtrar entre ambas fechas
-      const fechaInicio = formatDateForAPI(newRange.from);
-      const fechaFin = formatDateForAPI(newRange.to);
-      console.log("Filtrando por rango de fechas:", fechaInicio, "hasta", fechaFin);
-      handleFilterChange("createdAt", [fechaInicio, fechaFin]);
-    }
-  };
-
   // Obtener las filas filtradas
 const filteredRows = table.getFilteredRowModel().rows.map((row) => row.original);
 
 // Calcular contador y total basados en la data filtrada
 const filteredCount = filteredRows.length;
 const filteredTotal = filteredRows.reduce((acc, item: any) => acc + Math.round(item.montoEvaluar || 0), 0);
+
+
+//filtro fecha mes
+const handleMonthChange = (value: string) => {
+  if (value === "all") {
+    setSelectedMonth(""); // Limpiar el select visualmente
+    table.getColumn("createdAt")?.setFilterValue(undefined); // Quitar filtro
+  } else {
+    setSelectedMonth(value);
+    table.getColumn("createdAt")?.setFilterValue(value); // Aplicar filtro de mes
+  }
+};
+
+
 
   return (
     <div>
@@ -191,20 +178,20 @@ const filteredTotal = filteredRows.reduce((acc, item: any) => acc + Math.round(i
 
       
         {/* Filtro de Estado */}
-        <select
-          value={selectedEstado}
-          onChange={handleEstadoChange}
-          className="border p-2 rounded-md"
-        >
-          <option value="">Seleccionar Estado</option>
-          {estados.map((estado) => (
-            <option key={estado.nombre} value={estado.nombre}>
-              {estado.nombre}
-            </option>
-          ))}
-        </select>
-        
-        
+       <Select onValueChange={handleEstadoChange} value={selectedEstado || "all"}>
+  <SelectTrigger className="w-[180px] border p-2 rounded-md">
+    <SelectValue placeholder="Seleccionar Estado" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="all">Todos los estados</SelectItem>
+    {estados.map((estado) => (
+      <SelectItem key={estado.nombre} value={estado.nombre}>
+        {estado.nombre}
+      </SelectItem>
+    ))}
+  </SelectContent>
+</Select>
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
@@ -233,44 +220,22 @@ const filteredTotal = filteredRows.reduce((acc, item: any) => acc + Math.round(i
         </DropdownMenu>
 
               {/* Filtro de Fecha */}
-        <div className="flex items-center space-x-4">
-        <Popover>
-        <PopoverTrigger asChild>
-        <Button
-  id="date"
-  variant={"outline"}
-  className="w-[300px] justify-start text-left font-normal"
->
-  <CalendarIcon />
-  {fecha?.from ? (
-    fecha.to ? (
-      <>
-        {format(fecha.from, "dd MMM yyyy", { locale: es })} - {format(fecha.to, "dd MMM yyyy", { locale: es })}
-      </>
-    ) : (
-      format(fecha.from, "dd MMM yyyy", { locale: es }) //  Si solo hay una fecha, mostrarla sola
-    )
-  ) : (
-    <span>Seleccione rango de fechas</span>
-  )}
-</Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
-          <Calendar
-          locale={es}
-            initialFocus
-            mode="range"
-            defaultMonth={fecha?.from}
-            selected={fecha}
-            onSelect={handleFechaChange}
-            numberOfMonths={2}
-            toDate={new Date()} // limita la fecha máxima a hoy
-          />
-        </PopoverContent>
-      </Popover>
-      <Button variant="outline" onClick={() => handleFechaChange(undefined)}>
-    Limpiar
-  </Button>
+        <div>
+
+        <Select onValueChange={handleMonthChange} value={selectedMonth}>
+  <SelectTrigger className="w-[180px] border p-2 rounded-md">
+    <SelectValue placeholder="Seleccionar Mes" />
+  </SelectTrigger>
+  <SelectContent>
+    {/* Opción para limpiar el filtro */}
+    <SelectItem value="all">📅 Ver todos</SelectItem>  
+    {months.map((month, index) => (
+      <SelectItem key={index} value={(index + 1).toString().padStart(2, "0")}>
+        {month}
+      </SelectItem>
+    ))}
+  </SelectContent>
+</Select>
      
       </div>
         <Button asChild variant="bansur" className="ml-4">

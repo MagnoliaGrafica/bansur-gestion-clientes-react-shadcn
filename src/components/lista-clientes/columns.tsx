@@ -177,29 +177,26 @@ type BadgeVariant =
     },
     {
       accessorKey: "createdAt",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Fecha ingreso <ArrowsUpDownIcon className="size-4" />
-          </Button>
-        );
-      },
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Fecha ingreso <ArrowsUpDownIcon className="size-4" />
+        </Button>
+      ),
       cell: ({ row }) => {
-        const date = new Date(row.getValue("createdAt") as number); // Convertimos el valor de createdAt
+        const date = new Date(row.getValue("createdAt") as number);
         return <div className="text-center">{date.toLocaleDateString("es-CL")}</div>;
       },
-      filterFn:(row, columnId, value) => {
-        if (!value || !Array.isArray(value) || value.length !== 2) return true;
-        
-        const rowDate = new Date(row.getValue(columnId)).getTime();
-        const fromDate = new Date(value[0]).getTime();
-        const toDate = new Date(value[1]).getTime();
-        
-        return rowDate >= fromDate && rowDate <= toDate;
-      }
+      filterFn: (row, columnId, value) => {
+        if (!value) return true; // Si no hay filtro, mostrar todo
+    
+        const rowDate = new Date(row.getValue(columnId)); // Convertir timestamp a Date
+        const rowMonth = (rowDate.getMonth() + 1).toString().padStart(2, "0"); // Obtener MM
+    
+        return rowMonth === value; // Comparar con el mes seleccionado
+      },
     },
     /*{
       accessorKey: "fechaCierre",
@@ -235,18 +232,19 @@ type BadgeVariant =
         );
       },
       accessorFn: (row) => {
-        const createdAt = row.createdAt as string | number;
-        const fechaCierre = row.fechaCierre as string | number | Date | null;
+        const createdAt = row.createdAt; 
+        const fechaCierre = row.fechaCierre; // Usar `row.fechaCierre` directamente
         return calculateDays(createdAt, fechaCierre);
       },
       cell: ({ row }) => {
         const createdAt = row.getValue("createdAt") as string | number;
-        const fechaCierre = row.getValue("fechaCierre") as string | number | Date | null;
+        const fechaCierre = row.original.fechaCierre; // Acceder a `fechaCierre` desde `row.original`
         const days = calculateDays(createdAt, fechaCierre);
-  
+    
         return <div className="text-center">{days} días</div>;
       },
     },
+    
     {
       accessorFn: (row) => row.gc_estado?.nombre || "Sin asignar",
       id: "gc_estado",

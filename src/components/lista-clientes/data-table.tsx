@@ -24,7 +24,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router";
-import { UserPlusIcon, CalendarIcon } from "@heroicons/react/24/outline";
+import { UserPlusIcon } from "@heroicons/react/24/outline";
 
 import { format } from "date-fns";
 
@@ -55,8 +55,6 @@ const months = [
   "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
 ];
 
-const formatDateForAPI = (date: Date) => format(date, "yyyy-MM-dd"); // 📌 Sin hora
-
 export function DataTable<TData, TValue>({
   columns,
   data,
@@ -79,7 +77,6 @@ export function DataTable<TData, TValue>({
   }, []);
   
   
-
   const { hasRole } = useAuth(); // Obtiene la función hasRole desde el contexto de autenticación
 
   const table = useReactTable({
@@ -121,14 +118,12 @@ const handleEstadoChange = (estado: string) => {
   handleFilterChange("gc_estado", newEstado);
 };
 
-  
   // Obtener las filas filtradas
 const filteredRows = table.getFilteredRowModel().rows.map((row) => row.original);
 
 // Calcular contador y total basados en la data filtrada
 const filteredCount = filteredRows.length;
 const filteredTotal = filteredRows.reduce((acc, item: any) => acc + Math.round(item.montoEvaluar || 0), 0);
-
 
 //filtro fecha mes
 const handleMonthChange = (value: string) => {
@@ -140,8 +135,6 @@ const handleMonthChange = (value: string) => {
     table.getColumn("createdAt")?.setFilterValue(value); // Aplicar filtro de mes
   }
 };
-
-
 
   return (
     <div>
@@ -175,7 +168,6 @@ const handleMonthChange = (value: string) => {
             className="max-w-sm"
           />
         )}
-
       
         {/* Filtro de Estado */}
        <Select onValueChange={handleEstadoChange} value={selectedEstado || "all"}>

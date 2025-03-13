@@ -177,7 +177,29 @@ const handleMonthChange = (value: string) => {
     ))}
   </SelectContent>
 </Select>
-        <DropdownMenu>
+
+
+   {/* Filtro de Fecha */}
+        <div>
+
+        <Select onValueChange={handleMonthChange} value={selectedMonth}>
+  <SelectTrigger className="w-[180px] border p-2 rounded-md">
+    <SelectValue placeholder="Seleccionar Mes" />
+  </SelectTrigger>
+  <SelectContent>
+    {/* Opción para limpiar el filtro */}
+    <SelectItem value="all">📅 Ver todos</SelectItem>  
+    {months.map((month, index) => (
+      <SelectItem key={index} value={(index + 1).toString().padStart(2, "0")}>
+        {month}
+      </SelectItem>
+    ))}
+  </SelectContent>
+</Select>
+     
+      </div>
+{/* Dropdown para seleccionar columnas */}
+      <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
               Columnas
@@ -204,25 +226,7 @@ const handleMonthChange = (value: string) => {
           </DropdownMenuContent>
         </DropdownMenu>
 
-   {/* Filtro de Fecha */}
-        <div>
-
-        <Select onValueChange={handleMonthChange} value={selectedMonth}>
-  <SelectTrigger className="w-[180px] border p-2 rounded-md">
-    <SelectValue placeholder="Seleccionar Mes" />
-  </SelectTrigger>
-  <SelectContent>
-    {/* Opción para limpiar el filtro */}
-    <SelectItem value="all">📅 Ver todos</SelectItem>  
-    {months.map((month, index) => (
-      <SelectItem key={index} value={(index + 1).toString().padStart(2, "0")}>
-        {month}
-      </SelectItem>
-    ))}
-  </SelectContent>
-</Select>
-     
-      </div>
+{/* Botón para agregar nuevo cliente */}
         <Button asChild variant="bansur" className="ml-4">
           <Link to="/cliente/add">
             <UserPlusIcon /> Nuevo Cliente

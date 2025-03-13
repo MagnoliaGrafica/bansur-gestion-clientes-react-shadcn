@@ -20,14 +20,10 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router";
 import { UserPlusIcon } from "@heroicons/react/24/outline";
-
-import { format } from "date-fns";
-
 
 import {
   Table,
@@ -76,7 +72,6 @@ export function DataTable<TData, TValue>({
       });
   }, []);
   
-  
   const { hasRole } = useAuth(); // Obtiene la función hasRole desde el contexto de autenticación
 
   const table = useReactTable({
@@ -110,7 +105,6 @@ export function DataTable<TData, TValue>({
     });
   };
   
-
   // Manejar cambio de estado
 const handleEstadoChange = (estado: string) => {
   const newEstado = estado === "all" ? "" : estado; // Si es "all", limpia el filtro
@@ -183,7 +177,6 @@ const handleMonthChange = (value: string) => {
     ))}
   </SelectContent>
 </Select>
-
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
@@ -211,7 +204,7 @@ const handleMonthChange = (value: string) => {
           </DropdownMenuContent>
         </DropdownMenu>
 
-              {/* Filtro de Fecha */}
+   {/* Filtro de Fecha */}
         <div>
 
         <Select onValueChange={handleMonthChange} value={selectedMonth}>

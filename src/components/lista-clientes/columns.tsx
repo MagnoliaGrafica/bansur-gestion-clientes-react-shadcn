@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { ColumnDef } from "@tanstack/react-table"
 import { Link } from "react-router";
 import { Button } from "@/components/ui/button"
+import { toast } from "sonner";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,8 +11,22 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+
 import { Badge } from "@/components/ui/badge";
-import { PencilSquareIcon, EllipsisHorizontalIcon, ArrowsUpDownIcon } from "@heroicons/react/24/outline";
+import { PencilSquareIcon, ArrowsUpDownIcon, Bars3Icon, TrashIcon } from "@heroicons/react/24/outline";
+
+import { deleteClienteById } from "@/api/clientes.ts"; // Importar la función de la API
 
 export type Payment = {
     id: number;
@@ -61,7 +77,6 @@ interface gc_convenio {
   return Math.floor(differenceInMilliseconds / (1000 * 60 * 60 * 24));
 };
 
-
 type BadgeVariant =
   | "sinasignar"
   | "prospecto"
@@ -96,9 +111,9 @@ type BadgeVariant =
     if (!text) return '';
     return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
   };
-  
 
-  export const columns: ColumnDef<Payment>[] = [
+export const getColumns = (onDeleteSuccess: () => void): ColumnDef<Payment>[] => [
+  
     {
       accessorKey: "nombre",
       header: ({ column }) => {
@@ -198,27 +213,6 @@ type BadgeVariant =
         return rowMonth === value; // Comparar con el mes seleccionado
       },
     },
-    /*{
-      accessorKey: "fechaCierre",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Fecha cierre <ArrowsUpDownIcon className="size-4" />
-          </Button>
-        );
-      },
-      cell: ({ row }) => {
-        const fechaCierre = row.getValue("fechaCierre") as string | number | null;
-        if (!fechaCierre) {
-          return <div className="text-center">-</div>;
-        }
-        const date = new Date(fechaCierre);
-        return <div className="text-center">{date.toLocaleDateString("es-CL")}</div>;
-      },
-    },*/
     {
       id: "días",
       header: ({ column }) => {
@@ -290,27 +284,73 @@ type BadgeVariant =
     {
       id: "actions",
       cell: ({ row }) => {
-        const payment = row.original;
+        const cliente = row.original;
+        const [isLoading, setIsLoading] = useState(false);
+  
+        const handleDelete = async () => {
+          setIsLoading(true);
+          const response = await deleteClienteById(cliente.id);
+          setIsLoading(false);
+  
+          if (response.success) {
+            toast.success("Cliente eliminado", {
+              description: "El cliente ha sido eliminado correctamente.",
+            });
+            onDeleteSuccess(); 
+          } else {
+            toast.error("Error al eliminar", {
+              description: response.message,
+            });
+          }
+        };
+  
         return (
           <div className="text-center">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="size-8 p-0">
-                  <span className="sr-only">Open menu</span>
-                  <EllipsisHorizontalIcon className="size-4" />
+                <Button variant="ghost">
+                  <Bars3Icon className="size-6" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                <DropdownMenuLabel>Acciones</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <Button asChild variant="outline">
-                    <Link to={`/cliente/${payment.id}`}>
-                      <PencilSquareIcon className="h-4 w-4" />
-                      Editar
-                    </Link>
-                  </Button>
+  
+                {/* Botón Editar */}
+                <DropdownMenuItem asChild>
+                  <Link to={`/cliente/${cliente.id}`} className="flex items-center gap-2">
+                    <PencilSquareIcon className="h-4 w-4" />
+                    Editar
+                  </Link>
                 </DropdownMenuItem>
+  
+                {/* Botón Eliminar con Confirmación */}
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <DropdownMenuItem className="text-red-600 cursor-pointer" onSelect={(e) => e.preventDefault()}>
+                      <TrashIcon className="h-4 w-4" />
+                      Eliminar
+                    </DropdownMenuItem>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Esta acción no se puede deshacer. Se eliminará el cliente permanentemente.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                      <AlertDialogAction
+                        className="bg-red-600 hover:bg-red-700"
+                        onClick={handleDelete}
+                        disabled={isLoading}
+                      >
+                        {isLoading ? "Eliminando..." : "Sí, eliminar"}
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
@@ -318,4 +358,3 @@ type BadgeVariant =
       },
     },
   ];
-  

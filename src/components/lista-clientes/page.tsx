@@ -1,38 +1,35 @@
 import { useEffect, useState } from "react";
-import { Payment, columns } from "./columns";
+import { getColumns } from "./columns"; // Importamos `getColumns` en vez de `columns`
 import { DataTable } from "./data-table";
 import axios from "axios";
 import { Cliente } from "@/types/Types.tsx";
+import { Toaster } from "sonner"; // Importamos Toaster
 
 const DemoPage: React.FC = () => {
-  // ID de los estados de los clientes  
-  /* Sin asignar 1
-     Prospecto 2
-     En Preparación 3
-     Comité Superior 4
-     Aprobado 5
-     Rechazado 6
-     Cursado 7 */
-  const URL = "https://bansur-api-express.vercel.app/api/clientes?estadoId=1,2,3,4,5"; // sin cursados y rechazados
+  const URL = "https://bansur-api-express.vercel.app/api/clientes?estadoId=1,2,3,4,5"; 
+  const [data, setData] = useState<Cliente[]>([]); // Cambiado a Cliente[] para evitar errores
 
-  const [data, setData] = useState<Payment[]>([]);
-  
+  const fetchClientes = async () => {
+    try {
+      const result = await axios.get<Cliente[]>(URL);
+      setData(result.data);
+    } catch (error) {
+      console.error("Error al obtener los datos:", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await axios.get<Cliente[]>(URL);
-        setData(result.data);
-      } catch (error) {
-        console.error("Error al obtener los datos:", error);
-      }
-    };
-
-    fetchData();
+    fetchClientes();
   }, []);
+
+  const onDeleteSuccess = () => {
+    fetchClientes(); // Ahora actualiza los datos correctamente tras eliminar
+  };
 
   return (
     <div className="container mx-auto py-10">
-      <DataTable columns={columns} data={data} />
+       <Toaster />
+      <DataTable columns={getColumns(onDeleteSuccess)} data={data} />
     </div>
   );
 };

@@ -18,3 +18,18 @@ export const deleteClienteById = async (id: number): Promise<{ success: boolean;
     return { success: false, message: errorMessage };
   }
 };
+
+
+export const getAllClientesgg = async () => {
+  const URL = "https://bansur-api-express.vercel.app/api/clientes?estadoId=2,3,4,5,7";
+
+  try {
+    const response = await fetch(URL);
+    if (!response.ok) throw new Error("Error al obtener los datos");
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error en getAllClientesgg:", error);
+    return [];
+  }
+};

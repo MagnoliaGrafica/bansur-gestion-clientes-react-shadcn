@@ -7,7 +7,8 @@ import {
   UsersIcon,
   ArrowLeftStartOnRectangleIcon,
   HandThumbDownIcon,
-  HandThumbUpIcon
+  HandThumbUpIcon,
+  DocumentChartBarIcon
 } from "@heroicons/react/24/outline";
 
 const containerVariants = {
@@ -98,23 +99,29 @@ const Navigation = () => {
             </svg>
           </button>
         </div>
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col space-y-5">
           {/* Enlace al Dashboard solo para roles 1 y 2 */}
           {hasRole([1, 2]) && (
+            <div className="space-y-5">
             <NavigationLink name="Dashboard" path="/dashboard" isOpen={isOpen}>
-              <ChartBarIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
+              <ChartBarIcon className="stroke-inherit stroke-1 size-6 " />
             </NavigationLink>
+
+            <NavigationLink name="informe GG" path="/infogg" isOpen={isOpen}>
+              <DocumentChartBarIcon className="stroke-inherit stroke-1 size-6" />
+            </NavigationLink>
+            </div>
           )}
           <NavigationLink name="Clientes" path="/clientes" isOpen={isOpen}>
-            <UsersIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
+            <UsersIcon className="stroke-inherit stroke-1 size-6" />
           </NavigationLink>
 
           <NavigationLink name="Cursados" path="/clientes/cursados" isOpen={isOpen}>
-            <HandThumbUpIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />  
+            <HandThumbUpIcon className="stroke-inherit stroke-1 size-6" />  
           </NavigationLink>
 
           <NavigationLink name="Rechazados" path="/clientes/rechazados" isOpen={isOpen}>
-            <HandThumbDownIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
+            <HandThumbDownIcon className="stroke-inherit stroke-1 size-6" />
           </NavigationLink>
 
 

@@ -48,7 +48,7 @@ const Cursados = () => {
   if (!isAuthenticated) return null; // Evita renderizado si no está autenticado
 
     return (
-        <div>
+        <div className="pl-28">
             <h2 className="text-2xl font-medium text-bansur my-4">Prospectos Cursados</h2>
 
             {error && <p className="text-red-500">{error}</p>}

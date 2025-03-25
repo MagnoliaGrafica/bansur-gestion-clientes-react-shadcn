@@ -257,7 +257,7 @@ useEffect(() => {
   if (error) return <p>{error}</p>;
 
   return (
-    <div>
+    <div className="pl-28">
       {elCliente && (
         <form onSubmit={handleSubmit}>
           <Card className="w-[550px]">

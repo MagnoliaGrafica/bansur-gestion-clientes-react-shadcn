@@ -35,7 +35,7 @@ const Dashboard = () => {
   }
 
   return (
-    <div>
+    <div className='pl-28'>
       <h2 className="text-2xl font-medium text-bansur my-4">Dashboard Gestión Comercial</h2>
       <div className="grid grid-cols-3 gap-8">
          <section className='col-span-3'>

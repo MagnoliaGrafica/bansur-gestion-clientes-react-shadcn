@@ -20,7 +20,7 @@ const Clientes = () => {
   }
 
   return (
-    <div>
+    <div className='pl-28'>
       <h2 className="text-2xl font-medium text-bansur my-4">Gestión Comercial Clientes</h2>
       
       {/* Renderizar SearchComponent solo si el rol es 1 o 2 */}

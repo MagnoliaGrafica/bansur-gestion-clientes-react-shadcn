@@ -142,7 +142,7 @@ const Infogg = () => {
     html2canvas(table, { scale: 2 }).then((canvas) => {
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF("p", "mm", "a4");
-      const imgWidth = 190; // Ancho en mm (ajustar según necesidad)
+      const imgWidth = 210; // Ancho en mm (ajustar según necesidad)
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
       pdf.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
@@ -154,7 +154,7 @@ const Infogg = () => {
       const year = today.getFullYear();
       const formattedDate = `${day}-${month}-${year}`;
 
-      pdf.save(`resumen-tubo-comercial-${formattedDate}.pdf`);
+      pdf.save(`Resumen-tubo-comercial-${formattedDate}.pdf`);
     });
   };
 
@@ -166,7 +166,6 @@ const Infogg = () => {
           <Button variant="outline" onClick={handleExportPDF}>
             <DocumentArrowDownIcon /> Exportar a PDF
           </Button>
-          <div className="text-bansur">fecha: <span className="font-bold">{new Date().toLocaleDateString("es-CL")}</span></div>
         </div>
       </section>
     <div id="table-to-export" className="space-y-4">
@@ -174,8 +173,9 @@ const Infogg = () => {
       <section>
         <div className="flex flex-col justify-center">
           <div className="w-full max-w-5xl mx-auto bg-white shadow-lg rounded-sm border border-gray-200">
-            <header className="px-5 py-4 border-b border-gray-100">
+            <header className="px-5 py-4 border-b border-gray-100 flex justify-between">
               <h2 className="font-semibold text-gray-800">RESUMEN POR SUCURSAL</h2>
+              <div className="text-bansur mr-4">fecha: <span className="font-bold">{new Date().toLocaleDateString("es-CL")}</span></div>
             </header>
             <div className="p-3">
               <div className="overflow-x-auto">
@@ -273,7 +273,9 @@ const Infogg = () => {
                         </tbody>
                         <tfoot className="text-md font-semibold uppercase text-bansur bg-gray-50 p-10">
                         <tr>
-                          <td><span className="ml-2">TOTAL</span></td>
+                          <td>
+                            <div className="ml-2 p-3">TOTAL</div>
+                          </td>
                           {["Prospecto", "Aceptado","ComiteSuperior", "Aprobado", "Cursado"].map((estado, index) => (
                             <td key={index}>
                               {Object.values(totales)
@@ -343,7 +345,8 @@ const Infogg = () => {
 </tbody>
                   <tfoot className="text-md font-semibold uppercase text-bansur bg-gray-50 p-3">
                           <tr>
-                            <td><span className="pl-2">TOTAL</span></td>
+                            <td><div className="ml-2 p-3">TOTAL</div></td>
+                            
                             {["Prospecto", "Aceptado","ComiteSuperior", "Aprobado", "Cursado"].map((estado, index) => (
                               <td key={index}>
                                 {Object.values(totalesEjecutivos)

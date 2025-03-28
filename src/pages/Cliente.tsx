@@ -15,7 +15,6 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-
 const ClienteDetail = () => {
   const params = useParams();
   const { hasRole } = useAuth();
@@ -47,7 +46,6 @@ const ClienteDetail = () => {
   const CONVENIOS_API_URL = "https://bansur-api-express.vercel.app/api/convenios";
   const RECHAZOS_API_URL = "https://bansur-api-express.vercel.app/api/tiporechazos";
 
-
   //obtener convenios desde la API
   useEffect(()=> {
     const fetchConvenios = async () => {
@@ -61,7 +59,6 @@ const ClienteDetail = () => {
     };
     fetchConvenios();
   }, []);
-
 
   // Obtener canales desde la API
   useEffect(() => {
@@ -147,6 +144,11 @@ useEffect(() => {
     };
     fetchCliente();
   }, [params.id]);
+
+  // Filtrar estados según el rol del usuario
+  const estadosFiltrados = hasRole([1, 2])
+  ? estados // Muestra todos los estados
+  : estados.filter((estado) => ["Prospecto", "Aprobado"].includes(estado.nombre)); // Muestra solo "Prospecto" y "Aprobado"
   
 
   // Manejar cambios en los inputs
@@ -194,8 +196,7 @@ useEffect(() => {
     setElCliente((prev)=> (prev ? {...prev, tipo_rechazos: Number(value)}: null));
   };  
   
-    
-  // Manejar selección de canal
+   // Manejar selección de canal
   const handleCanalChange = (value: string) => {
     setSelectedCanal(value);
     setElCliente((prev)=> (prev ? {...prev, canal: Number(value)}: null));
@@ -311,7 +312,6 @@ useEffect(() => {
                     value={elCliente.montoEvaluar || ""} 
                     onChange={handleInputChange} /> 
                 </div>  
-
                 
                 {/* Convenios */}    
                 <div className="flex flex-col space-y-1.5">
@@ -327,25 +327,24 @@ useEffect(() => {
                         </SelectContent>
                       </Select>
                     </div>
-
                        
                    {/* Estado */}
-<div className="grid grid-cols-2 gap-4">
-  <div className="flex flex-col space-y-1.5">
-    <Label htmlFor="estado">Estado</Label>
-    <Select value={selectedEstados} onValueChange={handleEstadoChange}>
-      <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder="Estado" />
-      </SelectTrigger>
-      <SelectContent>
-        {estados.map((estado) => (
-          <SelectItem key={estado.id} value={String(estado.id)} id={`estado-${estado.id}`}> 
-            {estado.nombre} 
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
-  </div>
+          <div className="grid grid-cols-2 gap-4"> 
+            <div className="flex flex-col space-y-1.5">
+  <Label htmlFor="estado">Estado</Label>
+  <Select value={selectedEstados} onValueChange={handleEstadoChange}>
+    <SelectTrigger className="w-[180px]">
+      <SelectValue placeholder="Estado" />
+    </SelectTrigger>
+    <SelectContent>
+      {estadosFiltrados.map((estado) => (
+        <SelectItem key={estado.id} value={String(estado.id)} id={`estado-${estado.id}`}>
+          {estado.nombre}
+        </SelectItem>
+      ))}
+    </SelectContent>
+  </Select>
+</div>
 
   {/* Mostrar "Motivo" solo si el estado es "Rechazado" */}
   {estados.find((estado) => String(estado.id) === selectedEstados)?.nombre === "Rechazado" && (
@@ -367,8 +366,6 @@ useEffect(() => {
   )}
 </div>
 
-                    
-
                     {/* Canal */}
                     <div className="flex flex-col space-y-1.5">
                       <Label htmlFor="canal">Canal</Label> 
@@ -384,7 +381,6 @@ useEffect(() => {
                       </Select>
                     </div>
 
-
                     {/* ejecutivo */}
                     {hasRole([1, 2]) && <div className="flex flex-col space-y-1.5">
                       <Label htmlFor="ejecutivo">Ejecutivo</Label>
@@ -399,8 +395,6 @@ useEffect(() => {
                         </SelectContent>
                       </Select>
                     </div>}
-
-                    
               </div>
             </CardContent>
             <CardFooter className="flex justify-between">

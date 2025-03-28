@@ -50,7 +50,8 @@ type DataItem = {
 export function MonthlyChart2() {
   const [data, setData] = useState<DataItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedMonth, setSelectedMonth] = useState("2024-12");
+  //const [selectedMonth, setSelectedMonth] = useState("2024-12");
+  const [selectedMonth, setSelectedMonth] = useState(dayjs().format("YYYY-MM"));
   const [error, setError] = useState(false);
   const [showClientes, setShowClientes] = useState(true); // Controlar la visibilidad de Clientes
   const [showMonto, setShowMonto] = useState(true); // Controlar la visibilidad de Monto

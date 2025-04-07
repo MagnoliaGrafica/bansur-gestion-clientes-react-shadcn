@@ -54,7 +54,11 @@ const Cursados = () => {
               return response.json();
           })
           .then((data) => setCursados(data))
-          .catch(() => toast.error("Error al cargar los cursados"));
+          .catch((err) => {
+            console.error(err);
+            setError("Error al cargar los cursados");
+            toast.error("Error al cargar los cursados");
+          });
   }, [user, hasRole]);
 
   const cursadosFiltrados = mesSeleccionado

@@ -53,7 +53,12 @@ const Rechazados = () => {
               return response.json();
           })
           .then((data) => setRechazados(data))
-          .catch(() => toast.error("Error al cargar los rechazados"));
+          .catch((err) => {
+            console.error(err);
+            setError("Error al cargar los rechazados");
+            toast.error("Error al cargar los rechazados");
+
+          });
   }
   , [user, hasRole]);
       

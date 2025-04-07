@@ -36,7 +36,7 @@ export type Payment = {
     rut:string;
     empresa: string;
     comuna:string;
-    monto: number;
+    //monto: number;
     montoEvaluar: number;
     tipoCredito:number;
     convenio: number;
@@ -142,7 +142,7 @@ export const getColumns = (onDeleteSuccess: () => void): ColumnDef<Payment>[] =>
         );
       },
     },
-    {
+    /*{
       accessorKey: "monto",
       header: ({ column }) => {
         return (
@@ -163,7 +163,7 @@ export const getColumns = (onDeleteSuccess: () => void): ColumnDef<Payment>[] =>
   
         return <div className="text-center">{formatted}</div>;
       },
-    },
+    },*/
     {
       accessorKey: "montoEvaluar",
       header: ({ column }) => {

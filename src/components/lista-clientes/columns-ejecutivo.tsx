@@ -20,7 +20,7 @@ export type PaymentEje = {
     rut:string;
     empresa: string;
     comuna:string;
-    monto: number;
+    //monto: number;
     montoEvaluar: number;
     tipoCredito:number;
     convenio: number;
@@ -121,7 +121,7 @@ type BadgeVariant =
         );
       },
     },
-    {
+    /*{
       accessorKey: "monto",
       header: ({ column }) => {
         return (
@@ -142,7 +142,7 @@ type BadgeVariant =
   
         return <div className="text-center">{formatted}</div>;
       },
-    },
+    },*/
     {
       accessorKey: "montoEvaluar",
       header: ({ column }) => {

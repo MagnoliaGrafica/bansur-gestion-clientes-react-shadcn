@@ -61,7 +61,6 @@ const Rechazados = () => {
     <TableRow>
       <TableHead>Nombre</TableHead>
       <TableHead>Razones</TableHead>
-      <TableHead>Monto Solicitado</TableHead>
       <TableHead>Monto Evaluado</TableHead>
       <TableHead>Fecha Cierre</TableHead>
       <TableHead>Ejecutivo</TableHead>
@@ -77,12 +76,6 @@ const Rechazados = () => {
       <TableRow key={index}>
         <TableCell>{item.nombre} {item.apellido}</TableCell>
         <TableCell>{item.gc_tipo_rechazos?.nombre || "No especificado"}</TableCell>
-        <TableCell>
-          {new Intl.NumberFormat("es-CL", {
-            style: "currency",
-            currency: "CLP",
-          }).format(item.monto || 0)}
-        </TableCell>
         <TableCell>
           {new Intl.NumberFormat("es-CL", {
             style: "currency",

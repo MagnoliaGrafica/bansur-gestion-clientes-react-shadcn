@@ -14,6 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { toast } from "sonner";
 
 const ClienteDetail = () => {
   const params = useParams();
@@ -212,7 +213,9 @@ useEffect(() => {
   const validateForm = (): boolean => {
     //if (!elCliente?.nombre || !elCliente.email) {
       if (!elCliente?.nombre) {
-      alert("Por favor, completa los campos obligatorios: Nombre");
+      //alert("Por favor, completa los campos obligatorios: Nombre");
+      toast.error("Por favor, completa los campos obligatorios: Nombre");
+
       return false;
     }
    /* if (!/^\S+@\S+\.\S+$/.test(elCliente.email)) {
@@ -241,14 +244,16 @@ useEffect(() => {
       const response = await axios.put(`${CLIENTE_API_URL}${elCliente!.id}`, clienteActualizado);
   
       if (response.status === 200) {
-        alert("Cliente actualizado con éxito.");
-        navigate("/clientes");
+        toast.success("Cliente actualizado con éxito.");
+        //navigate("/clientes");
       } else {
         console.error("Error en la respuesta del servidor:", response);
       }
     } catch (error: any) {
       console.error("Error al actualizar el cliente:", error.response?.data || error.message);
-      alert("Error al actualizar el cliente.");
+      //alert("Error al actualizar el cliente.");
+      toast.error("Error al actualizar el cliente");
+
     } finally {
       setIsSubmitting(false);
     }
@@ -294,15 +299,6 @@ useEffect(() => {
                     name="rut" 
                     value={elCliente.rut || ""} 
                     onChange={handleInputChange} />
-                  </div>
-                <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="monto">Monto Solicitado</Label>
-                  <Input 
-                    type="number" 
-                    name="monto" 
-                    value={elCliente.monto || ""} 
-                    onChange={handleInputChange} 
-                    />
                   </div>
                 <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="monto">Monto a Evaluar</Label>
@@ -399,7 +395,7 @@ useEffect(() => {
             </CardContent>
             <CardFooter className="flex justify-between">
               <Button variant="ghost" onClick={() => navigate("/clientes")}>
-                Cancelar
+                Cancelar/Salir
               </Button>
               <Button type="submit" disabled={isSubmitting}>
                 {isSubmitting ? "Guardando..." : "Guardar Cambios"}

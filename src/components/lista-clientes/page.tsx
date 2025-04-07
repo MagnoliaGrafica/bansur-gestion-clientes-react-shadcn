@@ -3,7 +3,6 @@ import { getColumns } from "./columns"; // Importamos `getColumns` en vez de `co
 import { DataTable } from "./data-table";
 import axios from "axios";
 import { Cliente } from "@/types/Types.tsx";
-import { Toaster } from "sonner"; // Importamos Toaster
 
 const DemoPage: React.FC = () => {
   const URL = "https://bansur-api-express.vercel.app/api/clientes?estadoId=1,2,3,4,5"; 
@@ -28,7 +27,6 @@ const DemoPage: React.FC = () => {
 
   return (
     <div className="container mx-auto py-10">
-       <Toaster />
       <DataTable columns={getColumns(onDeleteSuccess)} data={data} />
     </div>
   );

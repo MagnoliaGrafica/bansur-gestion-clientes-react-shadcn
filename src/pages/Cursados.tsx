@@ -2,6 +2,7 @@ import * as React from "react";
 import { useAuth } from '../context/AuthContext.tsx';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import { toast } from "sonner";
 
 import {
     Table,
@@ -11,7 +12,14 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-  } from "@/components/ui/table"
+  } from "@/components/ui/table";
+  import {
+    Pagination,
+    PaginationContent,
+    PaginationItem,
+    PaginationLink,
+  } from "@/components/ui/pagination";
+  
   
 
 const Cursados = () => {
@@ -19,6 +27,10 @@ const Cursados = () => {
     const navigate = useNavigate();
     const [cursados, setCursados] = React.useState<any[]>([]);
     const [error, setError] = React.useState<string | null>(null);
+    const [currentPage, setCurrentPage] = React.useState(1);
+    const [mesSeleccionado, setMesSeleccionado] = React.useState("");
+
+  const itemsPerPage = 10;
 
     useEffect(() => {
         if (!isAuthenticated ) {
@@ -42,10 +54,29 @@ const Cursados = () => {
               return response.json();
           })
           .then((data) => setCursados(data))
-          .catch((error) => setError(error.message));
+          .catch(() => toast.error("Error al cargar los cursados"));
   }, [user, hasRole]);
 
+  const cursadosFiltrados = mesSeleccionado
+    ? cursados.filter((item) => {
+        if (!item.fechaCierre) return false;
+        const mes = new Date(item.fechaCierre).getMonth() + 1;
+        return mes === parseInt(mesSeleccionado);
+      })
+    : cursados;
+
   if (!isAuthenticated) return null; // Evita renderizado si no está autenticado
+
+  const totalPages = Math.ceil(cursadosFiltrados.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  
+  const cursadosOrdenados = [...cursadosFiltrados].sort((a, b) => {
+    const fechaA = new Date(a.fechaCierre).getTime();
+    const fechaB = new Date(b.fechaCierre).getTime();
+    return fechaB - fechaA; // Más recientes primero
+  });
+  
+  const cursadosPaginados = cursadosOrdenados.slice(startIndex, startIndex + itemsPerPage);
 
     return (
         <div className="pl-28">
@@ -53,45 +84,93 @@ const Cursados = () => {
 
             {error && <p className="text-red-500">{error}</p>}
 
-            <Table>
-  <TableCaption>Lista de Prospectos Cursados.</TableCaption>
-  <TableHeader>
-    <TableRow>
-      <TableHead>Nombre</TableHead>
-      <TableHead>Monto Evaluado</TableHead>
-      <TableHead>Fecha Cierre</TableHead>
-      <TableHead>Ejecutivo</TableHead>
-    </TableRow>
-  </TableHeader>
-  <TableBody>
-  {cursados.length === 0 && !error ? (
-    <TableRow>
-      <TableCell colSpan={5} className="text-center">Cargando...</TableCell>
-    </TableRow>
-  ) : (
-    cursados.map((item, index) => (
-      <TableRow key={index}>
-        <TableCell>{item.nombre} {item.apellido}</TableCell>
-        <TableCell>
-          {new Intl.NumberFormat("es-CL", {
-            style: "currency",
-            currency: "CLP",
-          }).format(item.montoEvaluar || 0)}
-        </TableCell>
-        <TableCell>
-          {item.fechaCierre 
-            ? new Date(item.fechaCierre).toLocaleDateString("es-CL") 
-            : "No disponible"}
-        </TableCell>
-        <TableCell>
-          {item.gc_ban_user?.nombre || "No asignado"} {item.gc_ban_user?.apellido || ""}
-        </TableCell>
-      </TableRow>
-    ))
-  )}
-</TableBody>
+            {/* Filtro por mes */}
+      <div className="mb-4">
+        <label className="block mb-1 text-sm font-medium">Filtrar por mes:</label>
+        <select
+          value={mesSeleccionado}
+          onChange={(e) => {
+            setMesSeleccionado(e.target.value);
+            setCurrentPage(1);
+          }}
+          className="border px-3 py-2 rounded w-60"
+        >
+          <option value="">Todos</option>
+          {Array.from({ length: 12 }, (_, i) => {
+            const fecha = new Date(0, i);
+            const nombreMes = fecha.toLocaleString("es-CL", { month: "long" });
+            return (
+              <option key={i} value={i + 1}>
+                {nombreMes.charAt(0).toUpperCase() + nombreMes.slice(1)}
+              </option>
+            );
+          })}
+        </select>
+      </div>
 
-</Table>
+            {/* Tabla */}
+            <div className="rounded-md border">
+      <Table>
+      <TableCaption>Lista de Clientes con montos cursados.</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Nombre</TableHead>
+            <TableHead>Monto Evaluado</TableHead>
+            <TableHead>Fecha de Cierre</TableHead>
+            <TableHead>Ejecutivo</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {cursadosPaginados.map((item, index) => (
+            <TableRow key={index}>
+              <TableCell>{item.nombre} {item.apellido}</TableCell>
+              <TableCell>
+                {new Intl.NumberFormat("es-CL", {
+                  style: "currency",
+                  currency: "CLP",
+                }).format(item.montoEvaluar || 0)}
+              </TableCell>
+              <TableCell>
+                {item.fechaCierre
+                  ? new Date(item.fechaCierre).toLocaleDateString("es-CL")
+                  : "No disponible"}
+              </TableCell>
+              <TableCell>
+                {item.gc_ban_user?.nombre || "No asignado"} {item.gc_ban_user?.apellido || ""}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      </div>
+       {/* Paginación */}
+       <div className="mt-6">
+       <Pagination>
+  <PaginationContent>
+    {Array.from({ length: totalPages }, (_, i) => {
+      const isActive = currentPage === i + 1;
+
+      return (
+        <PaginationItem key={i}>
+          <PaginationLink
+            isActive={isActive}
+            onClick={() => setCurrentPage(i + 1)}
+            className={`px-4 py-2 rounded-md border text-sm font-medium cursor-pointer transition-colors ${
+              isActive
+                ? "bg-bansur text-white hover:bg-bansur"
+                : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
+            }`}
+          >
+            {i + 1}
+          </PaginationLink>
+        </PaginationItem>
+      );
+    })}
+  </PaginationContent>
+</Pagination>
+
+      </div>
+
         </div>
     );
 };

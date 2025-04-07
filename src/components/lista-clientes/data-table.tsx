@@ -41,6 +41,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+} from "@/components/ui/pagination";
+
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
@@ -128,6 +135,27 @@ const handleMonthChange = (value: string) => {
     setSelectedMonth(value);
     table.getColumn("createdAt")?.setFilterValue(value); // Aplicar filtro de mes
   }
+};
+const pageIndex = table.getState().pagination.pageIndex;
+const totalPages = table.getPageCount();
+
+const visiblePages = () => {
+  const maxVisible = 5;
+  //const pages: (number | string)[] = [];
+
+  if (totalPages <= maxVisible) {
+    return Array.from({ length: totalPages }, (_, i) => i);
+  }
+
+  if (pageIndex < 3) {
+    return [0, 1, 2, "...", totalPages - 1];
+  }
+
+  if (pageIndex > totalPages - 4) {
+    return [0, "...", totalPages - 3, totalPages - 2, totalPages - 1];
+  }
+
+  return [0, "...", pageIndex - 1, pageIndex, pageIndex + 1, "...", totalPages - 1];
 };
 
   return (
@@ -269,8 +297,13 @@ const handleMonthChange = (value: string) => {
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <Button
+      
+      <div className="flex items-center justify-end py-4">
+      <Pagination>
+  <PaginationContent>
+
+    <PaginationItem>
+    <Button
           variant="outline"
           size="sm"
           onClick={() => table.previousPage()}
@@ -278,7 +311,30 @@ const handleMonthChange = (value: string) => {
         >
           Anterior
         </Button>
-        <Button
+    </PaginationItem>
+      
+
+    {visiblePages().map((page, i) =>
+      page === "..." ? (
+        <PaginationItem key={`ellipsis-${i}`}>
+          <span className="px-2 text-gray-500">...</span>
+        </PaginationItem>
+      ) : (
+        <PaginationItem key={page}>
+          <PaginationLink
+            isActive={page === pageIndex}
+            onClick={() => table.setPageIndex(Number(page))}
+            className={`cursor-pointer ${
+              page === pageIndex ? "bg-blue-600 text-white hover:bg-blue-700" : ""
+            }`}
+          >
+            {Number(page) + 1}
+          </PaginationLink>
+        </PaginationItem>
+      )
+    )}
+    <PaginationItem>
+    <Button
           variant="outline"
           size="sm"
           onClick={() => table.nextPage()}
@@ -286,7 +342,13 @@ const handleMonthChange = (value: string) => {
         >
           Siguiente
         </Button>
-      </div>
+    </PaginationItem>
+
+  </PaginationContent>
+</Pagination>
+
+</div>
     </div>
+    
   );
 }

@@ -1,6 +1,8 @@
+import { useState, useEffect } from "react";
 import { ColumnDef } from "@tanstack/react-table"
 import { Link } from "react-router";
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,7 +10,17 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
 import { Badge } from "@/components/ui/badge";
 import { PencilSquareIcon, EllipsisHorizontalIcon, ArrowsUpDownIcon } from "@heroicons/react/24/outline";
 
@@ -92,7 +104,7 @@ type BadgeVariant =
   };
   
 
-  export const columnas: ColumnDef<PaymentEje>[] = [
+  export const columnas = (onUpdateSuccess?: () => void): ColumnDef<PaymentEje>[] => [
     {
       accessorKey: "nombre",
       header: ({ column }) => {
@@ -165,27 +177,6 @@ type BadgeVariant =
       },
       
     },
-    /*{
-      accessorKey: "fechaCierre",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Fecha cierre <ArrowsUpDownIcon className="size-4" />
-          </Button>
-        );
-      },
-      cell: ({ row }) => {
-        const fechaCierre = row.getValue("fechaCierre") as string | number | null;
-        if (!fechaCierre) {
-          return <div className="text-center">-</div>;
-        }
-        const date = new Date(fechaCierre);
-        return <div className="text-center">{date.toLocaleDateString("es-CL")}</div>;
-      },
-    },*/
     {
       id: "días",
       header: ({ column }) => {
@@ -213,27 +204,78 @@ type BadgeVariant =
     },
     {
       accessorFn: (row) => row.gc_estado?.nombre || "Sin asignar",
-      id: "gc_estado",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Estado <ArrowsUpDownIcon className="size-4" />
-          </Button>
-        );
-      },
-      cell: ({ row }) => {
-        return (
-          <div className="text-center">
-            <Badge variant={getBadgeVariant(row.original.gc_estado?.id)}>
-              {row.original.gc_estado ? row.original.gc_estado?.nombre : "Sin asignar"}
-            </Badge>
-          </div>
-        );
-      },
-    },
+       id: "gc_estado",
+            header: () => (
+              <Button variant="ghost">
+                Estado <ArrowsUpDownIcon className="size-4" />
+              </Button>
+            ),
+            cell: ({ row }) => {
+              const onUpdate = onUpdateSuccess; 
+              const [open, setOpen] = useState(false);
+              const [selectedEstado, setSelectedEstado] = useState(row.original.gc_estado?.id || "");
+              const [estadosDisponibles, setEstadosDisponibles] = useState<{ id: number; nombre: string }[]>([]);
+        
+              useEffect(() => {
+                fetch("https://bansur-api-express.vercel.app/api/estados")
+                  .then((res) => res.json())
+                  .then(setEstadosDisponibles);
+              }, []);
+        
+              const handleUpdateEstado = async () => {
+                try {
+                  const res = await fetch(`https://bansur-api-express.vercel.app/api/clientes/${row.original.id}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ estado: selectedEstado }),
+                  });
+        
+                  if (res.ok) {
+                    toast.success("Estado actualizado correctamente");
+                    setOpen(false);
+                    if (onUpdate) onUpdate();
+      
+                  } else {
+                    toast.error("Error al actualizar estado");
+                  }
+                } catch (error) {
+                  toast.error("Error de red");
+                }
+              };
+        
+              return (
+                <Dialog open={open} onOpenChange={setOpen}>
+                  <DialogTrigger asChild>
+                    <Badge variant={getBadgeVariant(row.original.gc_estado?.id)} className="cursor-pointer">
+                      {row.original.gc_estado?.nombre || "Sin asignar"}
+                    </Badge>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Actualizar Estado</DialogTitle>
+                      <DialogDescription>
+        Seleccione el nuevo estado para este cliente.
+      </DialogDescription>
+                    </DialogHeader>
+                    <div className="space-y-4">
+                      <select
+                        className="w-full border rounded px-2 py-1"
+                        value={selectedEstado}
+                        onChange={(e) => setSelectedEstado(Number(e.target.value))}
+                      >
+                        {estadosDisponibles.map((estado) => (
+                          <option key={estado.id} value={estado.id}>
+                            {estado.nombre}
+                          </option>
+                        ))}
+                      </select>
+                      <Button onClick={handleUpdateEstado}>Actualizar</Button>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              );
+            },
+          },
     {
       id: "actions",
       cell: ({ row }) => {

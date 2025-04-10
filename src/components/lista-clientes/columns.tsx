@@ -25,6 +25,7 @@ import {
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -278,6 +279,9 @@ type BadgeVariant =
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Actualizar Estado</DialogTitle>
+                <DialogDescription>
+        Seleccione el nuevo estado para este cliente.
+      </DialogDescription>
               </DialogHeader>
               <div className="space-y-4">
                 <select

@@ -32,16 +32,29 @@ Cursado 7 */
   const [data2, setData2] = useState<PaymentEje[]>([]);
   useEffect(() => {
     const fetchData = async () => {
-      const result2 = await axios.get<Cliente[]>(URL2);
-      setData2(result2.data);
+      try {
+        const result2 = await axios.get<Cliente[]>(URL2);
+        setData2(result2.data); // Set the fetched data into state
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     };
 
     fetchData();
   }, []);
+  // Add this function to refresh data when a state is updated
+  const onUpdateSuccess = async () => {
+    try {
+      const result2 = await axios.get<Cliente[]>(URL2);
+      setData2(result2.data);
+    } catch (error) {
+      console.error("Error refreshing data:", error);
+    }
+  };
 
   return (
     <div className="container mx-auto">
-      <DataTable columns={columnas} data={data2} />
+      <DataTable columns={columnas(onUpdateSuccess)} data={data2} />
     </div>
   );
 };

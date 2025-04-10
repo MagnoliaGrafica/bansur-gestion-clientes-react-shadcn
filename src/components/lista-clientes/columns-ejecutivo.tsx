@@ -121,28 +121,6 @@ type BadgeVariant =
         );
       },
     },
-    /*{
-      accessorKey: "monto",
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Monto Solicitado <ArrowsUpDownIcon className="size-4" />
-          </Button>
-        );
-      },
-      cell: ({ row }) => {
-        const amount = parseFloat(row.getValue("monto") as string); // Cast explícito
-        const formatted = new Intl.NumberFormat("es-CL", {
-          style: "currency",
-          currency: "CLP",
-        }).format(amount);
-  
-        return <div className="text-center">{formatted}</div>;
-      },
-    },*/
     {
       accessorKey: "montoEvaluar",
       header: ({ column }) => {

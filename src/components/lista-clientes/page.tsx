@@ -27,7 +27,7 @@ const DemoPage: React.FC = () => {
 
   return (
     <div className="container mx-auto py-10">
-      <DataTable columns={getColumns(onDeleteSuccess)} data={data} />
+      <DataTable columns={getColumns(onDeleteSuccess, fetchClientes)} data={data} />
     </div>
   );
 };

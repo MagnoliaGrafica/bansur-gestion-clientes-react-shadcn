@@ -25,9 +25,10 @@ Aceptado 3
 Comité Superior 4
 Aprobado 5
 Rechazado 6
-Cursado 7 */
+Cursado 7 
+Sin Respuesta 8*/
 
-  const URL2 = `https://bansur-api-express.vercel.app/api/clientes?estadoId=1,2,3,4,5&banUserId=${user.id}`
+  const URL2 = `https://bansur-api-express.vercel.app/api/clientes?estadoId=1,2,3,4,5,8&banUserId=${user.id}`
 
   const [data2, setData2] = useState<PaymentEje[]>([]);
   useEffect(() => {

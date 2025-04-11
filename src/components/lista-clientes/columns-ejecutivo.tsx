@@ -80,6 +80,7 @@ type BadgeVariant =
   | "default"
   | "secondary"
   | "destructive"
+  | "sinrespuesta"
   | null
   | undefined;
 
@@ -91,7 +92,8 @@ type BadgeVariant =
     4: "comite",
     5: "aprobado",
     6: "rechazado",
-    7: "cursado"
+    7: "cursado",
+    8: "sinrespuesta",
   };
   
   const getBadgeVariant = (id: number | undefined): BadgeVariant =>

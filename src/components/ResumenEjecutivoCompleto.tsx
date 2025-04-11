@@ -23,6 +23,7 @@ export function ResumenEjecutivoCompleto() {
     { id: "5", nombre: "Aprobado" },
     { id: "7", nombre: "Cursado" },
     { id: "6", nombre: "Rechazado" },
+    { id: "8", nombre: "Sin Respuesta" },
   ];
 
   useEffect(() => {

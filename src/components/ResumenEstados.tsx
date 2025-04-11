@@ -41,7 +41,8 @@ export function ResumenEstados() {
     { nombre: "Comité Superior", key: "4" },
     { nombre: "Aprobado", key: "5" },
     { nombre: "Rechazado", key: "6" },
-    { nombre: "Cursado", key: "7" }
+    { nombre: "Cursado", key: "7" },
+    { nombre: "Sin Respuesta", key: "8" }
   ];
 
   const estadosMap = new Map(estados.map(({ key, nombre }) => [key, nombre]));

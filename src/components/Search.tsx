@@ -81,6 +81,7 @@ const SearchComponent: React.FC = () => {
   | "default"
   | "secondary"
   | "destructive"
+  | "sinrespuesta"
   | null
   | undefined;
 
@@ -92,7 +93,8 @@ const SearchComponent: React.FC = () => {
     4: "comite",
     5: "aprobado",
     6: "rechazado",
-    7: "cursado"
+    7: "cursado",
+    8: "sinrespuesta"
   };
   
   const getBadgeVariant = (id: number | undefined): BadgeVariant =>

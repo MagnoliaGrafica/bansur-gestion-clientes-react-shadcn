@@ -35,14 +35,11 @@ export function ResumenEstados() {
 
   // Definir los canales y su key correspondiente
   const estados = [
-    { nombre: "Sin Asignar", key: "1" },
-    { nombre: "Prospecto", key: "2" },
-    { nombre: "Aceptado", key: "3" },
-    { nombre: "Comité Superior", key: "4" },
-    { nombre: "Aprobado", key: "5" },
-    { nombre: "Rechazado", key: "6" },
-    { nombre: "Cursado", key: "7" },
-    { nombre: "Sin Respuesta", key: "8" }
+    { nombre: "Prospecto", key: "1" },
+    { nombre: "En Comité", key: "2" },
+    { nombre: "Para Curse", key: "3" },
+    { nombre: "Rechazado", key: "4" },
+    { nombre: "Sin Respuesta", key: "5" }
   ];
 
   const estadosMap = new Map(estados.map(({ key, nombre }) => [key, nombre]));

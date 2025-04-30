@@ -41,7 +41,7 @@ const Rechazados = () => {
     useEffect(() => {
       if(!user) return; // Si user es null, salir de la función
 
-      let apiUrl = `https://bansur-api-express.vercel.app/api/clientes?estadoId=6`;
+      let apiUrl = `https://bansur-api-express.vercel.app/api/clientes?estadoId=4`;
 
       if (hasRole([3, 4]) && user.id) {
           apiUrl += `&banUserId=${user.id}`;

@@ -21,7 +21,7 @@ export const deleteClienteById = async (id: number): Promise<{ success: boolean;
 
 
 export const getAllClientesgg = async () => {
-  const URL = "https://bansur-api-express.vercel.app/api/clientes?estadoId=2,3,4,5,7";
+  const URL = "https://bansur-api-express.vercel.app/api/clientes?estadoId=1,2,3,4,5";
 
   try {
     const response = await fetch(URL);

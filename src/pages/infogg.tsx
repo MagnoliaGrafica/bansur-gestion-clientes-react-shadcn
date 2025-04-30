@@ -53,7 +53,8 @@ const Infogg = () => {
   // Función para normalizar los nombres de los estados
   const normalizarEstado = (estado: string) => {
     const mapEstados: Record<string, string> = {
-      "Comité Superior": "ComiteSuperior",
+      "En Comité": "EnComite",
+      "Para Curse": "ParaCurse",
     };
     return mapEstados[estado] || estado;
   };
@@ -69,8 +70,8 @@ const Infogg = () => {
         }
 
         const sucursales = [1, 2, 3];
-        const estadosNormales = ["Prospecto", "Aceptado", "ComiteSuperior", "Aprobado"];
-        const estadosConFecha = ["Cursado"];
+        const estadosNormales = ["Prospecto", "EnComite"];
+        const estadosConFecha = ["ParaCurse"];
 
         let totalesTemp: TotalesPorSucursal = {};
         let totalesEjecutivosTemp: Record<string, Record<string, number>> = {}; // Para almacenar los totales por ejecutivo
@@ -106,10 +107,8 @@ const Infogg = () => {
             if (!totalesEjecutivosTemp[ejecutivoNombre]) {
               totalesEjecutivosTemp[ejecutivoNombre] = {
                 Prospecto: 0,
-                Aceptado: 0,
-                ComiteSuperior: 0,
-                Aprobado: 0,
-                Cursado: 0
+                EnComite: 0,
+                ParaCurse: 0
               };
             }
 
@@ -189,16 +188,10 @@ const Infogg = () => {
                                     <div className="font-semibold text-left">Prospecto</div>
                                 </th>
                                 <th className="p-2 whitespace-nowrap">
-                                    <div className="font-semibold text-left">Aceptado</div>
+                                    <div className="font-semibold text-left">En Comité</div>
                                 </th>
                                 <th className="p-2 whitespace-nowrap">
-                                    <div className="font-semibold text-left">Comité Superior</div>
-                                </th>
-                                <th className="p-2 whitespace-nowrap">
-                                    <div className="font-semibold text-left">Aprobado</div>
-                                </th>
-                                <th className="p-2 whitespace-nowrap">
-                                    <div className="font-semibold text-left">Cursado</div>
+                                    <div className="font-semibold text-left">Para Curse</div>
                                 </th>
                             </tr>
                         </thead>
@@ -213,16 +206,10 @@ const Infogg = () => {
                                   <div className="text-left text-bansur">{(totales[1]?.["Prospecto"] ?? 0).toLocaleString("es-CL", { style: "currency", currency: "CLP" })}</div>
                                 </td>
                                 <td className="p-2 whitespace-nowrap">
-                                  <div className="text-left text-bansur">{(totales[1]?.["Aceptado"] ?? 0).toLocaleString("es-CL", { style: "currency", currency: "CLP" })}</div>
+                                  <div className="text-left text-bansur">{(totales[1]?.["EnComite"] ?? 0).toLocaleString("es-CL", { style: "currency", currency: "CLP" })}</div>
                                 </td>
                                 <td className="p-2 whitespace-nowrap">
-                                  <div className="text-left text-bansur">{(totales[1]?.["ComiteSuperior"] ?? 0).toLocaleString("es-CL", { style: "currency", currency: "CLP" })}</div>
-                                </td>
-                                <td className="p-2 whitespace-nowrap">
-                                  <div className="text-left text-bansur">{(totales[1]?.["Aprobado"] ?? 0).toLocaleString("es-CL", { style: "currency", currency: "CLP" })}</div>
-                                </td>
-                                <td className="p-2 whitespace-nowrap">
-                                  <div className="text-left text-bansur">{(totales[1]?.["Cursado"] ?? 0).toLocaleString("es-CL", { style: "currency", currency: "CLP" })}</div>
+                                  <div className="text-left text-bansur">{(totales[1]?.["ParaCurse"] ?? 0).toLocaleString("es-CL", { style: "currency", currency: "CLP" })}</div>
                                 </td>
                             </tr>
                             <tr>
@@ -235,16 +222,10 @@ const Infogg = () => {
                                   <div className="text-left text-bansur">{(totales[2]?.["Prospecto"] ?? 0).toLocaleString("es-CL", { style: "currency", currency: "CLP" })}</div>
                                 </td>
                                 <td className="p-2 whitespace-nowrap">
-                                  <div className="text-left text-bansur">{(totales[2]?.["Aceptado"] ?? 0).toLocaleString("es-CL", { style: "currency", currency: "CLP" })}</div>
+                                  <div className="text-left text-bansur">{(totales[2]?.["EnComite"] ?? 0).toLocaleString("es-CL", { style: "currency", currency: "CLP" })}</div>
                                 </td>
                                 <td className="p-2 whitespace-nowrap">
-                                  <div className="text-left text-bansur">{(totales[2]?.["ComiteSuperior"] ?? 0).toLocaleString("es-CL", { style: "currency", currency: "CLP" })}</div>
-                                </td>
-                                <td className="p-2 whitespace-nowrap">
-                                  <div className="text-left text-bansur">{(totales[2]?.["Aprobado"] ?? 0).toLocaleString("es-CL", { style: "currency", currency: "CLP" })}</div>
-                                </td>
-                                <td className="p-2 whitespace-nowrap">
-                                  <div className="text-left text-bansur">{(totales[2]?.["Cursado"] ?? 0).toLocaleString("es-CL", { style: "currency", currency: "CLP" })}</div>
+                                  <div className="text-left text-bansur">{(totales[2]?.["ParaCurse"] ?? 0).toLocaleString("es-CL", { style: "currency", currency: "CLP" })}</div>
                                 </td>
                             </tr>
                             <tr>
@@ -257,16 +238,10 @@ const Infogg = () => {
                                   <div className="text-left text-bansur">{(totales[3]?.["Prospecto"] ?? 0).toLocaleString("es-CL", { style: "currency", currency: "CLP" })}</div>
                                 </td>
                                 <td className="p-2 whitespace-nowrap">
-                                  <div className="text-left text-bansur">{(totales[3]?.["Aceptado"] ?? 0).toLocaleString("es-CL", { style: "currency", currency: "CLP" })}</div>
+                                  <div className="text-left text-bansur">{(totales[3]?.["EnComite"] ?? 0).toLocaleString("es-CL", { style: "currency", currency: "CLP" })}</div>
                                 </td>
                                 <td className="p-2 whitespace-nowrap">
-                                  <div className="text-left text-bansur">{(totales[3]?.["ComiteSuperior"] ?? 0).toLocaleString("es-CL", { style: "currency", currency: "CLP" })}</div>
-                                </td>
-                                <td className="p-2 whitespace-nowrap">
-                                  <div className="text-left text-bansur">{(totales[3]?.["Aprobado"] ?? 0).toLocaleString("es-CL", { style: "currency", currency: "CLP" })}</div>
-                                </td>
-                                <td className="p-2 whitespace-nowrap">
-                                  <div className="text-left text-bansur">{(totales[3]?.["Cursado"] ?? 0).toLocaleString("es-CL", { style: "currency", currency: "CLP" })}</div>
+                                  <div className="text-left text-bansur">{(totales[3]?.["ParaCurse"] ?? 0).toLocaleString("es-CL", { style: "currency", currency: "CLP" })}</div>
                                 </td>
                             </tr>
                                        
@@ -276,7 +251,7 @@ const Infogg = () => {
                           <td>
                             <div className="ml-2 p-3">TOTAL</div>
                           </td>
-                          {["Prospecto", "Aceptado","ComiteSuperior", "Aprobado", "Cursado"].map((estado, index) => (
+                          {["Prospecto", "EnComite", "ParaCurse"].map((estado, index) => (
                             <td key={index}>
                               {Object.values(totales)
                                 .reduce((acc, sucursal) => acc + (sucursal[estado] || 0), 0)
@@ -311,16 +286,10 @@ const Infogg = () => {
                         <div className="font-semibold text-left">Prospecto</div>
                       </th>
                       <th className="p-2 whitespace-nowrap">
-                        <div className="font-semibold text-left">Aceptado</div>
+                        <div className="font-semibold text-left">En Comité</div>
                       </th>
                       <th className="p-2 whitespace-nowrap">
-                        <div className="font-semibold text-left">Comité Superior</div>
-                      </th>
-                      <th className="p-2 whitespace-nowrap">
-                        <div className="font-semibold text-left">Aprobado</div>
-                      </th>
-                      <th className="p-2 whitespace-nowrap">
-                        <div className="font-semibold text-left">Cursado</div>
+                        <div className="font-semibold text-left">Para Curse</div>
                       </th>
                     </tr>
                   </thead>
@@ -333,7 +302,7 @@ const Infogg = () => {
           <div className="font-medium text-gray-800">{ejecutivoNombre}</div>
         </div>
       </td>
-      {["Prospecto", "Aceptado", "ComiteSuperior", "Aprobado", "Cursado"].map((estado, index) => (
+      {["Prospecto", "EnComite", "ParaCurse"].map((estado, index) => (
         <td key={index} className="p-2 whitespace-nowrap">
           <div className="text-left text-bansur">
             {(estados[estado] ?? 0).toLocaleString("es-CL", { style: "currency", currency: "CLP" })}
@@ -347,7 +316,7 @@ const Infogg = () => {
                           <tr>
                             <td><div className="ml-2 p-3">TOTAL</div></td>
                             
-                            {["Prospecto", "Aceptado","ComiteSuperior", "Aprobado", "Cursado"].map((estado, index) => (
+                            {["Prospecto", "EnComite", "ParaCurse"].map((estado, index) => (
                               <td key={index}>
                                 {Object.values(totalesEjecutivos)
                                   .reduce((acc, ejecutivo) => acc + (ejecutivo[estado] || 0), 0)

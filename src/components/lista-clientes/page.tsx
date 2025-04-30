@@ -5,7 +5,7 @@ import axios from "axios";
 import { Cliente } from "@/types/Types.tsx";
 
 const DemoPage: React.FC = () => {
-  const URL = "https://bansur-api-express.vercel.app/api/clientes?estadoId=1,2,3,4,5,8"; 
+  const URL = "https://bansur-api-express.vercel.app/api/clientes?estadoId=1,2,3,5"; 
   const [data, setData] = useState<Cliente[]>([]); // Cambiado a Cliente[] para evitar errores
 
   const fetchClientes = async () => {

@@ -86,31 +86,25 @@ interface gc_convenio {
 };
 
 type BadgeVariant =
-  | "sinasignar"
-  | "prospecto"
-  | "aceptado"
-  | "comite"
-  | "aprobado"
-  | "rechazado"
-  | "cursado"
-  | "outline"
-  | "default"
-  | "secondary"
-  | "destructive"
-  | "sinrespuesta"
-  | null
-  | undefined;
+| "prospecto"
+| "encomite"
+| "paracurse"
+| "rechazado"
+| "sinrespuesta"
+| "outline"
+| "default"
+| "secondary"
+| "destructive"
+| null
+| undefined;
 
 
   const badgeVariants: Record<number, BadgeVariant> = {
-    1: "sinasignar",
-    2: "prospecto",
-    3: "aceptado",
-    4: "comite",
-    5: "aprobado",
-    6: "rechazado",
-    7: "cursado",
-    8: "sinrespuesta"
+    1: "prospecto",
+    2: "encomite",
+    3: "paracurse",
+    4: "rechazado",
+    5: "sinrespuesta",
   };
   
   const getBadgeVariant = (id: number | undefined): BadgeVariant =>

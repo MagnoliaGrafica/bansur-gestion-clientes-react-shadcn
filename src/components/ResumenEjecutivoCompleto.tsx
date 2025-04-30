@@ -16,14 +16,11 @@ export function ResumenEjecutivoCompleto() {
 
   // Estados conocidos
   const estadosConocidos = [
-   // { id: "1", nombre: "Sin asignar" },
-    { id: "2", nombre: "Prospecto" },
-    { id: "3", nombre: "Aceptado" },
-    { id: "4", nombre: "Comité Sup." },
-    { id: "5", nombre: "Aprobado" },
-    { id: "7", nombre: "Cursado" },
-    { id: "6", nombre: "Rechazado" },
-    { id: "8", nombre: "Sin Respuesta" },
+    { id: "1", nombre: "Prospecto" },
+    { id: "2", nombre: "En Comité" },
+    { id: "3", nombre: "Para Curse" },
+    { id: "4", nombre: "Rechazado" },
+    { id: "5", nombre: "Sin Respuesta" }
   ];
 
   useEffect(() => {

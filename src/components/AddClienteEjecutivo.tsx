@@ -30,7 +30,7 @@ const AddClienteEjecutivo = () => {
     email: "",
     monto: 0,
     montoEvaluar: 0,
-    estado: 2,  // prospecto x defecto
+    estado: 1,  // prospecto x defecto
     canal: 0,  
     ejecutivo: userId || 0, // Inicializar con el ID del usuario autenticado
     convenio: 0,

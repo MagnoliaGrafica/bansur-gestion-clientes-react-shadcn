@@ -149,7 +149,7 @@ useEffect(() => {
   // Filtrar estados según el rol del usuario
   const estadosFiltrados = hasRole([1, 2, 3, 4]) // por ahora deje todos los roles x cambio de idea de bansur y no perder el codigo
   ? estados // Muestra todos los estados
-  : estados.filter((estado) => ["Prospecto", "Aprobado"].includes(estado.nombre)); // Muestra solo "Prospecto" y "Aprobado" cuando no es el rol 1 o 2
+  : estados.filter((estado) => ["Prospecto", "Para Curse"].includes(estado.nombre)); // Muestra "Prospecto" y "Para Curse" cuando no es el rol 1 o 2
   
 
   // Manejar cambios en los inputs
@@ -181,7 +181,7 @@ useEffect(() => {
   
       // Buscar el estado por id y verificar su nombre
       const estadoSeleccionado = estados.find((estado) => String(estado.id) === value);
-      const esEstadoFinalizado = estadoSeleccionado?.nombre === "Cursado" || estadoSeleccionado?.nombre === "No cursado";
+      const esEstadoFinalizado = estadoSeleccionado?.nombre === "Para Curse" || estadoSeleccionado?.nombre === "No cursado";
   
       return {
         ...prev,

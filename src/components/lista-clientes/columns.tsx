@@ -91,6 +91,7 @@ type BadgeVariant =
 | "paracurse"
 | "rechazado"
 | "sinrespuesta"
+| "cursado"
 | "outline"
 | "default"
 | "secondary"
@@ -105,6 +106,7 @@ type BadgeVariant =
     3: "paracurse",
     4: "rechazado",
     5: "sinrespuesta",
+    6: "cursado"
   };
   
   const getBadgeVariant = (id: number | undefined): BadgeVariant =>

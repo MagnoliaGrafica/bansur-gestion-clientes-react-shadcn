@@ -112,7 +112,6 @@ const Rechazados = () => {
           })}
         </select>
       </div>
-
                {/* Tabla */}
                         <div className="rounded-md border">
                   <Table>
@@ -175,8 +174,7 @@ const Rechazados = () => {
                         })}
                       </PaginationContent>
                     </Pagination>
-                    
-                          </div>
+                  </div>
         </div>
     );
 };

@@ -75,6 +75,7 @@ const SearchComponent: React.FC = () => {
   | "paracurse"
   | "rechazado"
   | "sinrespuesta"
+  | "cursado"
   | "outline"
   | "default"
   | "secondary"
@@ -88,7 +89,8 @@ const SearchComponent: React.FC = () => {
     2: "encomite",
     3: "paracurse",
     4: "rechazado",
-    5: "sinrespuesta"
+    5: "sinrespuesta",
+    6: "cursado"
   };
   
   const getBadgeVariant = (id: number | undefined): BadgeVariant =>

@@ -20,7 +20,8 @@ export function ResumenEjecutivoCompleto() {
     { id: "2", nombre: "En Comité" },
     { id: "3", nombre: "Para Curse" },
     { id: "4", nombre: "Rechazado" },
-    { id: "5", nombre: "Sin Respuesta" }
+    { id: "5", nombre: "Sin Respuesta"},
+    { id: "6", nombre: "Cursado"}
   ];
 
   useEffect(() => {

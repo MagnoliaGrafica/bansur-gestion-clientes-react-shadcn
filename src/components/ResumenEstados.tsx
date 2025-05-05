@@ -39,7 +39,8 @@ export function ResumenEstados() {
     { nombre: "En Comité", key: "2" },
     { nombre: "Para Curse", key: "3" },
     { nombre: "Rechazado", key: "4" },
-    { nombre: "Sin Respuesta", key: "5" }
+    { nombre: "Sin Respuesta", key: "5" },
+    { nombre: "Cursado", key: "6" }
   ];
 
   const estadosMap = new Map(estados.map(({ key, nombre }) => [key, nombre]));

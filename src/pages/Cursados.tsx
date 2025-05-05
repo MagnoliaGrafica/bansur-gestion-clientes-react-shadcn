@@ -41,7 +41,7 @@ const Cursados = () => {
     useEffect(() => {
       if (!user) return; // Si user es null, salir de la función
   
-      let apiUrl = `https://bansur-api-express.vercel.app/api/clientes?estadoId=3`;
+      let apiUrl = `https://bansur-api-express.vercel.app/api/clientes?estadoId=6`;
   
       // Si el usuario tiene rol 3 o 4 y user.id está definido, agregarlo a la URL
       if (hasRole([3, 4]) && user.id) {
@@ -84,7 +84,7 @@ const Cursados = () => {
 
     return (
         <div className="pl-28">
-            <h2 className="text-2xl font-medium text-bansur my-4">Prospectos Para Curse</h2>
+            <h2 className="text-2xl font-medium text-bansur my-4">Prospectos Cursados</h2>
 
             {error && <p className="text-red-500">{error}</p>}
 
@@ -115,7 +115,7 @@ const Cursados = () => {
             {/* Tabla */}
             <div className="rounded-md border">
       <Table>
-      <TableCaption>Lista de Clientes con montos Para Curse.</TableCaption>
+      <TableCaption>Lista de Clientes con montos Cursados.</TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead>Nombre</TableHead>

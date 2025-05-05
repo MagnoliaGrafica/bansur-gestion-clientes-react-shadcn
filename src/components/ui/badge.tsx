@@ -22,6 +22,7 @@ const badgeVariants = cva(
         rechazado:"border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
         sinrespuesta:"text-foreground",
         paracurse:"bg-green-500 border-transparent text-white",
+        cursado:"bg-blue-500 border-transparent text-white"
       },
     },
     defaultVariants: {
